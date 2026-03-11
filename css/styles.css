@@ -329,6 +329,10 @@ nav.scrolled {
   font-family:'Fraunces',serif; font-size:1.15rem; font-weight:400;
   margin-bottom:0.3rem; color:var(--texto);
 }
+.proj-sub {
+  font-family:'Fraunces',serif; font-style:italic;
+  font-size:0.85rem; font-weight:300; color:var(--cinza); margin-bottom:0.4rem;
+}
 .proj-area {
   font-size:0.65rem; font-weight:500; letter-spacing:0.18em;
   text-transform:uppercase; color:var(--ouro); margin-bottom:1rem;
