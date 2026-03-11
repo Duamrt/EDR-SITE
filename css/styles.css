@@ -500,7 +500,7 @@ footer { background:var(--preto); padding:4rem 5vw 2rem; }
   display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem;
   padding-bottom:3rem; border-bottom:1px solid rgba(245,240,232,0.07); margin-bottom:2rem;
 }
-.f-logo { height:70px; width:auto; margin-bottom:0.8rem; opacity:0.85; }
+.f-logo { height:52px; width:auto; margin-bottom:0.8rem; opacity:0.85; }
 .f-tag { font-family:'Fraunces',serif; font-style:italic; font-size:0.82rem; color:rgba(245,240,232,0.28); line-height:1.7; max-width:220px; margin-bottom:1.2rem; }
 .f-end { font-size:0.68rem; font-weight:300; color:rgba(245,240,232,0.2); line-height:1.8; }
 .f-col h5 { font-size:0.57rem; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--ouro); margin-bottom:1.2rem; }
