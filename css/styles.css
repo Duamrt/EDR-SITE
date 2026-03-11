@@ -210,6 +210,7 @@ nav.scrolled {
 .section-sobre {
   padding:7rem 5vw; background:var(--areia2);
   display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center;
+  overflow:hidden; position:relative; z-index:1;
 }
 .sobre-label { font-size:0.6rem; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--ouro); margin-bottom:1.2rem; }
 .sobre-title {
@@ -224,7 +225,7 @@ nav.scrolled {
 }
 .nome-i h4 { font-family:'Fraunces',serif; font-size:1rem; font-weight:400; margin-bottom:0.2rem; }
 .nome-i p { font-size:0.62rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--cinza); }
-.sobre-fotos { position:relative; height:480px; }
+.sobre-fotos { position:relative; height:480px; overflow:hidden; }
 .sf-a {
   position:absolute; top:0; left:0; width:75%; height:82%;
   object-fit:cover; object-position:center;
