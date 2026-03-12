@@ -260,9 +260,17 @@ body{{font-family:'Barlow',sans-serif;background:var(--cinza);color:var(--preto)
             <div class="msg-author-dot">E</div>
             <div class="msg-author-info">
                 <strong>Eng. Elyda Rodrigues</strong>
-                CREA-PE 66902 &middot; EDR Engenharia
+                CREA-PE 66902
             </div>
         </div>
+        <div class="msg-author" style="margin-top:12px;">
+            <div class="msg-author-dot" style="background:var(--dourado);">D</div>
+            <div class="msg-author-info">
+                <strong>Duam Rodrigues</strong>
+                Gestao &amp; Projetos
+            </div>
+        </div>
+        <div style="font-size:.75rem;color:#aaa;margin-top:16px;padding-left:16px;">EDR Engenharia</div>
     </div>
 </div>
 
