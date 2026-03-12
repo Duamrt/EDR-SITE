@@ -103,7 +103,7 @@ nav.scrolled {
 }
 .hero-title {
   font-family:'Fraunces',serif;
-  font-size:clamp(2.4rem,4.5vw,4.8rem);
+  font-size:clamp(2rem,4.5vw,4.8rem);
   font-weight:300; line-height:1.1; margin-bottom:1.8rem;
 }
 .hero-title .l1 {
@@ -427,8 +427,7 @@ nav.scrolled {
 
 /* MCMV */
 .section-mcmv {
-  padding:7rem 5vw; background:var(--areia2);
-  display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start;
+  display:block; padding:7rem 5vw; background:var(--areia2);
 }
 .mcmv-tag {
   display:inline-block; padding:0.35rem 0.9rem; background:var(--verde);
@@ -441,6 +440,98 @@ nav.scrolled {
 }
 .mcmv-title em { font-style:italic; color:var(--verde); }
 .mcmv-txt { font-size:0.85rem; font-weight:300; line-height:1.95; color:var(--cinza); margin-bottom:2rem; }
+
+/* MCMV — Header */
+.mcmv-header {
+  text-align:center; max-width:640px; margin:0 auto 2.5rem;
+}
+
+/* MCMV — Banner */
+.mcmv-banner {
+  display:flex; align-items:center; justify-content:center;
+  gap:0.7rem; flex-wrap:wrap;
+  background:var(--verde); color:var(--areia);
+  padding:1rem 1.5rem; margin:0 auto 3.5rem; max-width:860px;
+  font-size:0.88rem; line-height:1.7; text-align:center;
+}
+.mcmv-banner strong { font-weight:700; }
+.mcmv-banner-badge {
+  background:rgba(255,255,255,0.15); padding:0.2rem 0.65rem;
+  font-size:0.7rem; font-weight:700; letter-spacing:0.08em;
+  white-space:nowrap; flex-shrink:0;
+}
+
+/* MCMV — Faixas de renda */
+.mcmv-faixas {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1.2rem; margin:0 auto 3rem; max-width:1100px;
+}
+.mcmv-faixa {
+  background:white; padding:1.6rem 1.3rem;
+  border:1.5px solid rgba(42,37,25,0.1);
+  position:relative; transition:box-shadow 0.25s, transform 0.25s;
+}
+.mcmv-faixa:hover {
+  box-shadow:0 8px 28px rgba(10,61,24,0.1); transform:translateY(-3px);
+}
+.mcmv-faixa--dest { border-color:var(--verde); border-width:2px; }
+.mcmv-faixa-top {
+  position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+  background:var(--verde); color:var(--areia);
+  font-size:0.6rem; font-weight:700; letter-spacing:0.1em;
+  padding:0.22rem 0.8rem; white-space:nowrap;
+}
+.mcmv-faixa-top--new { background:var(--ouro); color:var(--preto); }
+.mcmv-faixa-num {
+  font-size:0.6rem; font-weight:700; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--verde); margin-bottom:0.35rem;
+}
+.mcmv-faixa-renda {
+  font-family:'Fraunces',serif; font-size:0.95rem; font-weight:400;
+  color:var(--texto); margin-bottom:1.1rem; line-height:1.4;
+}
+.mcmv-faixa-list {
+  list-style:none; padding:0; margin:0;
+  display:flex; flex-direction:column; gap:0.55rem;
+}
+.mcmv-faixa-list li {
+  display:flex; align-items:flex-start; gap:0.6rem;
+  font-size:0.78rem; font-weight:300; color:var(--cinza); line-height:1.5;
+}
+.mcmv-faixa-list li::before {
+  content:''; display:block; width:14px; height:14px; border-radius:50%;
+  background:var(--verde); opacity:0.15; flex-shrink:0; margin-top:2px;
+}
+.mcmv-faixa-list li.mcmv-faixa-dest { color:var(--verde); font-weight:500; }
+.mcmv-faixa-list li.mcmv-faixa-dest::before { opacity:1; background:var(--verde); }
+.mcmv-faixa-extra {
+  margin-top:1.1rem; padding:0.6rem 0.8rem;
+  background:rgba(10,61,24,0.06); font-size:0.75rem; font-weight:500;
+  color:var(--verde); text-align:center; line-height:1.5;
+  border-top:1px solid rgba(10,61,24,0.1);
+}
+
+/* MCMV — Nota Nordeste */
+.mcmv-nordeste {
+  display:flex; align-items:flex-start; gap:1rem;
+  background:#fff8ed; border-left:3px solid var(--ouro);
+  padding:1.2rem 1.5rem; max-width:860px; margin:0 auto 3.5rem;
+}
+.mcmv-nordeste-icon { font-size:1.3rem; flex-shrink:0; line-height:1.2; }
+.mcmv-nordeste p { font-size:0.82rem; font-weight:300; color:var(--cinza); line-height:1.75; margin:0; }
+.mcmv-nordeste strong { color:var(--texto); font-weight:600; }
+
+/* MCMV — Como a EDR ajuda */
+.mcmv-como-header { text-align:center; margin-bottom:2rem; }
+.mcmv-como-label {
+  font-size:0.6rem; font-weight:500; letter-spacing:0.28em;
+  text-transform:uppercase; color:var(--ouro); margin-bottom:0.6rem;
+}
+.mcmv-como-title {
+  font-family:'Fraunces',serif; font-size:clamp(1.4rem,2.5vw,2rem);
+  font-weight:300; color:var(--texto); line-height:1.2;
+}
+.mcmv-como-title em { font-style:italic; color:var(--verde); }
 .mcmv-items { display:flex; flex-direction:column; gap:0.8rem; }
 .mcmv-item {
   display:flex; gap:1rem; align-items:flex-start;
@@ -457,68 +548,16 @@ nav.scrolled {
 .mcmv-it h4 { font-size:0.8rem; font-weight:500; margin-bottom:0.2rem; }
 .mcmv-it p { font-size:0.73rem; font-weight:300; color:var(--cinza); line-height:1.6; }
 
-/* MCMV — Subsídio destaque */
-.mcmv-subsidio {
-  margin:1.5rem 0 2rem; padding:1.5rem 2rem;
-  background:var(--verde); border-radius:4px;
-  text-align:center;
+/* MCMV — CTA */
+.mcmv-cta { text-align:center; margin-top:3rem; }
+.mcmv-cta-txt {
+  font-family:'Fraunces',serif; font-style:italic;
+  font-size:1rem; color:var(--cinza); margin-bottom:1.5rem;
 }
-.mcmv-subsidio-valor {
-  font-family:'Fraunces',serif; font-size:clamp(2rem,3.5vw,3rem);
-  font-weight:600; color:var(--ouro); line-height:1.1;
-}
-.mcmv-subsidio-label {
-  font-size:0.68rem; font-weight:500; letter-spacing:0.2em;
-  text-transform:uppercase; color:rgba(245,240,232,0.5); margin-top:0.4rem;
-}
-
-/* MCMV — Faixas de renda */
-.mcmv-faixas { margin-top:1.5rem; }
-.mcmv-faixas-title {
-  font-size:0.68rem; font-weight:600; letter-spacing:0.18em;
-  text-transform:uppercase; color:var(--ouro); margin-bottom:0.8rem;
-}
-.mcmv-faixa {
-  display:flex; gap:1rem; align-items:center;
-  padding:0.8rem 1rem; background:white;
-  border:1px solid rgba(42,37,25,0.07);
-  margin-bottom:0.4rem; transition:border-color 0.3s;
-}
-.mcmv-faixa:hover { border-color:var(--verde); }
-.mcmv-faixa-num {
-  flex-shrink:0; width:28px; height:28px; border-radius:50%;
-  background:var(--ouro); color:var(--preto);
-  display:flex; align-items:center; justify-content:center;
-  font-size:0.72rem; font-weight:700;
-}
-.mcmv-faixa-renda { font-size:0.82rem; font-weight:500; color:var(--texto); }
-.mcmv-faixa-sub { font-size:0.68rem; font-weight:300; color:var(--cinza); margin-top:0.1rem; }
-
-/* MCMV — FAQ */
-.mcmv-faq { margin-top:1.5rem; }
-.mcmv-faq-title {
-  font-size:0.68rem; font-weight:600; letter-spacing:0.18em;
-  text-transform:uppercase; color:var(--ouro); margin-bottom:0.8rem;
-}
-.mcmv-faq-item {
-  background:white; border:1px solid rgba(42,37,25,0.07);
-  margin-bottom:0.4rem; transition:border-color 0.3s;
-}
-.mcmv-faq-item[open] { border-color:var(--verde); }
-.mcmv-faq-item summary {
-  padding:0.9rem 1.2rem; font-size:0.82rem; font-weight:500;
-  color:var(--texto); cursor:pointer; list-style:none;
-  display:flex; justify-content:space-between; align-items:center;
-}
-.mcmv-faq-item summary::-webkit-details-marker { display:none; }
-.mcmv-faq-item summary::after {
-  content:'+'; font-size:1.1rem; font-weight:300; color:var(--ouro);
-  transition:transform 0.3s;
-}
-.mcmv-faq-item[open] summary::after { content:'−'; }
-.mcmv-faq-item p {
-  padding:0 1.2rem 1rem; font-size:0.78rem; font-weight:300;
-  color:var(--cinza); line-height:1.8;
+.mcmv-disclaimer {
+  margin-top:1.2rem; font-size:0.68rem; font-weight:300;
+  color:var(--cinza); opacity:0.6; max-width:560px;
+  margin-left:auto; margin-right:auto; line-height:1.6;
 }
 
 /* CTA */
@@ -577,7 +616,7 @@ footer { background:var(--preto); padding:4rem 5vw 2rem; }
 
 /* FLOAT WPP */
 .float-wpp {
-  position:fixed; bottom:1.8rem; right:1.8rem; z-index:250;
+  position:fixed; bottom:calc(1.8rem + env(safe-area-inset-bottom, 0px)); right:1.8rem; z-index:250;
   display:flex; align-items:center; gap:0.6rem;
   padding:0.85rem 1.3rem; background:#25D366; color:white;
   font-size:0.63rem; font-weight:500; letter-spacing:0.12em;
@@ -617,8 +656,11 @@ footer { background:var(--preto); padding:4rem 5vw 2rem; }
   .hero-right { min-height:60vw; }
   .hero-right img { height:60vw; }
   .section-nums { grid-template-columns:repeat(2,1fr); }
+  .num-item { border-right:none; border-bottom:1px solid rgba(245,240,232,0.1); }
+  .num-item:nth-child(even) { border-left:1px solid rgba(245,240,232,0.1); }
+  .num-item:nth-last-child(-n+2) { border-bottom:none; }
   .section-sobre { grid-template-columns:1fr; gap:2.5rem; }
-  .sobre-fotos { height:260px; }
+  .sobre-fotos { height:auto; min-height:220px; }
   .servicos-grid { grid-template-columns:1fr 1fr; }
   .portfolio-grid { grid-template-columns:1fr; }
   .p-item img { height:260px; }
@@ -626,7 +668,7 @@ footer { background:var(--preto); padding:4rem 5vw 2rem; }
   .projetos-grid { grid-template-columns:1fr 1fr; }
   .processo-grid { grid-template-columns:1fr 1fr; gap:2.5rem; }
   .processo-grid::before { display:none; }
-  .section-mcmv { grid-template-columns:1fr; gap:3rem; }
+  .mcmv-faixas { grid-template-columns:1fr 1fr; }
   .section-cta { grid-template-columns:1fr; gap:3rem; }
   .footer-top { grid-template-columns:1fr 1fr; }
 }
@@ -635,7 +677,12 @@ footer { background:var(--preto); padding:4rem 5vw 2rem; }
   .projetos-grid { grid-template-columns:1fr; }
   .processo-grid { grid-template-columns:1fr; }
   .footer-top { grid-template-columns:1fr; }
+  .footer-bottom { flex-direction:column; gap:0.5rem; text-align:center; }
   .section-nums { grid-template-columns:repeat(2,1fr); }
   .hero-left { padding:6rem 5vw 3rem; }
   .mikael-bloco img { height:240px; }
+  .depo-card { padding:1.8rem 1.5rem; }
+  .depo-txt { font-size:0.92rem; }
+  .mcmv-faixas { grid-template-columns:1fr; }
+  .mcmv-banner { flex-direction:column; }
 }
