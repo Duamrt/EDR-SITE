@@ -24,6 +24,7 @@
 <!-- Fonts (non-blocking) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
 
@@ -226,35 +227,169 @@
   </div>
 </section>
 
+<style>
+  :root {
+    --edr-green: #0a3d18; --edr-green2: #0f5225;
+    --edr-black: #080808; --edr-card: #161b16;
+    --edr-border: rgba(255,255,255,0.07);
+    --edr-text: #e8e8e2; --edr-muted: #7a7d77;
+    --edr-accent: #2a7a3b;
+  }
+  .edr-portfolio { background: var(--edr-black); padding: 90px 0 100px; font-family: 'Barlow', sans-serif; overflow: hidden; }
+  .edr-portfolio__inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  .edr-portfolio__label { display: inline-flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--edr-green2); margin-bottom: 16px; }
+  .edr-portfolio__label::before { content: ''; display: block; width: 28px; height: 1px; background: var(--edr-green2); }
+  .edr-portfolio__title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 5vw, 58px); font-weight: 900; line-height: 1; color: var(--edr-text); text-transform: uppercase; margin: 0 0 14px; }
+  .edr-portfolio__title span { color: var(--edr-green2); }
+  .edr-portfolio__sub { font-size: 15px; font-weight: 300; color: var(--edr-muted); max-width: 480px; line-height: 1.6; }
+  .edr-portfolio__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; }
+  .edr-card--destaque { grid-column: span 2; }
+  .edr-card { background: var(--edr-card); border: 1px solid var(--edr-border); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; transition: border-color .25s, transform .25s; }
+  .edr-card:hover { border-color: rgba(42,122,59,0.4); transform: translateY(-3px); }
+  .edr-card__img { position: relative; overflow: hidden; background: #0d120d; }
+  .edr-card--destaque .edr-card__img { height: 280px; }
+  .edr-card:not(.edr-card--destaque) .edr-card__img { height: 200px; }
+  .edr-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.88); transition: filter .3s, transform .4s; }
+  .edr-card:hover .edr-card__img img { filter: brightness(.95); transform: scale(1.03); }
+  .edr-card__img::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(transparent, var(--edr-card)); pointer-events: none; }
+  .edr-card__real { position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; background: rgba(10,61,24,.8); color: #6fcf8a; border: 1px solid rgba(111,207,138,.25); padding: 3px 8px; border-radius: 2px; }
+  .edr-card__exec { position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; background: rgba(180,120,0,.8); color: #ffd87a; border: 1px solid rgba(255,200,80,.25); padding: 3px 8px; border-radius: 2px; }
+  .edr-card__body { padding: 22px 24px 24px; flex: 1; display: flex; flex-direction: column; }
+  .edr-card__code { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--edr-accent); margin-bottom: 4px; }
+  .edr-card__name { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 900; text-transform: uppercase; color: var(--edr-text); line-height: 1; margin-bottom: 14px; }
+  .edr-card--destaque .edr-card__name { font-size: 36px; }
+  .edr-card__specs { display: flex; gap: 20px; margin-bottom: 16px; }
+  .edr-spec__val { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--edr-text); line-height: 1; }
+  .edr-spec__lbl { font-size: 10px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--edr-muted); }
+  .edr-card__footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--edr-border); margin-top: auto; }
+  .edr-card__status--ok { color: #5cb870; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+  .edr-card__status--exec { color: #e0a843; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+  .edr-card__cta { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--edr-green2); text-decoration: none; }
+  .edr-card__cta:hover { color: #5cb870; }
+  .edr-portfolio__cta { margin-top: 52px; text-align: center; }
+  .edr-portfolio__cta p { font-size: 14px; font-weight: 300; color: var(--edr-muted); margin-bottom: 20px; }
+  .edr-btn { display: inline-flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; background: var(--edr-green); padding: 14px 32px; border-radius: 2px; text-decoration: none; transition: background .2s; }
+  .edr-btn:hover { background: var(--edr-green2); }
+  @media (max-width: 900px) { .edr-portfolio__grid { grid-template-columns: 1fr 1fr; } .edr-card--destaque { grid-column: span 2; } }
+  @media (max-width: 580px) { .edr-portfolio__grid { grid-template-columns: 1fr; } .edr-card--destaque { grid-column: span 1; } .edr-card--destaque .edr-card__img { height: 220px; } }
+</style>
+
 <!-- PORTFÓLIO -->
-<section class="section-portfolio" id="portfolio">
-  <div class="portfolio-intro">
-    <p class="sec-label reveal">Nossas Obras</p>
-    <h2 class="sec-title reveal d1">Cada entrega é<br><em>um sonho realizado.</em></h2>
-  </div>
-  <div class="portfolio-grid reveal">
-    <div class="p-item">
-      <img src="img/portfolio-1.jpg" alt="Casa Vinícius finalizada — fachada frontal, projeto de 119m² em Jupi-PE" loading="lazy" width="800" height="340">
-      <div class="p-info">
-        <div class="p-info-title">Casa Vinícius · Jupi, PE</div>
-        <div class="p-info-sub">119m² · Entregue em 8 meses</div>
+<section class="edr-portfolio" id="portfolio">
+  <div class="edr-portfolio__inner">
+    <div class="edr-portfolio__header">
+      <p class="edr-portfolio__label">Nossas Obras</p>
+      <h2 class="edr-portfolio__title">Cada entrega é<br><span>um sonho realizado.</span></h2>
+      <p class="edr-portfolio__sub">Projetos reais entregues em Jupi-PE. Do projeto à entrega das chaves.</p>
+    </div>
+    <div class="edr-portfolio__grid">
+
+      <!-- CECÍLIA -->
+      <div class="edr-card edr-card--destaque">
+        <div class="edr-card__img">
+          <img src="img/portfolio-cecilia.jpg" alt="Modelo Cecília — EDR 65, 64,85m², Jupi-PE" loading="lazy">
+          <span class="edr-card__real">📸 Foto real</span>
+        </div>
+        <div class="edr-card__body">
+          <div class="edr-card__code">EDR 65</div>
+          <div class="edr-card__name">Cecília</div>
+          <div class="edr-card__specs">
+            <div class="edr-spec"><div class="edr-spec__val">64,85<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
+            <div class="edr-spec"><div class="edr-spec__val">2</div><div class="edr-spec__lbl">Quartos</div></div>
+            <div class="edr-spec"><div class="edr-spec__val">2</div><div class="edr-spec__lbl">Banheiros</div></div>
+          </div>
+          <div class="edr-card__footer">
+            <span class="edr-card__status--ok">✓ Entregue</span>
+            <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Cecília%20(EDR%2065)." class="edr-card__cta" target="_blank" rel="noopener">Solicitar orçamento →</a>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="p-item">
-      <img src="img/portfolio-mikael.jpg" alt="Casa Mikael em fase de acabamento — fachada moderna em Jupi-PE" loading="lazy" width="800" height="340">
-      <div class="p-info">
-        <div class="p-info-title">Casa Mikael · Jupi, PE</div>
-        <div class="p-info-sub">Em acabamento · Acompanhamento completo</div>
+
+      <!-- AFONSO -->
+      <div class="edr-card">
+        <div class="edr-card__img">
+          <img src="img/portfolio-afonso.jpg" alt="Modelo Afonso — EDR 60, 60,20m², Jupi-PE" loading="lazy">
+          <span class="edr-card__real">📸 Foto real</span>
+        </div>
+        <div class="edr-card__body">
+          <div class="edr-card__code">EDR 60</div>
+          <div class="edr-card__name">Afonso</div>
+          <div class="edr-card__specs">
+            <div class="edr-spec"><div class="edr-spec__val">60,20<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
+            <div class="edr-spec"><div class="edr-spec__val">2</div><div class="edr-spec__lbl">Quartos</div></div>
+          </div>
+          <div class="edr-card__footer">
+            <span class="edr-card__status--ok">✓ Entregue</span>
+            <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Afonso%20(EDR%2060)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
+          </div>
+        </div>
       </div>
+
+      <!-- THIAGO -->
+      <div class="edr-card">
+        <div class="edr-card__img">
+          <img src="img/portfolio-thiago.jpg" alt="Modelo Thiago — EDR 70, 69,81m², Jupi-PE" loading="lazy">
+          <span class="edr-card__real">📸 Foto real</span>
+        </div>
+        <div class="edr-card__body">
+          <div class="edr-card__code">EDR 70</div>
+          <div class="edr-card__name">Thiago</div>
+          <div class="edr-card__specs">
+            <div class="edr-spec"><div class="edr-spec__val">69,81<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
+            <div class="edr-spec"><div class="edr-spec__val">3</div><div class="edr-spec__lbl">Quartos</div></div>
+          </div>
+          <div class="edr-card__footer">
+            <span class="edr-card__status--ok">✓ Entregue</span>
+            <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Thiago%20(EDR%2070)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- LÍVIA -->
+      <div class="edr-card">
+        <div class="edr-card__img">
+          <img src="img/portfolio-livia.jpg" alt="Modelo Lívia — EDR 68, 67,81m², Jupi-PE" loading="lazy">
+          <span class="edr-card__exec">🔨 Em execução</span>
+        </div>
+        <div class="edr-card__body">
+          <div class="edr-card__code">EDR 68</div>
+          <div class="edr-card__name">Lívia</div>
+          <div class="edr-card__specs">
+            <div class="edr-spec"><div class="edr-spec__val">67,81<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
+            <div class="edr-spec"><div class="edr-spec__val">3</div><div class="edr-spec__lbl">Quartos</div></div>
+          </div>
+          <div class="edr-card__footer">
+            <span class="edr-card__status--exec">⏳ Em execução</span>
+            <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Lívia%20(EDR%2068)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLARA -->
+      <div class="edr-card">
+        <div class="edr-card__img">
+          <img src="img/portfolio-clara.jpg" alt="Modelo Clara — EDR 61, 60,97m², Jupi-PE" loading="lazy">
+          <span class="edr-card__real">📸 Foto real</span>
+        </div>
+        <div class="edr-card__body">
+          <div class="edr-card__code">EDR 61</div>
+          <div class="edr-card__name">Clara</div>
+          <div class="edr-card__specs">
+            <div class="edr-spec"><div class="edr-spec__val">60,97<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
+            <div class="edr-spec"><div class="edr-spec__val">2</div><div class="edr-spec__lbl">Quartos</div></div>
+          </div>
+          <div class="edr-card__footer">
+            <span class="edr-card__status--ok">✓ Entregue</span>
+            <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Clara%20(EDR%2061)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </div>
-  <div class="mikael-bloco reveal">
-    <img src="img/portfolio-mikael.jpg" alt="Casa Mikael em fase de acabamento final — Jupi, PE" loading="lazy" width="1200" height="320">
-    <div class="mikael-overlay">
-      <div class="mikael-title">Casa Mikael</div>
-      <div class="mikael-sub">Jupi, PE · Em acabamento final</div>
+    <div class="edr-portfolio__cta">
+      <p>Quer um projeto assim? A gente cuida de tudo — do projeto à entrega das chaves.</p>
+      <a href="https://wa.me/5587981713987?text=Olá!%20Quero%20conhecer%20os%20modelos%20EDR." class="edr-btn" target="_blank" rel="noopener">Falar com a EDR →</a>
     </div>
-    <div class="mikael-badge"><p>Entrega em breve</p></div>
   </div>
 </section>
 
