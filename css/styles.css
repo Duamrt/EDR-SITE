@@ -41,7 +41,7 @@ nav.scrolled {
   letter-spacing:0.12em; text-transform:uppercase;
   color:rgba(42,37,25,0.5); transition:color 0.3s;
 }
-.nav-links a:hover { color:var(--verde); }
+.nav-links a:hover, .nav-links a.active { color:var(--verde); }
 .nav-wpp {
   display:flex; align-items:center; gap:0.5rem;
   padding:0.6rem 1.2rem; background:var(--verde);
@@ -456,6 +456,70 @@ nav.scrolled {
 }
 .mcmv-it h4 { font-size:0.8rem; font-weight:500; margin-bottom:0.2rem; }
 .mcmv-it p { font-size:0.73rem; font-weight:300; color:var(--cinza); line-height:1.6; }
+
+/* MCMV — Subsídio destaque */
+.mcmv-subsidio {
+  margin:1.5rem 0 2rem; padding:1.5rem 2rem;
+  background:var(--verde); border-radius:4px;
+  text-align:center;
+}
+.mcmv-subsidio-valor {
+  font-family:'Fraunces',serif; font-size:clamp(2rem,3.5vw,3rem);
+  font-weight:600; color:var(--ouro); line-height:1.1;
+}
+.mcmv-subsidio-label {
+  font-size:0.68rem; font-weight:500; letter-spacing:0.2em;
+  text-transform:uppercase; color:rgba(245,240,232,0.5); margin-top:0.4rem;
+}
+
+/* MCMV — Faixas de renda */
+.mcmv-faixas { margin-top:1.5rem; }
+.mcmv-faixas-title {
+  font-size:0.68rem; font-weight:600; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--ouro); margin-bottom:0.8rem;
+}
+.mcmv-faixa {
+  display:flex; gap:1rem; align-items:center;
+  padding:0.8rem 1rem; background:white;
+  border:1px solid rgba(42,37,25,0.07);
+  margin-bottom:0.4rem; transition:border-color 0.3s;
+}
+.mcmv-faixa:hover { border-color:var(--verde); }
+.mcmv-faixa-num {
+  flex-shrink:0; width:28px; height:28px; border-radius:50%;
+  background:var(--ouro); color:var(--preto);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.72rem; font-weight:700;
+}
+.mcmv-faixa-renda { font-size:0.82rem; font-weight:500; color:var(--texto); }
+.mcmv-faixa-sub { font-size:0.68rem; font-weight:300; color:var(--cinza); margin-top:0.1rem; }
+
+/* MCMV — FAQ */
+.mcmv-faq { margin-top:1.5rem; }
+.mcmv-faq-title {
+  font-size:0.68rem; font-weight:600; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--ouro); margin-bottom:0.8rem;
+}
+.mcmv-faq-item {
+  background:white; border:1px solid rgba(42,37,25,0.07);
+  margin-bottom:0.4rem; transition:border-color 0.3s;
+}
+.mcmv-faq-item[open] { border-color:var(--verde); }
+.mcmv-faq-item summary {
+  padding:0.9rem 1.2rem; font-size:0.82rem; font-weight:500;
+  color:var(--texto); cursor:pointer; list-style:none;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.mcmv-faq-item summary::-webkit-details-marker { display:none; }
+.mcmv-faq-item summary::after {
+  content:'+'; font-size:1.1rem; font-weight:300; color:var(--ouro);
+  transition:transform 0.3s;
+}
+.mcmv-faq-item[open] summary::after { content:'−'; }
+.mcmv-faq-item p {
+  padding:0 1.2rem 1rem; font-size:0.78rem; font-weight:300;
+  color:var(--cinza); line-height:1.8;
+}
 
 /* CTA */
 .section-cta {
