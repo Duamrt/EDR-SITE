@@ -310,60 +310,6 @@ nav.scrolled {
 }
 .mikael-badge p { font-size:0.6rem; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:var(--ouro); }
 
-/* PROJETOS PRONTOS */
-.section-projetos { padding:7rem 5vw; background:var(--areia); }
-.projetos-grid {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:3.5rem;
-}
-.proj-card {
-  background:white; border:1px solid rgba(42,37,25,0.08);
-  border-radius:4px; overflow:hidden; transition:transform 0.35s, box-shadow 0.35s;
-}
-.proj-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(42,37,25,0.1); }
-.proj-img {
-  width:100%; height:220px; object-fit:cover; display:block;
-  background:var(--areia2);
-}
-.proj-body { padding:1.6rem 1.5rem; }
-.proj-nome {
-  font-family:'Fraunces',serif; font-size:1.15rem; font-weight:400;
-  margin-bottom:0.3rem; color:var(--texto);
-}
-.proj-sub {
-  font-family:'Fraunces',serif; font-style:italic;
-  font-size:0.85rem; font-weight:300; color:var(--cinza); margin-bottom:0.4rem;
-}
-.proj-area {
-  font-size:0.65rem; font-weight:500; letter-spacing:0.18em;
-  text-transform:uppercase; color:var(--ouro); margin-bottom:1rem;
-}
-.proj-specs {
-  display:flex; flex-direction:column; gap:0.5rem;
-  padding-top:1rem; border-top:1px solid rgba(42,37,25,0.08);
-}
-.proj-spec {
-  display:flex; align-items:center; gap:0.7rem;
-  font-size:0.8rem; font-weight:400; color:var(--cinza);
-}
-.proj-spec-icon {
-  width:18px; height:18px; flex-shrink:0; color:var(--verde); opacity:0.7;
-}
-.proj-cta {
-  display:block; text-align:center; margin-top:1.2rem;
-  padding:0.8rem; background:var(--verde); color:var(--areia);
-  font-size:0.65rem; font-weight:500; letter-spacing:0.15em;
-  text-transform:uppercase; text-decoration:none; border-radius:2px;
-  transition:background 0.3s;
-}
-.proj-cta:hover { background:var(--verde-vivo); }
-.proj-badge {
-  display:inline-block; padding:0.25rem 0.7rem; background:var(--ouro);
-  color:var(--preto); font-size:0.55rem; font-weight:600;
-  letter-spacing:0.12em; text-transform:uppercase; border-radius:2px;
-  position:absolute; top:0.8rem; right:0.8rem;
-}
-.proj-img-wrap { position:relative; }
-
 /* DEPOIMENTOS */
 .section-depo { padding:7rem 5vw; background:var(--areia2); }
 .depo-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; margin-top:3.5rem; }
@@ -665,7 +611,7 @@ footer { background:var(--preto); padding:4rem 5vw 2rem; }
   .portfolio-grid { grid-template-columns:1fr; }
   .p-item img { height:260px; }
   .depo-grid { grid-template-columns:1fr; }
-  .projetos-grid { grid-template-columns:1fr 1fr; }
+
   .processo-grid { grid-template-columns:1fr 1fr; gap:2.5rem; }
   .processo-grid::before { display:none; }
   .mcmv-faixas { grid-template-columns:1fr 1fr; }
@@ -674,7 +620,7 @@ footer { background:var(--preto); padding:4rem 5vw 2rem; }
 }
 @media(max-width:560px){
   .servicos-grid { grid-template-columns:1fr; }
-  .projetos-grid { grid-template-columns:1fr; }
+
   .processo-grid { grid-template-columns:1fr; }
   .footer-top { grid-template-columns:1fr; }
   .footer-bottom { flex-direction:column; gap:0.5rem; text-align:center; }
