@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Evolução EDR — Passo a Passo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Inter',sans-serif; background:#fafaf8; color:#1a1a18;
+    line-height:1.7; padding:2rem; max-width:900px; margin:0 auto;
+  }
+
+  @media print {
+    body { padding:0; font-size:11px; }
+    .no-print { display:none !important; }
+    .phase { break-inside:avoid; page-break-inside:avoid; }
+    .page-break { page-break-before:always; }
+  }
+
+  /* HEADER */
+  .header {
+    text-align:center; padding:3rem 2rem; margin-bottom:3rem;
+    background:linear-gradient(135deg, #0a3d18, #0f5222);
+    color:#f5f0e8; border-radius:8px;
+  }
+  .header h1 { font-size:1.8rem; font-weight:700; margin-bottom:0.5rem; letter-spacing:-0.02em; }
+  .header p { font-size:0.85rem; font-weight:300; opacity:0.7; }
+  .header .date { font-size:0.7rem; margin-top:1rem; opacity:0.4; text-transform:uppercase; letter-spacing:0.15em; }
+
+  /* INTRO */
+  .intro {
+    background:#fff; border:1px solid #e8e5dd; border-left:4px solid #c9a84c;
+    padding:1.5rem 2rem; border-radius:4px; margin-bottom:3rem;
+    font-size:0.88rem; color:#5a5545;
+  }
+  .intro strong { color:#1a1a18; }
+
+  /* PHASE */
+  .phase {
+    margin-bottom:2.5rem; background:#fff;
+    border:1px solid #e8e5dd; border-radius:6px; overflow:hidden;
+  }
+  .phase-header {
+    display:flex; align-items:center; gap:1rem;
+    padding:1.2rem 1.5rem; border-bottom:1px solid #e8e5dd;
+  }
+  .phase-num {
+    width:36px; height:36px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.8rem; font-weight:700; color:#fff; flex-shrink:0;
+  }
+  .phase-num.green { background:#0a3d18; }
+  .phase-num.gold { background:#c9a84c; color:#1a1a18; }
+  .phase-num.dark { background:#2a2519; }
+  .phase-title { font-size:1.05rem; font-weight:600; }
+  .phase-subtitle { font-size:0.72rem; color:#8a8070; margin-top:0.1rem; }
+  .phase-body { padding:1.5rem; }
+
+  /* TASKS */
+  .task-group { margin-bottom:1.5rem; }
+  .task-group:last-child { margin-bottom:0; }
+  .task-group-title {
+    font-size:0.68rem; font-weight:600; letter-spacing:0.15em;
+    text-transform:uppercase; color:#c9a84c; margin-bottom:0.8rem;
+  }
+  .task {
+    display:flex; gap:0.8rem; padding:0.6rem 0;
+    border-bottom:1px solid #f5f2ec; font-size:0.82rem;
+  }
+  .task:last-child { border-bottom:none; }
+  .task-check {
+    width:18px; height:18px; border:1.5px solid #ccc; border-radius:3px;
+    flex-shrink:0; margin-top:2px;
+  }
+  .task-content { flex:1; }
+  .task-label { font-weight:500; }
+  .task-detail { font-size:0.75rem; color:#8a8070; margin-top:0.2rem; }
+  .task-who {
+    display:inline-block; padding:0.15rem 0.5rem; border-radius:3px;
+    font-size:0.62rem; font-weight:600; letter-spacing:0.08em;
+    text-transform:uppercase; margin-left:0.3rem;
+  }
+  .who-duam { background:#e8f5e9; color:#2e7d32; }
+  .who-claude { background:#e3f2fd; color:#1565c0; }
+  .who-both { background:#fff3e0; color:#e65100; }
+
+  /* DEPENDENCY */
+  .dep {
+    display:inline-flex; align-items:center; gap:0.3rem;
+    font-size:0.65rem; color:#b0a898; margin-top:0.3rem;
+  }
+  .dep::before { content:''; display:inline-block; width:4px; height:4px; background:#c9a84c; border-radius:50%; }
+
+  /* PRIORITY */
+  .priority-bar {
+    display:flex; gap:0.5rem; padding:0 1.5rem 1rem;
+    flex-wrap:wrap;
+  }
+  .priority-tag {
+    font-size:0.62rem; padding:0.2rem 0.6rem;
+    border-radius:3px; font-weight:500;
+  }
+  .prio-high { background:#ffebee; color:#c62828; }
+  .prio-medium { background:#fff8e1; color:#f57f17; }
+  .prio-low { background:#e8f5e9; color:#2e7d32; }
+
+  /* TIMELINE */
+  .timeline {
+    margin:2rem 0; padding:1.5rem 2rem;
+    background:#f9f7f2; border-radius:6px; border:1px solid #e8e5dd;
+  }
+  .timeline h3 {
+    font-size:0.75rem; font-weight:600; letter-spacing:0.15em;
+    text-transform:uppercase; color:#0a3d18; margin-bottom:1rem;
+  }
+  .tl-row {
+    display:grid; grid-template-columns:80px 1fr;
+    gap:0.8rem; padding:0.5rem 0; border-bottom:1px solid #ece8df;
+    font-size:0.8rem;
+  }
+  .tl-row:last-child { border-bottom:none; }
+  .tl-week { font-weight:600; color:#0a3d18; }
+  .tl-what { color:#5a5545; }
+
+  /* RULES */
+  .rules {
+    background:#2a2519; color:#f5f0e8; padding:2rem;
+    border-radius:6px; margin:2rem 0;
+  }
+  .rules h3 {
+    font-size:0.9rem; font-weight:600; margin-bottom:1rem; color:#c9a84c;
+  }
+  .rule {
+    padding:0.5rem 0; border-bottom:1px solid rgba(245,240,232,0.08);
+    font-size:0.82rem; font-weight:300; opacity:0.8;
+  }
+  .rule:last-child { border-bottom:none; }
+  .rule strong { color:#c9a84c; font-weight:500; opacity:1; }
+
+  /* SECTION DIVIDER */
+  .section-divider {
+    text-align:center; margin:3rem 0 2rem;
+    font-size:0.7rem; font-weight:600; letter-spacing:0.25em;
+    text-transform:uppercase; color:#b0a898;
+  }
+  .section-divider::before,
+  .section-divider::after {
+    content:''; display:inline-block; width:40px; height:1px;
+    background:#d0c8b8; vertical-align:middle; margin:0 1rem;
+  }
+
+  /* NOTES */
+  .note {
+    padding:1rem 1.5rem; background:#fffde7; border-left:3px solid #f9a825;
+    border-radius:0 4px 4px 0; margin:1rem 0; font-size:0.8rem; color:#5a5545;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Guia de Evolucao EDR</h1>
+  <p>Roteiro completo — do que atacar primeiro ao que pode esperar</p>
+  <div class="date">Atualizado em 12 de Marco de 2026</div>
+</div>
+
+<div class="intro">
+  <strong>Duam, a regra de ouro:</strong> uma coisa de cada vez. Este guia esta organizado em fases sequenciais. Cada fase tem tarefas pequenas e marcaveis. Nao pule fases. Quando terminar uma, risca e vai pra proxima. O progresso visivel e o que vai te dar folego pra continuar.
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider">Regras do Jogo</div>
+<!-- ============================================ -->
+
+<div class="rules">
+  <h3>3 Regras Antes de Comecar</h3>
+  <div class="rule"><strong>1. Nao faca duas coisas ao mesmo tempo.</strong> Site OU sistema. Nunca os dois na mesma noite. Escolhe um, termina o bloco, descansa.</div>
+  <div class="rule"><strong>2. Sessao = 1 a 2 horas, maximo.</strong> Abre o guia, ve qual e a proxima tarefa, faz, marca como feita. Acabou o tempo? Para. Amanha continua.</div>
+  <div class="rule"><strong>3. "Feito" e melhor que "perfeito".</strong> Foto nao ficou 10/10? Usa a de 7/10. O site no ar com foto boa ja gera resultado. Perfeicao pode vir depois.</div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider">Visao Geral — Linha do Tempo</div>
+<!-- ============================================ -->
+
+<div class="timeline">
+  <h3>Sequencia Recomendada (ritmo: 1-2h por sessao)</h3>
+  <div class="tl-row"><div class="tl-week">Fase 1</div><div class="tl-what"><strong>Fotos</strong> — Tirar, tratar no Freepik, organizar na pasta</div></div>
+  <div class="tl-row"><div class="tl-week">Fase 2</div><div class="tl-what"><strong>Site Visual</strong> — Subir fotos, melhorar MCMV, ajustes gerais</div></div>
+  <div class="tl-row"><div class="tl-week">Fase 3</div><div class="tl-what"><strong>Acervo de Projetos</strong> — Baixar PDFs, padronizar, anonimizar</div></div>
+  <div class="tl-row"><div class="tl-week">Fase 4</div><div class="tl-what"><strong>Modelos EDR no Site</strong> — Plantas tratadas, 3D, paginas dos modelos</div></div>
+  <div class="tl-row"><div class="tl-week">Fase 5</div><div class="tl-what"><strong>Sistema EDR</strong> — Corrigir bugs anotados, novas features</div></div>
+  <div class="tl-row"><div class="tl-week">Fase 6</div><div class="tl-what"><strong>Dominio e Lancamento</strong> — edreng.com.br, SEO final, divulgacao</div></div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider">Fase 1 — Fotos</div>
+<!-- ============================================ -->
+
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num green">1</div>
+    <div>
+      <div class="phase-title">Banco de Fotos da EDR</div>
+      <div class="phase-subtitle">Voce precisa de fotos boas antes de qualquer melhoria no site</div>
+    </div>
+  </div>
+  <div class="priority-bar">
+    <span class="priority-tag prio-high">Prioridade alta</span>
+    <span class="priority-tag" style="background:#e3f2fd;color:#1565c0">Bloqueia a Fase 2</span>
+  </div>
+  <div class="phase-body">
+    <div class="task-group">
+      <div class="task-group-title">O que fotografar</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Fachadas de casas entregues (minimo 4-5 casas diferentes) <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Dica: foto de manha cedo ou fim de tarde (luz dourada). Celular na horizontal. Enquadramento reto, sem inclinar.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Fotos de obra em andamento (2-3 fotos) <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Estrutura, alvenaria, acabamento — mostra que tem obra rolando.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Foto profissional de Elyda e Duam (secao "Sobre") <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Pode ser no canteiro de obra ou escritorio. Roupa neutra, fundo limpo. Freepik corrige o resto.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-title">Tratamento das fotos</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Levar fotos ao Freepik AI para aprimorar <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Foco: correcao de luz, remover elementos indesejados, melhorar nitidez. Salvar em alta resolucao.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Organizar na pasta <code>C:/Users/Duam Rodrigues/EDR-SITE/img/</code> <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Nomes padrao: <code>fachada-vinicius.jpg</code>, <code>fachada-mikael.jpg</code>, <code>obra-andamento-01.jpg</code>, <code>equipe-edr.jpg</code></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Nao trave aqui.</strong> Se so conseguir 3 fotos boas num primeiro momento, ja serve. Coloca no site e vai adicionando depois. O site hoje tem 2 fotos — qualquer numero acima de 2 ja e evolucao.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider">Fase 2 — Site Visual + MCMV</div>
+<!-- ============================================ -->
+
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num green">2</div>
+    <div>
+      <div class="phase-title">Melhorias no Site</div>
+      <div class="phase-subtitle">Com fotos em maos, evoluir o site — especialmente a secao MCMV</div>
+    </div>
+  </div>
+  <div class="priority-bar">
+    <span class="priority-tag prio-high">Prioridade alta</span>
+    <span class="priority-tag" style="background:#e8f5e9;color:#2e7d32">Sessao com Claude</span>
+  </div>
+  <div class="phase-body">
+    <div class="task-group">
+      <div class="task-group-title">Fotos no site</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Substituir fotos duplicadas no portfolio <span class="task-who who-both">Duam + Claude</span></div>
+          <div class="task-detail">Hoje portfolio-1.jpg = hero-casa.jpg. Trocar por fotos novas da Fase 1.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Adicionar mais casas no portfolio (meta: 4-6 fotos) <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">Expandir o grid do portfolio com as novas fotos.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Foto real na secao Sobre (Elyda + Duam) <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">Substituir a foto genérica por foto real da equipe.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-title">Secao MCMV (evolucao)</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Adicionar faixas de renda do MCMV com valores <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">Faixa 1, 2 e 3 com renda maxima e subsidio aproximado — pessoa ja se situa antes de ligar.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Destaque visual "Ate R$ 55 mil de subsidio" <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">Numero grande que chama atencao e gera clique no WhatsApp.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">FAQ basico sobre MCMV (3-4 perguntas) <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">"Quem tem direito?", "Precisa de terreno?", "Quanto tempo demora?" — accordion simples.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-title">Melhorias tecnicas</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Contadores animados na secao de numeros <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">116, 25, 8, 5+ contam de 0 ate o valor quando aparecem na tela.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Nav ativa no scroll + offset correto <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">Link da secao visivel fica destacado. Scroll nao fica coberto pela nav fixa.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Deletar footer-logo.png (nao usado) <span class="task-who who-claude">Claude</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider page-break">Fase 3 — Acervo de Projetos</div>
+<!-- ============================================ -->
+
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num gold">3</div>
+    <div>
+      <div class="phase-title">Padronizar o Acervo</div>
+      <div class="phase-subtitle">Transformar projetos de clientes em produtos EDR (modelos)</div>
+    </div>
+  </div>
+  <div class="priority-bar">
+    <span class="priority-tag prio-medium">Prioridade media</span>
+    <span class="priority-tag" style="background:#e3f2fd;color:#1565c0">Bloqueia a Fase 4</span>
+  </div>
+  <div class="phase-body">
+    <div class="task-group">
+      <div class="task-group-title">Preparacao (trabalho braçal, unica vez)</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Criar pasta <code>C:/Users/Duam Rodrigues/EDR-ACERVO/</code> <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Subpastas: <code>/originais</code> (PDFs do Drive como vieram) e <code>/modelos-edr</code> (versoes tratadas).</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Baixar os PDFs do Drive compartilhado <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">So os executivos finais (nao rascunhos). Um por um se precisar — salvar em <code>/originais</code>.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Listar quais projetos sao unicos vs duplicatas <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Exemplo: "Casa Pedro Arthur = unica", "Casa Joao e Casa Maria = mesmo projeto, so mudou endereco". Fazer uma lista simples em .txt.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-title">Padronizacao (sessao com Claude)</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Definir catalogo final: quais projetos viram modelos EDR <span class="task-who who-both">Duam + Claude</span></div>
+          <div class="task-detail">Hoje tem 3: EDR 86 (45m2), EDR 65 (65m2), EDR 1001 (90m2). Tem mais? Avaliar acervo.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Anonimizar PDFs — remover nomes de clientes, enderecos <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">Claude pode ler os PDFs e gerar versoes limpas (sem dados pessoais). Substituir por "PROPRIETARIO" ou dados genericos.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Renomear pranchas seguindo padrao EDR <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">Capa com "Modelo EDR 86", selo EDR Engenharia, codigo do projeto.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Sobre o Drive:</strong> Nao precisa baixar tudo de uma vez. Comeca pelos 3 modelos que ja estao no site (EDR 86, 65, 1001). Se fizer 1 por dia, em 3 dias tem o material.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider">Fase 4 — Modelos EDR no Site</div>
+<!-- ============================================ -->
+
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num gold">4</div>
+    <div>
+      <div class="phase-title">Vitrine de Modelos</div>
+      <div class="phase-subtitle">Cada modelo EDR com planta, 3D, specs e book online</div>
+    </div>
+  </div>
+  <div class="priority-bar">
+    <span class="priority-tag prio-medium">Prioridade media</span>
+    <span class="priority-tag" style="background:#fff3e0;color:#e65100">Depende da Fase 3</span>
+  </div>
+  <div class="phase-body">
+    <div class="task-group">
+      <div class="task-group-title">Imagens dos modelos</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Gerar imagens 3D das plantas baixas <span class="task-who who-both">Duam + Claude</span></div>
+          <div class="task-detail">Opcoes: usar Freepik AI, ou Claude pode gerar a partir da planta. Substituir os SVGs placeholder atuais.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Render de fachada de cada modelo (mesmo que simplificado) <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Se tiver foto real de casa construida com esse modelo, melhor ainda. Senao, Freepik/AI resolve.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-title">Pagina/secao de cada modelo</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Substituir SVGs placeholder por imagens reais <span class="task-who who-claude">Claude</span></div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Criar books online dos modelos (estilo Pedro Arthur) <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">HTML self-contained com pranchas, marca d'agua EDR, navegacao entre paginas.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Link "Ver projeto completo" nos cards de cada modelo <span class="task-who who-claude">Claude</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider">Fase 5 — Sistema EDR</div>
+<!-- ============================================ -->
+
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num dark">5</div>
+    <div>
+      <div class="phase-title">Bugs + Features do Sistema</div>
+      <div class="phase-subtitle">Corrigir os erros ja identificados e adicionar funcionalidades</div>
+    </div>
+  </div>
+  <div class="priority-bar">
+    <span class="priority-tag prio-medium">Prioridade media</span>
+    <span class="priority-tag" style="background:#e8f5e9;color:#2e7d32">Conversa separada</span>
+  </div>
+  <div class="phase-body">
+    <div class="task-group">
+      <div class="task-group-title">Bugs anotados (corrigir primeiro)</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Listar todos os bugs que voce ja identificou <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Anota num .txt ou manda por mensagem na conversa do sistema. Nao confia na memoria — escreve.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Corrigir bugs em sessao dedicada <span class="task-who who-claude">Claude</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-title">Proximas features (apos bugs)</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Exportar dados para Excel/CSV <span class="task-who who-claude">Claude</span></div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Relatorio PDF por periodo <span class="task-who who-claude">Claude</span></div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Modulo financeiro (contas a pagar) <span class="task-who who-claude">Claude</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Regra:</strong> Sempre corrigir bugs ANTES de adicionar features novas. Feature nova em cima de bug = mais bug.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider">Fase 6 — Lancamento</div>
+<!-- ============================================ -->
+
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num dark">6</div>
+    <div>
+      <div class="phase-title">Dominio + Lancamento Oficial</div>
+      <div class="phase-subtitle">Colocar tudo sob edreng.com.br e divulgar</div>
+    </div>
+  </div>
+  <div class="priority-bar">
+    <span class="priority-tag prio-low">Pode esperar</span>
+  </div>
+  <div class="phase-body">
+    <div class="task-group">
+      <div class="task-group-title">Infraestrutura</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Registrar e configurar dominio edreng.com.br <span class="task-who who-duam">Duam</span></div>
+          <div class="task-detail">Registro.br ou Cloudflare. Apontar DNS pro Netlify.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Atualizar canonical, OG, sitemap e JSON-LD <span class="task-who who-claude">Claude</span></div>
+          <div class="task-detail">Trocar todas as referencias de sensational-pixie... para edreng.com.br.</div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Configurar sistema.edreng.com.br (GitHub Pages) <span class="task-who who-duam">Duam</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="task-group">
+      <div class="task-group-title">Divulgacao</div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">Link do site na bio do Instagram @elydaedr <span class="task-who who-duam">Duam</span></div>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-content">
+          <div class="task-label">QR Code do site pra material impresso <span class="task-who who-claude">Claude</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<div class="section-divider page-break">Resumo Rapido</div>
+<!-- ============================================ -->
+
+<div class="rules" style="background:#0a3d18;">
+  <h3 style="color:#f5f0e8;">Quando Abrir Cada Conversa com o Claude</h3>
+  <div class="rule"><strong>Conversa "EDR Site":</strong> Fases 1, 2, 4 e 6 (tudo relacionado ao site)</div>
+  <div class="rule"><strong>Conversa "EDR System":</strong> Fase 5 (bugs e features do sistema)</div>
+  <div class="rule"><strong>Fase 3 (Acervo):</strong> Pode ser em qualquer uma das duas, ou numa terceira dedicada</div>
+  <div class="rule" style="border-bottom:none;"><strong>Legenda das tags:</strong>
+    <span class="task-who who-duam" style="margin-left:0.5rem">Duam</span> = voce faz sozinho
+    <span class="task-who who-claude" style="margin-left:0.5rem">Claude</span> = eu faco na sessao
+    <span class="task-who who-both" style="margin-left:0.5rem">Duam + Claude</span> = a gente faz junto
+  </div>
+</div>
+
+<div class="intro" style="border-left-color:#0a3d18; margin-top:2rem;">
+  <strong>Proximo passo concreto:</strong> Tira as fotos (Fase 1). Quando tiver pelo menos 3-4 fotos tratadas no Freepik, volta aqui e a gente ataca a Fase 2 juntos. Sem pressa. Uma coisa de cada vez.
+</div>
+
+<p style="text-align:center; font-size:0.7rem; color:#b0a898; margin-top:3rem; padding-bottom:2rem;">
+  EDR Engenharia &middot; Guia de Evolucao &middot; Versao 1.0 &middot; Marco 2026<br>
+  <span class="no-print" style="display:block; margin-top:0.5rem;">Para salvar como PDF: Ctrl+P &rarr; "Salvar como PDF"</span>
+</p>
+
+</body>
+</html>
