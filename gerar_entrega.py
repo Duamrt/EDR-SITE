@@ -330,7 +330,7 @@ def main():
     slug = sys.argv[1]
     nome = sys.argv[2]
     num_pranchas = sys.argv[3]
-    com_termo = '--sem-termo' not in sys.argv
+    com_termo = '--com-termo' in sys.argv
 
     print(f'\nGerando entrega digital para: {nome} (slug: {slug})')
     gerar_entrega(slug, nome, num_pranchas, com_termo)
