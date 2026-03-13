@@ -231,11 +231,11 @@ nav.scrolled {
 }
 .sf-a {
   grid-row:1/3; width:100%; height:100%;
-  object-fit:cover; object-position:center; border-radius:2px;
+  object-fit:contain; object-position:center; border-radius:2px;
 }
 .sf-b {
   grid-row:2; width:100%; height:100%;
-  object-fit:cover; border-radius:2px;
+  object-fit:contain; border-radius:2px;
 }
 
 /* SERVIÇOS */
