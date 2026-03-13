@@ -251,6 +251,7 @@
   .edr-card:hover .edr-card__img img { filter: brightness(.95); transform: scale(1.03); }
   .edr-card__img::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(transparent, var(--edr-card)); pointer-events: none; }
 
+  .edr-card__badge { position: absolute; top: 12px; left: 12px; font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; background: rgba(10,61,24,.85); color: #a8d5b4; border: 1px solid rgba(42,122,59,.35); padding: 3px 8px; border-radius: 2px; z-index: 2; }
   .edr-card__exec { position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; background: rgba(180,120,0,.8); color: #ffd87a; border: 1px solid rgba(255,200,80,.25); padding: 3px 8px; border-radius: 2px; }
   .edr-card__body { padding: 22px 24px 24px; flex: 1; display: flex; flex-direction: column; }
   .edr-card__code { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--edr-accent); margin-bottom: 4px; }
@@ -276,9 +277,9 @@
 <section class="edr-portfolio" id="portfolio">
   <div class="edr-portfolio__inner">
     <div class="edr-portfolio__header">
-      <p class="edr-portfolio__label">Nossas Obras</p>
+      <p class="edr-portfolio__label">Nossos Modelos</p>
       <h2 class="edr-portfolio__title">Cada entrega é<br><span>um sonho realizado.</span></h2>
-      <p class="edr-portfolio__sub">Projetos reais entregues em Jupi-PE. Do projeto à entrega das chaves.</p>
+      <p class="edr-portfolio__sub">Conheça nossos modelos de projeto — referências do nosso padrão construtivo em Jupi-PE.</p>
     </div>
     <div class="edr-portfolio__grid">
 
@@ -286,11 +287,11 @@
       <div class="edr-card edr-card--destaque">
         <div class="edr-card__img">
           <img src="img/portfolio-cecilia.jpg" alt="Modelo Cecília — EDR 65, 64,85m², Jupi-PE" loading="lazy">
-
+          <span class="edr-card__badge">Projeto Modelo</span>
         </div>
         <div class="edr-card__body">
           <div class="edr-card__code">EDR 65</div>
-          <div class="edr-card__name">Cecília</div>
+          <div class="edr-card__name">Modelo Cecília</div>
           <div class="edr-card__specs">
             <div class="edr-spec"><div class="edr-spec__val">64,85<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
             <div class="edr-spec"><div class="edr-spec__val">2</div><div class="edr-spec__lbl">Quartos</div></div>
@@ -307,11 +308,11 @@
       <div class="edr-card">
         <div class="edr-card__img">
           <img src="img/portfolio-afonso.jpg" alt="Modelo Afonso — EDR 60, 60,20m², Jupi-PE" loading="lazy">
-
+          <span class="edr-card__badge">Projeto Modelo</span>
         </div>
         <div class="edr-card__body">
           <div class="edr-card__code">EDR 60</div>
-          <div class="edr-card__name">Afonso</div>
+          <div class="edr-card__name">Modelo Afonso</div>
           <div class="edr-card__specs">
             <div class="edr-spec"><div class="edr-spec__val">60,20<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
             <div class="edr-spec"><div class="edr-spec__val">2</div><div class="edr-spec__lbl">Quartos</div></div>
@@ -327,11 +328,11 @@
       <div class="edr-card">
         <div class="edr-card__img">
           <img src="img/portfolio-thiago.jpg" alt="Modelo Thiago — EDR 70, 69,81m², Jupi-PE" loading="lazy">
-
+          <span class="edr-card__badge">Projeto Modelo</span>
         </div>
         <div class="edr-card__body">
           <div class="edr-card__code">EDR 70</div>
-          <div class="edr-card__name">Thiago</div>
+          <div class="edr-card__name">Modelo Thiago</div>
           <div class="edr-card__specs">
             <div class="edr-spec"><div class="edr-spec__val">69,81<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
             <div class="edr-spec"><div class="edr-spec__val">3</div><div class="edr-spec__lbl">Quartos</div></div>
@@ -347,11 +348,12 @@
       <div class="edr-card">
         <div class="edr-card__img">
           <img src="img/portfolio-livia.jpg" alt="Modelo Lívia — EDR 68, 67,81m², Jupi-PE" loading="lazy">
-          <span class="edr-card__exec">🔨 Em execução</span>
+          <span class="edr-card__badge">Projeto Modelo</span>
+          <span class="edr-card__exec">Em execução</span>
         </div>
         <div class="edr-card__body">
           <div class="edr-card__code">EDR 68</div>
-          <div class="edr-card__name">Lívia</div>
+          <div class="edr-card__name">Modelo Lívia</div>
           <div class="edr-card__specs">
             <div class="edr-spec"><div class="edr-spec__val">67,81<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
             <div class="edr-spec"><div class="edr-spec__val">3</div><div class="edr-spec__lbl">Quartos</div></div>
@@ -367,11 +369,11 @@
       <div class="edr-card">
         <div class="edr-card__img">
           <img src="img/portfolio-clara.jpg" alt="Modelo Clara — EDR 61, 60,97m², Jupi-PE" loading="lazy">
-
+          <span class="edr-card__badge">Projeto Modelo</span>
         </div>
         <div class="edr-card__body">
           <div class="edr-card__code">EDR 61</div>
-          <div class="edr-card__name">Clara</div>
+          <div class="edr-card__name">Modelo Clara</div>
           <div class="edr-card__specs">
             <div class="edr-spec"><div class="edr-spec__val">60,97<sup>m²</sup></div><div class="edr-spec__lbl">Área</div></div>
             <div class="edr-spec"><div class="edr-spec__val">2</div><div class="edr-spec__lbl">Quartos</div></div>
