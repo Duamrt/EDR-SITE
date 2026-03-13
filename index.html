@@ -264,7 +264,14 @@
   .edr-card__status--ok { color: #5cb870; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
   .edr-card__status--exec { color: #e0a843; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
   .edr-card__cta { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--edr-green2); text-decoration: none; }
+  .edr-card__planta { background: none; border: 1px solid rgba(42,122,59,0.3); color: var(--edr-green2); font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; cursor: pointer; transition: all .2s; }
+  .edr-card__planta:hover { background: rgba(42,122,59,0.15); border-color: rgba(42,122,59,0.5); }
   .edr-card__cta:hover { color: #5cb870; }
+  .edr-lightbox { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
+  .edr-lightbox.open { opacity: 1; visibility: visible; }
+  .edr-lightbox__close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #fff; font-size: 32px; cursor: pointer; z-index: 2; line-height: 1; }
+  .edr-lightbox__title { color: #e8e8e2; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+  .edr-lightbox__img { max-width: 92vw; max-height: 78vh; border-radius: 4px; object-fit: contain; }
   .edr-portfolio__cta { margin-top: 52px; text-align: center; }
   .edr-portfolio__cta p { font-size: 14px; font-weight: 300; color: var(--edr-muted); margin-bottom: 20px; }
   .edr-btn { display: inline-flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; background: var(--edr-green); padding: 14px 32px; border-radius: 2px; text-decoration: none; transition: background .2s; }
@@ -299,7 +306,8 @@
           </div>
           <div class="edr-card__footer">
             <span class="edr-card__status--ok">✓ Entregue</span>
-            <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Cecília%20(EDR%2065)." class="edr-card__cta" target="_blank" rel="noopener">Solicitar orçamento →</a>
+            <button class="edr-card__planta" onclick="abrirPlanta('img/planta-cecilia.jpg','Modelo Cecília — EDR 65')">Ver planta</button>
+            <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Cecília%20(EDR%2065)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
           </div>
         </div>
       </div>
@@ -319,6 +327,7 @@
           </div>
           <div class="edr-card__footer">
             <span class="edr-card__status--ok">✓ Entregue</span>
+            <button class="edr-card__planta" onclick="abrirPlanta('img/planta-afonso.jpg','Modelo Afonso — EDR 60')">Ver planta</button>
             <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Afonso%20(EDR%2060)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
           </div>
         </div>
@@ -339,6 +348,7 @@
           </div>
           <div class="edr-card__footer">
             <span class="edr-card__status--ok">✓ Entregue</span>
+            <button class="edr-card__planta" onclick="abrirPlanta('img/planta-thiago.jpg','Modelo Thiago — EDR 70')">Ver planta</button>
             <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Thiago%20(EDR%2070)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
           </div>
         </div>
@@ -360,6 +370,7 @@
           </div>
           <div class="edr-card__footer">
             <span class="edr-card__status--exec">⏳ Em execução</span>
+            <button class="edr-card__planta" onclick="abrirPlanta('img/planta-livia.jpg','Modelo Lívia — EDR 68')">Ver planta</button>
             <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Lívia%20(EDR%2068)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
           </div>
         </div>
@@ -380,6 +391,7 @@
           </div>
           <div class="edr-card__footer">
             <span class="edr-card__status--ok">✓ Entregue</span>
+            <button class="edr-card__planta" onclick="abrirPlanta('img/planta-clara.jpg','Modelo Clara — EDR 61')">Ver planta</button>
             <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Clara%20(EDR%2061)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
           </div>
         </div>
@@ -625,5 +637,25 @@
 
 <script src="js/main.js" defer></script>
 
+<!-- LIGHTBOX PLANTAS -->
+<div class="edr-lightbox" id="lightbox-planta" onclick="if(event.target===this)fecharPlanta()">
+  <button class="edr-lightbox__close" onclick="fecharPlanta()">&times;</button>
+  <div class="edr-lightbox__title" id="lightbox-titulo"></div>
+  <img class="edr-lightbox__img" id="lightbox-img" src="" alt="">
+</div>
+<script>
+function abrirPlanta(src, titulo) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-img').alt = titulo;
+  document.getElementById('lightbox-titulo').textContent = titulo;
+  document.getElementById('lightbox-planta').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function fecharPlanta() {
+  document.getElementById('lightbox-planta').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharPlanta(); });
+</script>
 </body>
 </html>
