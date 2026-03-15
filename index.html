@@ -31,6 +31,20 @@
 <!-- Preload hero image -->
 <link rel="preload" as="image" href="img/hero-casa.jpg">
 
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G59WQ0F641"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G59WQ0F641');
+  // Rastrear cliques no WhatsApp como conversão
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[href*="wa.me"]');
+    if (link) gtag('event', 'contato_whatsapp', { event_category: 'conversao', event_label: link.textContent.trim() || 'WhatsApp' });
+  });
+</script>
+
 <!-- CSS -->
 <link rel="stylesheet" href="css/styles.css">
 
