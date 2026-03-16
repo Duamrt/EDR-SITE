@@ -414,47 +414,86 @@ const _SUPABASE_URL = 'https://mepzoxoahpwcvvlymlfh.supabase.co';
 const _SUPABASE_ANON = 'sb_publishable_Z9E8KLU8ZIMcWjD-bMG5gg_eM585qWq';
 
 // ── Respostas offline (funciona sem API) ──
+let _msgCount = 0;
 function respostaOffline(msg) {
+  _msgCount++;
   const m = msg.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const podeWhatsApp = _msgCount >= 4; // só depois de 3+ trocas
 
-  if (m.match(/ola|oi|bom dia|boa tarde|boa noite|opa/))
-    return 'Olá! 😊 Bem-vindo à EDR Engenharia! Como posso te ajudar? Se quiser saber sobre o programa Minha Casa Minha Vida, nossos modelos de casa, ou como funciona o processo de construção, é só perguntar!';
+  if (m.match(/^(ola|oi|opa|eai|e ai|hey|boa tarde|bom dia|boa noite|salve)[\s!?.]*$/))
+    return 'Olá! 😊 Tudo bem? Me conta, qual sua dúvida?';
 
-  if (m.match(/mcmv|minha casa|financ|faixa|caixa/))
-    return 'O primeiro passo é a gente fazer uma análise de crédito, sem compromisso, pra saber o quanto você consegue financiar. O resultado nos diz quanto fica a entrada e a parcela. 😊\n\nTemos faixas de renda que vão de R$2.850 até R$12.000/mês, com juros a partir de 4% ao ano e prazo de até 35 anos.\n\nQuer que a Elyda faça essa análise pra você? É só chamar no WhatsApp: (87) 9 8171-3987';
+  if (m.match(/duvida|saber|informac|pergunt|ajud/))
+    return 'Claro, com prazer! 😊 Pode perguntar à vontade. É sobre financiamento, modelos de casa, terreno...?';
 
-  if (m.match(/terreno|lote|nao tenho terreno/))
-    return 'Quanto ao terreno, não se preocupe! 😊 O processo que a gente faz é de aquisição de terreno e construção. A compra do terreno é feita junto com o financiamento da construção. A EDR cuida de tudo isso pra você.';
+  if (m.match(/mcmv|minha casa|financ|faixa|caixa|programa/))
+    return 'O MCMV é um programa federal que facilita muito a construção da casa própria! 😊\n\nFunciona assim: a Caixa financia a construção com juros bem baixos (a partir de 4% ao ano) e prazo de até 35 anos. E o melhor — durante a obra você não paga a parcela cheia, só uma taxa pequena.\n\nPosso te explicar as faixas de renda se quiser. Qual a renda aproximada da sua família?';
 
-  if (m.match(/entrada|fgts|quanto preciso|quanto custa/))
-    return 'A entrada depende da sua análise de crédito. Mas posso te adiantar: o FGTS pode ser usado pra reduzir a entrada, e a gente pode negociar o parcelamento do restante. 😊\n\nFechando agora, são cerca de 9 meses até a entrega das chaves. Dá pra se organizar bem nesse período.\n\nQuer fazer a análise sem compromisso? Fale com a Elyda: (87) 9 8171-3987';
+  if (m.match(/renda|ganho|salario|quanto.*ganho|faixa/)) {
+    const nums = m.match(/\d[\d.,]*/);
+    if (nums) {
+      const renda = parseFloat(nums[0].replace('.','').replace(',','.'));
+      if (renda <= 2850) return 'Com essa renda, você se encaixa na Faixa 1 — a melhor do programa! 😊\n\nO banco pode financiar até R$168.000, com juros a partir de 4% ao ano. E ainda pode ter subsídio do governo federal, que reduz o valor.\n\nVocê já tem terreno ou precisaria de um?';
+      if (renda <= 4700) return 'Você se encaixa na Faixa 2, que é a mais procurada! 😊\n\nO banco pode financiar até R$194.461, com juros de 7,95% ao ano. O prazo pode ser de até 35 anos.\n\nVocê já tem terreno ou precisaria incluir no financiamento?';
+      if (renda <= 8600) return 'Sua renda se encaixa na Faixa 3! O banco pode financiar até R$280.000, com juros entre 7,66% e 8,16% ao ano. 😊\n\nIsso dá pra fazer um projeto bem legal. Você tem ideia do tamanho de casa que gostaria?';
+      return 'Com essa renda, você entra na Faixa 4 — financiamento de até R$400.000! Dá pra fazer um projeto mais amplo e confortável. 😊\n\nVocê já tem alguma ideia de terreno ou tamanho de casa?';
+    }
+    return 'Pra te dizer a faixa certinha, preciso saber a renda aproximada da família (somando todos que vão compor renda). Pode me dizer um valor aproximado? 😊';
+  }
 
-  if (m.match(/modelo|projeto|planta|casa|quartos|metros/))
-    return 'Temos modelos a partir de 60m² com 2 quartos até 70m² com 3 quartos! 😊\n\n• EDR 60 (Afonso): 60,20m², 2 quartos\n• EDR 61 (Clara): 60,97m², 2 quartos\n• EDR 65 (Cecília): 64,85m², 2 quartos, 2 banheiros\n• EDR 68 (Lívia): 67,81m², 3 quartos\n• EDR 70 (Thiago): 69,81m², 3 quartos\n\nA gente apresenta as opções compatíveis com o seu orçamento após a análise de crédito. Quer agendar?';
+  if (m.match(/terreno|lote|nao tenho terreno|sem terreno/))
+    return 'Não precisa ter terreno! 😊 O processo que a gente faz inclui a compra do terreno junto com a construção — tudo no mesmo financiamento. A EDR cuida dessa parte toda.\n\nVocê já tem ideia de qual bairro ou região gostaria?';
 
-  if (m.match(/prazo|demora|tempo|quanto tempo/))
-    return 'A parte burocrática (projeto, aprovação e análise do banco) leva de 2 a 3 meses. A obra em si leva de 4 a 7 meses, dependendo do porte. 😊\n\nE o melhor: pra iniciar todo o processo, você precisa de apenas R$5.000 — que já fazem parte da sua entrada!';
+  if (m.match(/entrada|fgts|quanto preciso/))
+    return 'A entrada depende da análise de crédito, mas posso te adiantar: se você tem FGTS, ele abate direto no valor da entrada! 😊\n\nE a gente pode negociar o parcelamento do restante. Muitos dos nossos clientes se surpreendem com o valor — costuma ser menor do que imaginam.\n\nVocê trabalha de carteira assinada?';
 
-  if (m.match(/garantia|seguranca|confi|qualidade/))
-    return 'Na EDR, o que fechamos não é alterado — sem surpresa de valores. 😊 No ato da entrega, você recebe:\n\n• Manual do usuário da sua casa\n• Termo de garantia\n• Suporte de até 5 anos em questões estruturais\n\nJá visitou alguma obra nossa? A gente marca um dia e te mostra de perto o nosso padrão de construção! 🙏🏼';
+  if (m.match(/quanto custa|valor|preco|caro|barato/))
+    return 'O valor da parcela depende da sua renda e da faixa do programa. Mas pra te dar uma ideia: muitos dos nossos clientes pagam parcelas menores do que o aluguel que pagavam antes! 😊\n\nA gente faz uma simulação gratuita e sem compromisso. Qual a renda aproximada da sua família?';
 
-  if (m.match(/parcela|juros|taxa|pagar/))
-    return 'As taxas do MCMV são as mais baixas do mercado! Aqui no Nordeste, a Faixa 1 começa em 4% ao ano. 😊\n\nE caso as coisas apertem, existe uma cláusula no contrato que permite pausar as parcelas por um período. Casa financiada também pode ser vendida como qualquer outra. Sem preocupação!\n\nQuer saber sua parcela? Fale com a Elyda: (87) 9 8171-3987';
+  if (m.match(/modelo|projeto|planta|quartos|metros|tamanho/))
+    return 'Temos modelos de 60m² a 70m², com 2 ou 3 quartos! 😊\n\n• 2 quartos: a partir de 60m² — ideal pra casais ou famílias pequenas\n• 3 quartos: até 70m² — mais espaço, suíte incluída\n\nTodos com sala, cozinha, área de serviço e garagem. A gente adapta o modelo ao seu orçamento. Quantas pessoas vão morar na casa?';
+
+  if (m.match(/prazo|demora|tempo|quanto tempo|quando fica pronto/))
+    return 'O processo todo leva de 6 a 10 meses — 2 a 3 meses de burocracia (projeto + aprovação do banco) e 4 a 7 meses de obra. 😊\n\nE o melhor: pra começar, você precisa de apenas R$5.000, que já fazem parte da sua entrada. O resto se resolve durante o processo.\n\nTem mais alguma dúvida sobre o prazo?';
+
+  if (m.match(/garantia|seguranca|confi|qualidade|medo/))
+    return 'Na EDR, a gente se responsabiliza por tudo. No ato da entrega você recebe um manual do usuário e um termo de garantia. Nosso suporte é de até 5 anos em questões estruturais. 😊\n\nE os valores que fechamos não são alterados — zero surpresas. Se quiser, posso marcar uma visita pra você conhecer uma obra de perto. O que acha?';
+
+  if (m.match(/parcela|juros|taxa|pagar|prestacao/))
+    return 'As taxas do MCMV são as mais baixas do mercado! Aqui no Nordeste, a Faixa 1 começa em 4% ao ano. 😊\n\nE tem uma coisa que pouca gente sabe: se apertar financeiramente, existe uma cláusula no contrato que permite pausar as parcelas por um período.\n\nQual a renda da sua família? Assim consigo te dar uma estimativa melhor.';
 
   if (m.match(/aluguel|alugar|alugado/))
-    return 'O financiamento habitacional é a melhor forma de investimento que você pode fazer hoje! A taxa de juros é baixíssima. 😊\n\nVocê vai pagar uma coisa que um dia será sua. Aluguel não tem fim nem te dá a segurança que a casa própria dá.\n\nVamos conversar sobre como sair do aluguel? (87) 9 8171-3987';
+    return 'Muitos dos nossos clientes estavam na mesma situação — pagando aluguel sem fim. 😊 O financiamento habitacional tem a taxa de juros mais baixa do mercado. Na prática, muita gente paga parcela menor que o aluguel.\n\nE a diferença é que cada parcela te aproxima de algo que vai ser SEU. Já pensou em quanto paga de aluguel hoje?';
 
-  if (m.match(/whatsapp|contato|falar|ligar|telefone/))
-    return 'Claro! Pode falar direto com a Elyda pelo WhatsApp: (87) 9 8171-3987 😊🙏🏼\n\nEla vai te atender pessoalmente e pode fazer sua análise de crédito sem compromisso!';
+  if (m.match(/whatsapp|contato|falar|ligar|telefone|atendimento/))
+    return 'Claro! 😊 Pode falar direto com a Elyda, nossa engenheira responsável, pelo WhatsApp: (87) 9 8171-3987\n\nEla vai te atender pessoalmente! 🙏🏼';
 
-  if (m.match(/visitar|visita|conhecer|obra/))
-    return 'Claro! A gente marca um dia e te mostra de perto o nosso padrão de construção. 😊 Temos obras em fases diferentes, dá pra ver bem o produto.\n\nPra agendar, fale com a Elyda: (87) 9 8171-3987';
+  if (m.match(/visitar|visita|conhecer|obra|ver/))
+    return 'Ótima ideia! A gente marca um dia e te mostra de perto o nosso padrão. 😊 Temos obras em fases diferentes — dá pra ver desde a fundação até casas prontas.\n\nQual dia seria melhor pra você?';
 
   if (m.match(/quem|voces|empresa|sobre|edr/))
-    return 'A EDR Engenharia é uma construtora de Jupi-PE com mais de 5 anos no mercado. 😊 Já entregamos 116 projetos e 25 casas concluídas!\n\nSomos a Elyda (Engenheira Responsável, CREA-PE 66902) e o Duam (Gestão). A gente cuida de tudo — do projeto à entrega das chaves, sem terceirizar o cuidado.\n\nNosso diferencial: sem madeira na estrutura do telhado, controle de custos rigoroso, e presença técnica em cada etapa. 🙏🏼';
+    return 'A EDR é uma construtora aqui de Jupi-PE, com mais de 5 anos de atuação. Já entregamos 116 projetos e 25 casas concluídas! 😊\n\nSomos a Elyda (engenheira responsável) e o Duam (gestão). A gente cuida de tudo — do projeto à entrega das chaves. Nosso diferencial é o acompanhamento de perto em cada etapa.\n\nTem alguma dúvida específica sobre nosso trabalho?';
 
-  // Resposta genérica
-  return 'Boa pergunta! 😊 Pra te dar a melhor resposta, sugiro conversar diretamente com a Elyda. Ela pode te explicar tudo em detalhes e fazer uma análise personalizada pra você.\n\nWhatsApp: (87) 9 8171-3987 🙏🏼';
+  if (m.match(/carteira|clt|autonomo|informal|renda informal/))
+    return 'Boa pergunta! Pra carteira assinada fica mais fácil — a renda já é comprovada e o FGTS pode ser usado. 😊\n\nPra autônomos também é possível, mas a comprovação de renda é diferente (extrato bancário, declaração de IR). A gente te orienta em tudo isso.\n\nQual sua situação?';
+
+  if (m.match(/documento|documentacao|preciso levar|o que preciso/))
+    return 'Os documentos básicos são: RG, CPF, comprovante de renda (últimos 3 meses), comprovante de residência e certidão de estado civil. 😊\n\nSe for usar FGTS, precisa do extrato também. Mas não se preocupa — a gente te orienta passo a passo em tudo!\n\nTem mais alguma dúvida?';
+
+  if (m.match(/obrigad|valeu|brigad|agradec/))
+    return podeWhatsApp
+      ? 'Imagina! 😊 Se quiser dar o próximo passo, a Elyda pode fazer uma simulação completa e sem compromisso pelo WhatsApp: (87) 9 8171-3987 🙏🏼\n\nFoi um prazer conversar com você!'
+      : 'Imagina, foi um prazer! 😊 Se surgir mais alguma dúvida, pode perguntar à vontade! 🙏🏼';
+
+  if (m.match(/sim|quero|vamos|bora|pode|fechado|interessado|interesse/))
+    return podeWhatsApp
+      ? 'Que bom! 😊 Pra gente avançar, a Elyda pode fazer uma simulação personalizada pra você. É só chamar no WhatsApp: (87) 9 8171-3987\n\nEla te atende pessoalmente!'
+      : 'Ótimo! 😊 Me conta mais sobre sua situação — já tem terreno? Qual a renda aproximada da família? Assim consigo te ajudar melhor!';
+
+  // Resposta genérica — SEM WhatsApp nas primeiras trocas
+  return podeWhatsApp
+    ? 'Boa pergunta! 😊 Pra te dar uma resposta mais completa, a Elyda pode te ajudar pessoalmente pelo WhatsApp: (87) 9 8171-3987\n\nEla é especialista nisso! 🙏🏼'
+    : 'Boa pergunta! 😊 Pode me contar um pouco mais sobre o que precisa? Assim consigo te ajudar melhor!';
 }
 
 // ── Inicializar quando o DOM carregar ──
