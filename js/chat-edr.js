@@ -355,8 +355,17 @@ async function enviarMsgChat() {
 
   try {
     const resposta = await chamarIA(msg);
-    addMsgChat('bot', resposta);
-    _chatMessages.push({ role: 'assistant', content: resposta });
+    // Detectar LEAD QUALIFICADO e salvar
+    if (resposta.includes('LEAD QUALIFICADO')) {
+      const respostaLimpa = resposta.replace('LEAD QUALIFICADO', '').trim();
+      addMsgChat('bot', respostaLimpa);
+      _chatMessages.push({ role: 'assistant', content: respostaLimpa });
+      salvarLead();
+      if (typeof gtag === 'function') gtag('event', 'lead_qualificado', { event_category: 'conversao' });
+    } else {
+      addMsgChat('bot', resposta);
+      _chatMessages.push({ role: 'assistant', content: resposta });
+    }
 
     // Se mencionou WhatsApp, rastrear como conversão
     if (resposta.includes('wa.me') || resposta.includes('WhatsApp')) {
@@ -393,6 +402,74 @@ async function chamarIA(mensagem) {
 
 const _SUPABASE_URL = 'https://mepzoxoahpwcvvlymlfh.supabase.co';
 const _SUPABASE_ANON = 'sb_publishable_Z9E8KLU8ZIMcWjD-bMG5gg_eM585qWq';
+
+// ── Salvar lead no Supabase ──
+async function salvarLead() {
+  try {
+    // Extrair dados da conversa
+    const conversa = _chatMessages.filter(m => m.role === 'user').map(m => m.content).join(' ');
+    const conversaCompleta = _chatMessages.map(m => `${m.role === 'user' ? 'Cliente' : 'Duda'}: ${m.content}`).join('\n');
+
+    // Extrair nome (procura padrões comuns)
+    const nomeMatch = conversa.match(/(?:meu nome e|me chamo|sou o|sou a|nome e)\s+([A-Za-zÀ-ÿ\s]+)/i)
+      || conversa.match(/^([A-Za-zÀ-ÿ]{2,}\s+[A-Za-zÀ-ÿ\s]+)$/m);
+    const nome = nomeMatch ? nomeMatch[1].trim() : null;
+
+    // Extrair telefone
+    const telMatch = conversa.match(/(?:\(?\d{2}\)?\s*9?\s*\d{4}[\s-]?\d{4})/);
+    const telefone = telMatch ? telMatch[0].replace(/\D/g, '') : null;
+
+    // Extrair renda
+    const rendaMatch = conversa.match(/(?:ganho|renda|salario|recebo)\s*(?:de\s*)?(?:r\$?\s*)?(\d[\d.,]*)/i)
+      || conversa.match(/(\d[\d.,]*)\s*(?:reais|por mes|mensal)/i);
+    const renda = rendaMatch ? parseFloat(rendaMatch[1].replace('.','').replace(',','.')) : null;
+
+    // Classificar faixa
+    let faixa = null;
+    if (renda) {
+      if (renda <= 2850) faixa = 'Faixa 1';
+      else if (renda <= 4700) faixa = 'Faixa 2';
+      else if (renda <= 8600) faixa = 'Faixa 3';
+      else if (renda <= 12000) faixa = 'Faixa 4';
+      else faixa = 'Acima MCMV';
+    }
+
+    // Extrair modelo
+    const modeloMatch = conversa.match(/(?:edr\s*\d{2}|modelo\s+\w+|cecilia|afonso|thiago|livia|clara)/i);
+    const modelo = modeloMatch ? modeloMatch[0].toUpperCase() : null;
+
+    // Detectar terreno e FGTS
+    const temTerreno = /(?:tenho|ja tenho)\s*(?:um\s*)?terreno/i.test(conversa) ? true
+      : /(?:nao tenho|sem)\s*terreno/i.test(conversa) ? false : null;
+    const temFgts = /(?:tenho|ja tenho)\s*fgts/i.test(conversa) ? true
+      : /(?:nao tenho|sem)\s*fgts/i.test(conversa) ? false : null;
+
+    // Salvar no Supabase
+    const lead = {
+      nome, telefone, renda, faixa,
+      modelo_escolhido: modelo,
+      tem_terreno: temTerreno,
+      tem_fgts: temFgts,
+      observacoes: conversaCompleta.substring(0, 2000),
+      status: 'novo'
+    };
+
+    await fetch(`${_SUPABASE_URL}/rest/v1/leads`, {
+      method: 'POST',
+      headers: {
+        'apikey': _SUPABASE_ANON,
+        'Authorization': `Bearer ${_SUPABASE_ANON}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(lead)
+    });
+
+    console.log('[Duda] Lead salvo:', { nome, telefone, faixa, modelo });
+  } catch(e) {
+    console.log('[Duda] Erro ao salvar lead:', e.message);
+  }
+}
 
 // ── Respostas offline (funciona sem API) ──
 let _msgCount = 0;
