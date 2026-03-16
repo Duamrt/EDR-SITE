@@ -306,20 +306,43 @@ async function enviarMsgChat() {
 }
 
 async function chamarIA(mensagem) {
-  // Se a API não tiver configurada, usar respostas offline
-  if (!EDR_CHAT_CONFIG.apiUrl) return respostaOffline(mensagem);
-
-  const r = await fetch(EDR_CHAT_CONFIG.apiUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      messages: _chatMessages.slice(-EDR_CHAT_CONFIG.maxMessages)
-    })
-  });
-  if (!r.ok) throw new Error('API error');
-  const data = await r.json();
-  return data.response || data.content || 'Desculpe, não consegui processar. Fale com a Elyda: (87) 9 8171-3987';
+  // Tentar API do Claude via Supabase (pega key segura do banco)
+  try {
+    const keyResp = await fetch(`${_SUPABASE_URL}/rest/v1/rpc/get_chat_key`, {
+      method: 'POST',
+      headers: { 'apikey': _SUPABASE_ANON, 'Authorization': `Bearer ${_SUPABASE_ANON}`, 'Content-Type': 'application/json' },
+      body: '{}'
+    });
+    const keyData = await keyResp.json();
+    if (keyData && keyData.length > 10) {
+      const msgs = _chatMessages.filter(m => m.role !== 'system').slice(-EDR_CHAT_CONFIG.maxMessages);
+      const r = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': keyData,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 500,
+          system: EDR_SYSTEM_PROMPT,
+          messages: msgs
+        })
+      });
+      if (r.ok) {
+        const data = await r.json();
+        const txt = data?.content?.[0]?.text;
+        if (txt) return txt;
+      }
+    }
+  } catch(e) { console.log('Chat IA indisponível, usando offline'); }
+  // Fallback offline
+  return respostaOffline(mensagem);
 }
+
+const _SUPABASE_URL = 'https://mepzoxoahpwcvvlymlfh.supabase.co';
+const _SUPABASE_ANON = 'sb_publishable_Z9E8KLU8ZIMcWjD-bMG5gg_eM585qWq';
 
 // ── Respostas offline (funciona sem API) ──
 function respostaOffline(msg) {
