@@ -375,38 +375,22 @@ async function enviarMsgChat() {
 }
 
 async function chamarIA(mensagem) {
-  // Tentar API do Claude via Supabase (pega key segura do banco)
   try {
-    const keyResp = await fetch(`${_SUPABASE_URL}/rest/v1/rpc/get_chat_key`, {
+    const msgs = _chatMessages.filter(m => m.role !== 'system').slice(-EDR_CHAT_CONFIG.maxMessages);
+    const r = await fetch(`${_SUPABASE_URL}/rest/v1/rpc/chat_edr`, {
       method: 'POST',
-      headers: { 'apikey': _SUPABASE_ANON, 'Authorization': `Bearer ${_SUPABASE_ANON}`, 'Content-Type': 'application/json' },
-      body: '{}'
+      headers: {
+        'apikey': _SUPABASE_ANON,
+        'Authorization': `Bearer ${_SUPABASE_ANON}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ messages: msgs })
     });
-    const keyData = await keyResp.json();
-    if (keyData && keyData.length > 10) {
-      const msgs = _chatMessages.filter(m => m.role !== 'system').slice(-EDR_CHAT_CONFIG.maxMessages);
-      const r = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key': keyData,
-          'anthropic-version': '2023-06-01',
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 500,
-          system: EDR_SYSTEM_PROMPT,
-          messages: msgs
-        })
-      });
-      if (r.ok) {
-        const data = await r.json();
-        const txt = data?.content?.[0]?.text;
-        if (txt) return txt;
-      }
+    if (r.ok) {
+      const data = await r.json();
+      if (data?.response && !data.response.includes('problema')) return data.response;
     }
-  } catch(e) { console.log('Chat IA indisponível, usando offline'); }
-  // Fallback offline
+  } catch(e) { console.log('Chat IA indisponivel:', e.message); }
   return respostaOffline(mensagem);
 }
 
