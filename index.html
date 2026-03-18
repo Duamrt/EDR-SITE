@@ -41,7 +41,11 @@
   // Rastrear cliques no WhatsApp como conversão
   document.addEventListener('click', function(e) {
     var link = e.target.closest('a[href*="wa.me"]');
-    if (link) gtag('event', 'contato_whatsapp', { event_category: 'conversao', event_label: link.textContent.trim() || 'WhatsApp' });
+    if (link) gtag('event', 'contato_whatsapp', {
+      event_category: 'conversao',
+      event_label: link.textContent.trim() || 'WhatsApp',
+      transport_type: 'beacon'
+    });
   });
 </script>
 
