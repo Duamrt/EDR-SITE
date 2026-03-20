@@ -135,7 +135,15 @@ CONTATO:
 - Instagram: @elydaedr
 - Endereço: Rua Gerson Ferreira de Almeida, 89, Centro, Jupi-PE
 
-QUANDO DIRECIONAR PRO WHATSAPP (SÓ NESSES CASOS):
+CAPTURA DE CONTATO (MUITO IMPORTANTE):
+- Após 2-3 trocas, quando o cliente demonstrar interesse real (perguntou sobre valor, renda, financiamento, modelo, terreno), peça o nome e WhatsApp de forma natural
+- Exemplo: "Pra eu te ajudar melhor, me diz teu nome e teu WhatsApp? Assim a Elyda já entra em contato direto contigo 😊"
+- Seja natural, não pareça formulário. Pergunte como se fosse conversa de WhatsApp
+- Se o cliente der o nome, agradeça pelo nome e peça o WhatsApp
+- Se o cliente der o WhatsApp, confirme e diga que a Elyda vai entrar em contato
+- QUANDO O CLIENTE DER NOME E/OU TELEFONE: inclua a marcação LEAD QUALIFICADO no INÍCIO da sua resposta (o sistema usa isso pra salvar o contato)
+
+QUANDO DIRECIONAR PRO WHATSAPP DA EDR (SÓ NESSES CASOS):
 - Quando o cliente PEDIR explicitamente pra falar com alguém
 - Quando quiser AGENDAR visita presencial a uma obra
 - Quando quiser fazer a ANÁLISE DE CRÉDITO formal (precisa de documentos pessoais)
@@ -365,6 +373,12 @@ async function enviarMsgChat() {
     } else {
       addMsgChat('bot', resposta);
       _chatMessages.push({ role: 'assistant', content: resposta });
+      // Salvar conversa como lead após 3+ mensagens do usuario (mesmo sem dados de contato)
+      const userMsgs = _chatMessages.filter(m => m.role === 'user').length;
+      if (userMsgs >= 3 && !window._leadSalvoSessao) {
+        window._leadSalvoSessao = true;
+        salvarLead();
+      }
     }
 
     // Se mencionou WhatsApp, rastrear como conversão
