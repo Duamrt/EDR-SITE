@@ -424,10 +424,27 @@ async function salvarLead() {
     const conversa = _chatMessages.filter(m => m.role === 'user').map(m => m.content).join(' ');
     const conversaCompleta = _chatMessages.map(m => `${m.role === 'user' ? 'Cliente' : 'Duda'}: ${m.content}`).join('\n');
 
-    // Extrair nome (procura padrões comuns)
-    const nomeMatch = conversa.match(/(?:meu nome e|me chamo|sou o|sou a|nome e)\s+([A-Za-zÀ-ÿ\s]+)/i)
-      || conversa.match(/^([A-Za-zÀ-ÿ]{2,}\s+[A-Za-zÀ-ÿ\s]+)$/m);
-    const nome = nomeMatch ? nomeMatch[1].trim() : null;
+    // Extrair nome — procura a resposta do usuario logo apos a Duda pedir o nome
+    let nome = null;
+    for (let i = 0; i < _chatMessages.length - 1; i++) {
+      const msg = _chatMessages[i];
+      if (msg.role === 'assistant' && /(?:teu nome|seu nome|como te chamo|me diz teu nome|qual.*nome)/i.test(msg.content)) {
+        const proxima = _chatMessages[i + 1];
+        if (proxima && proxima.role === 'user') {
+          // Limpar prefixos comuns e pegar o nome
+          const respLimpa = proxima.content.replace(/^(e |eh |sou |sou o |sou a |me chamo |meu nome e )/i, '').trim();
+          // Validar que parece nome (só letras, 2-40 chars)
+          if (/^[A-Za-zÀ-ÿ\s]{2,40}$/.test(respLimpa) && !/\d/.test(respLimpa)) {
+            nome = respLimpa;
+          }
+        }
+      }
+    }
+    // Fallback: regex tradicional
+    if (!nome) {
+      const nomeMatch = conversa.match(/(?:meu nome e|me chamo|sou o|sou a|nome e)\s+([A-Za-zÀ-ÿ\s]+)/i);
+      nome = nomeMatch ? nomeMatch[1].trim() : null;
+    }
 
     // Extrair telefone
     const telMatch = conversa.match(/(?:\(?\d{2}\)?\s*9?\s*\d{4}[\s-]?\d{4})/);
