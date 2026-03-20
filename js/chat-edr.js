@@ -141,7 +141,13 @@ CAPTURA DE CONTATO (MUITO IMPORTANTE):
 - Seja natural, não pareça formulário. Pergunte como se fosse conversa de WhatsApp
 - Se o cliente der o nome, agradeça pelo nome e peça o WhatsApp
 - Se o cliente der o WhatsApp, confirme e diga que a Elyda vai entrar em contato
-- QUANDO O CLIENTE DER NOME E/OU TELEFONE: inclua a marcação LEAD QUALIFICADO no INÍCIO da sua resposta (o sistema usa isso pra salvar o contato)
+- QUANDO O CLIENTE DER NOME E/OU TELEFONE: inclua no FINAL da sua resposta uma linha oculta neste formato exato:
+  <!--LEAD|nome:Nome do Cliente|tel:87999991234-->
+  Use EXATAMENTE esse formato. Preencha só os campos que o cliente informou. Exemplos:
+  <!--LEAD|nome:Maria Silva|tel:87988776655-->
+  <!--LEAD|nome:João-->
+  <!--LEAD|tel:81999998888-->
+  Essa linha NÃO aparece pro cliente, é só pro sistema salvar o contato.
 
 QUANDO DIRECIONAR PRO WHATSAPP DA EDR (SÓ NESSES CASOS):
 - Quando o cliente PEDIR explicitamente pra falar com alguém
@@ -362,23 +368,39 @@ async function enviarMsgChat() {
   document.getElementById('edr-chat-typing').classList.add('show');
 
   try {
-    const resposta = await chamarIA(msg);
-    // Detectar LEAD QUALIFICADO e salvar
-    if (resposta.includes('LEAD QUALIFICADO')) {
-      const respostaLimpa = resposta.replace('LEAD QUALIFICADO', '').trim();
-      addMsgChat('bot', respostaLimpa);
-      _chatMessages.push({ role: 'assistant', content: respostaLimpa });
-      salvarLead();
+    let resposta = await chamarIA(msg);
+
+    // Extrair dados estruturados do lead: <!--LEAD|nome:Fulano|tel:87999-->
+    const leadMatch = resposta.match(/<!--LEAD\|([^>]+)-->/);
+    if (leadMatch) {
+      const campos = leadMatch[1].split('|');
+      campos.forEach(c => {
+        const [k, v] = c.split(':');
+        if (k === 'nome' && v) window._leadNome = v.trim();
+        if (k === 'tel' && v) window._leadTel = v.trim().replace(/\D/g, '');
+      });
+      // Remover a marcação da resposta visível
+      resposta = resposta.replace(/<!--LEAD\|[^>]+-->/, '').trim();
+      // Salvar lead qualificado
+      salvarLead('qualificado');
       if (typeof gtag === 'function') gtag('event', 'lead_qualificado', { event_category: 'conversao' });
-    } else {
-      addMsgChat('bot', resposta);
-      _chatMessages.push({ role: 'assistant', content: resposta });
-      // Salvar conversa como lead após 3+ mensagens do usuario (mesmo sem dados de contato)
-      const userMsgs = _chatMessages.filter(m => m.role === 'user').length;
-      if (userMsgs >= 3 && !window._leadSalvoSessao) {
-        window._leadSalvoSessao = true;
-        salvarLead();
-      }
+    }
+
+    // Compatibilidade: detectar LEAD QUALIFICADO antigo
+    if (resposta.includes('LEAD QUALIFICADO')) {
+      resposta = resposta.replace('LEAD QUALIFICADO', '').trim();
+      salvarLead('qualificado');
+      if (typeof gtag === 'function') gtag('event', 'lead_qualificado', { event_category: 'conversao' });
+    }
+
+    addMsgChat('bot', resposta);
+    _chatMessages.push({ role: 'assistant', content: resposta });
+
+    // Salvar conversa como lead após 3+ mensagens do usuario (mesmo sem dados de contato)
+    const userMsgs = _chatMessages.filter(m => m.role === 'user').length;
+    if (userMsgs >= 3 && !window._leadSalvoSessao) {
+      window._leadSalvoSessao = true;
+      salvarLead('conversa');
     }
 
     // Se mencionou WhatsApp, rastrear como conversão
@@ -418,37 +440,25 @@ const _SUPABASE_URL = 'https://mepzoxoahpwcvvlymlfh.supabase.co';
 const _SUPABASE_ANON = 'sb_publishable_Z9E8KLU8ZIMcWjD-bMG5gg_eM585qWq';
 
 // ── Salvar lead no Supabase ──
-async function salvarLead() {
+async function salvarLead(tipo) {
   try {
     // Extrair dados da conversa
     const conversa = _chatMessages.filter(m => m.role === 'user').map(m => m.content).join(' ');
     const conversaCompleta = _chatMessages.map(m => `${m.role === 'user' ? 'Cliente' : 'Duda'}: ${m.content}`).join('\n');
 
-    // Extrair nome — procura a resposta do usuario logo apos a Duda pedir o nome
-    let nome = null;
-    for (let i = 0; i < _chatMessages.length - 1; i++) {
-      const msg = _chatMessages[i];
-      if (msg.role === 'assistant' && /(?:teu nome|seu nome|como te chamo|me diz teu nome|qual.*nome)/i.test(msg.content)) {
-        const proxima = _chatMessages[i + 1];
-        if (proxima && proxima.role === 'user') {
-          // Limpar prefixos comuns e pegar o nome
-          const respLimpa = proxima.content.replace(/^(e |eh |sou |sou o |sou a |me chamo |meu nome e )/i, '').trim();
-          // Validar que parece nome (só letras, 2-40 chars)
-          if (/^[A-Za-zÀ-ÿ\s]{2,40}$/.test(respLimpa) && !/\d/.test(respLimpa)) {
-            nome = respLimpa;
-          }
-        }
-      }
-    }
-    // Fallback: regex tradicional
+    // Nome e telefone: priorizar dados extraídos pela IA
+    let nome = window._leadNome || null;
+    let telefone = window._leadTel || null;
+
+    // Fallback: regex na conversa
     if (!nome) {
       const nomeMatch = conversa.match(/(?:meu nome e|me chamo|sou o|sou a|nome e)\s+([A-Za-zÀ-ÿ\s]+)/i);
       nome = nomeMatch ? nomeMatch[1].trim() : null;
     }
-
-    // Extrair telefone
-    const telMatch = conversa.match(/(?:\(?\d{2}\)?\s*9?\s*\d{4}[\s-]?\d{4})/);
-    const telefone = telMatch ? telMatch[0].replace(/\D/g, '') : null;
+    if (!telefone) {
+      const telMatch = conversa.match(/(?:\(?\d{2}\)?\s*9?\s*\d{4}[\s-]?\d{4})/);
+      telefone = telMatch ? telMatch[0].replace(/\D/g, '') : null;
+    }
 
     // Extrair renda
     const rendaMatch = conversa.match(/(?:ganho|renda|salario|recebo)\s*(?:de\s*)?(?:r\$?\s*)?(\d[\d.,]*)/i)
@@ -482,7 +492,7 @@ async function salvarLead() {
       tem_terreno: temTerreno,
       tem_fgts: temFgts,
       observacoes: conversaCompleta.substring(0, 2000),
-      status: 'novo'
+      status: tipo === 'qualificado' ? 'novo' : 'conversa'
     };
 
     await fetch(`${_SUPABASE_URL}/rest/v1/leads`, {
