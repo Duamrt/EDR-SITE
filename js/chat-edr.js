@@ -284,7 +284,7 @@ function initEdrChat() {
 
     @media (max-width:480px) {
       .edr-chat-window { right:0; bottom:0; width:100%; height:100%; max-height:100vh; border-radius:0; border:none; }
-      .edr-chat-btn { right:calc(1.2rem + 160px); bottom:calc(1.2rem + env(safe-area-inset-bottom,0px)); padding:0.7rem 1rem; }
+      .edr-chat-btn { right:1.2rem; bottom:calc(4.5rem + env(safe-area-inset-bottom,0px)); padding:0.7rem 1rem; }
     }
   `;
   document.head.appendChild(style);
