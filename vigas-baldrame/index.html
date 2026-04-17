@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Vigas de Baldrame — V1 a V32</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#eee;color:#111}
+  header{background:#fff;border-bottom:1px solid #ccc;padding:14px 20px;position:sticky;top:0;z-index:10}
+  header h1{margin:0;font-size:17px;font-weight:600}
+  header .sub{font-size:12px;color:#666;margin-top:2px}
+  nav{background:#fff;border-bottom:1px solid #ccc;padding:8px 20px;position:sticky;top:52px;z-index:9;overflow-x:auto;white-space:nowrap}
+  nav a{display:inline-block;padding:4px 10px;margin:2px;font-size:12px;color:#064;text-decoration:none;border:1px solid #cfe;border-radius:4px;background:#f0fff8}
+  nav a:hover{background:#d4f5e6}
+  main{max-width:1100px;margin:24px auto;padding:0 12px}
+  .viga{background:#fff;border:1px solid #ccc;border-radius:8px;margin-bottom:28px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.05);scroll-margin-top:120px}
+  .viga h2{margin:0 0 12px;font-size:14px;color:#444;font-weight:500}
+  .viga img{display:block;width:100%;height:auto;border:1px solid #eee}
+</style>
+</head>
+<body>
+<header>
+  <h1>Projeto Estrutural — Vigas de Baldrame (V1 a V32)</h1>
+  <div class="sub">Concreto C25 · Aço CA-50/CA-60 · Cobrimento 3 cm</div>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+
+<script>
+const VIGAS = [
+  {n:1,  f:"V1.jpeg"},
+  {n:2,  f:"v2.jpeg"},
+  {n:3,  f:"v3.jpeg"},
+  {n:4,  f:"v4.jpeg"},
+  {n:5,  f:"v5.jpeg"},
+  {n:"6 e 7", f:"v6 e 7.jpeg", id:"v6"},
+  {n:8,  f:"v8.jpeg"},
+  {n:9,  f:"v9.jpeg"},
+  {n:10, f:"v10.jpeg"},
+  {n:11, f:"v11.jpeg"},
+  {n:12, f:"v12.jpeg"},
+  {n:13, f:"v13.jpeg"},
+  {n:14, f:"v14.jpeg"},
+  {n:15, f:"v15.jpeg"},
+  {n:16, f:"v16.jpeg"},
+  {n:17, f:"v17.jpeg"},
+  {n:18, f:"v18.jpeg"},
+  {n:19, f:"v19.jpeg"},
+  {n:20, f:"v20.jpeg"},
+  {n:21, f:"v21.jpeg"},
+  {n:22, f:"v22.jpeg"},
+  {n:23, f:"v23.jpeg"},
+  {n:24, f:"v24.jpeg"},
+  {n:25, f:"v25.jpeg"},
+  {n:26, f:"v26.jpeg"},
+  {n:27, f:"v27.jpeg"},
+  {n:28, f:"v28.jpeg"},
+  {n:29, f:"v29.jpeg"},
+  {n:30, f:"v30.jpeg"},
+  {n:31, f:"v31.jpeg"},
+  {n:32, f:"v32.jpeg"}
+];
+
+const navEl = document.getElementById('nav');
+const main = document.getElementById('main');
+
+VIGAS.forEach(v => {
+  const id = v.id || ('v'+v.n);
+  const label = typeof v.n === 'number' ? 'V'+v.n : 'V'+v.n;
+
+  const a = document.createElement('a');
+  a.href = '#'+id;
+  a.textContent = label;
+  navEl.appendChild(a);
+
+  const art = document.createElement('article');
+  art.className = 'viga';
+  art.id = id;
+  art.innerHTML = `
+    <h2>${label}</h2>
+    <img src="${encodeURI(v.f)}" alt="${label}" loading="lazy">
+  `;
+  main.appendChild(art);
+});
+</script>
+</body>
+</html>
