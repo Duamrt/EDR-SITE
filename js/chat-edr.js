@@ -126,7 +126,7 @@ A EDR orienta em todos os documentos
 MODELOS DE PROJETO:
 - EDR 65 (Cecília): 64,85m², 2 quartos, 1 banheiro — entregue
 - EDR 60 (Afonso): 60,20m², 2 quartos — entregue
-- EDR 70 (Thiago): 69,81m², 3 quartos — entregue
+- EDR 70 (Thiago): 69,81m², 2 quartos + escritório/depósito — entregue
 - EDR 68 (Lívia): 67,81m², 3 quartos — em execução
 - EDR 61 (Clara): 60,97m², 2 quartos — entregue
 
