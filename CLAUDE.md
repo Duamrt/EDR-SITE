@@ -4,9 +4,8 @@ Sempre responda em português brasileiro.
 
 ## Projeto
 - **Stack:** HTML + CSS + JS vanilla (zero dependências)
-- **Deploy:** Netlify (branch main)
-- **URL atual:** https://sensational-pixie-84dce5.netlify.app/
-- **Domínio futuro:** edreng.com.br
+- **Deploy:** Hostinger — auto-deploy via webhook Git no push pra `main` (pull em `public_html`). Ver DEPLOY.md
+- **URL:** https://edreng.com.br
 - **Servidor local:** `npx serve -s .`
 
 ## Estrutura
