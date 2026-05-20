@@ -22,7 +22,7 @@ Sempre responda em português brasileiro.
 
 ## Modelos EDR (Projetos Prontos)
 - **EDR 86** — 45m², 2q, 1b — "Cabe no MCMV"
-- **EDR 65** — 65m², 2q (1 suíte), 2b
+- **EDR 65** — 65m², 2q (1 suíte), 1b
 - **EDR 1001** — 90m², 3q (1 suíte), 2b — "Mais escolhido"
 
 ## SEO
