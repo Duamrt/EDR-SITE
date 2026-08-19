@@ -8,22 +8,22 @@ const EDR_CHAT_CONFIG = {
   maxMessages: 20,
 };
 
-const EDR_SYSTEM_PROMPT = `Você é a assistente virtual da EDR Engenharia, uma construtora de Jupi-PE. Seu nome é EDR Assistente. Você conversa como a Elyda (engenheira responsável) — acolhedora, profissional e direta.
+const EDR_SYSTEM_PROMPT = `Você é a Duda, assistente virtual da EDR Engenharia, uma construtora de Jupi-PE. Fale de forma acolhedora, profissional e direta, sem fingir ser Elyda ou outra pessoa da equipe.
 
 PERSONALIDADE:
 - Fale como se fosse uma conversa natural de WhatsApp — tom leve, acolhedor
 - Use 😊🙏🏼 com moderação (não em toda mensagem)
 - Seja profissional mas nunca robótica
 - Adapte a formalidade: comece mais formal, se o cliente for informal, acompanhe
-- NUNCA diga que é uma IA ou robô. Se perguntarem, diga "Sou da equipe EDR, posso te ajudar com informações sobre nossos projetos e o programa MCMV"
+- Seja transparente: você é a Duda, assistente virtual da EDR. Nunca se apresente como uma pessoa da equipe.
 - Seja CONVERSACIONAL — faça perguntas de volta, mostre interesse genuíno
 - Responda a dúvida COMPLETAMENTE antes de sugerir qualquer coisa
 - NÃO seja apressada — o cliente precisa se sentir acolhido, não empurrado
 
-REGRA ABSOLUTA — NUNCA FALE:
-- O valor total de avaliação do imóvel. Sempre fale de PARCELA e ENTRADA
-- Se o cliente perguntar "quanto custa a casa?", responda sobre parcela e entrada, não o montante total
-- Motivo: o valor total assusta o cliente. Parcela + entrada é muito mais acessível na cabeça dele
+TRANSPARÊNCIA COM VALORES:
+- Nunca invente, esconda ou apresente como certo um valor ainda não confirmado.
+- Se perguntarem o custo total, explique que ele depende do terreno, projeto e orçamento e ofereça uma simulação completa.
+- Diferencie claramente estimativa, condição oficial do programa e proposta da EDR.
 
 FLUXO DE ATENDIMENTO — IMPORTANTE:
 1. PRIMEIRO acolha e entenda a dúvida. Pergunte mais se precisar. NÃO mande pro WhatsApp logo de cara.
@@ -47,31 +47,30 @@ SOBRE A EDR ENGENHARIA:
 
 SKILL MCMV — CONSULTOR COMPLETO:
 
-Faixas de renda e financiamento:
-- Faixa 1: renda familiar até R$2.850/mês → banco financia até R$168.000 → juros a partir de 4% a.a. → TEM subsídio do governo federal → menor taxa da história do FGTS
-- Faixa 2: renda R$2.850 a R$4.700/mês → até R$194.461 → juros 7,95% a.a. → SEM subsídio → MAIS PROCURADA
-- Faixa 3: renda R$4.700 a R$8.600/mês → até R$280.000 → juros 7,66-8,16% a.a.
-- Faixa 4 (nova): renda R$8.600 a R$12.000/mês → até R$400.000 → juros até 10,5% a.a.
-- Todas: prazo até 35 anos, FGTS pode ser usado
+Faixas de renda vigentes, consultadas em agosto de 2026:
+- Faixa 1: renda familiar até R$3.200/mês → taxas nominais a partir de 4% a.a. → pode haver subsídio, conforme análise
+- Faixa 2: renda de R$3.200,01 a R$5.000/mês → taxa e descontos variam conforme renda, região e perfil
+- Faixa 3: renda de R$5.000,01 a R$9.600/mês → taxas nominais entre 7,66% e 8,16% a.a.
+- Faixa 4 / Classe Média: renda de R$9.600,01 a R$13.000/mês → taxa nominal de 10% a.a. e imóveis de até R$600 mil
+- O prazo pode chegar a 35 anos. Uso do FGTS, subsídio, entrada, valor financiado e taxa final dependem das regras e da análise da Caixa.
+- NUNCA prometa valor financiado, entrada, parcela, aprovação ou taxa final sem simulação oficial.
 
 Modalidade: AQUISIÇÃO E CONSTRUÇÃO
-- Terreno + obra entram num ÚNICO financiamento pela Caixa
-- Durante a obra, cliente paga APENAS taxa de evolução de obra + taxa de manutenção (valores bem menores que parcela)
-- Parcela completa SÓ começa após entrega das chaves
-- Isso é muito importante explicar — o cliente não paga parcela cheia durante a construção
+- Terreno + obra podem entrar em um único financiamento pela Caixa
+- Encargos durante a obra, liberações e início da amortização dependem da análise e do contrato
+- Explique o fluxo sem prometer valores ou condições universais
 
 Como funciona na prática (passo a passo):
 1. EDR faz análise de crédito gratuita (sem compromisso) → descobre faixa, entrada e parcela estimada
 2. Cliente escolhe modelo de projeto compatível com o orçamento
 3. EDR elabora projeto nos padrões da Caixa
 4. Documentação completa (ART, aprovações) — EDR cuida de tudo
-5. Aprovação do financiamento pela Caixa (2-3 meses)
-6. Início da obra (4-7 meses dependendo do porte)
+5. Aprovação do financiamento pela Caixa, no prazo definido pela análise
+6. Início da obra conforme cronograma aprovado
 7. Vistorias da Caixa durante a obra (medições)
 8. Entrega das chaves com manual do usuário + termo de garantia
 
-Para iniciar todo o processo: apenas R$5.000 (já faz parte da entrada)
-Os 2-3 meses de burocracia são tempo A FAVOR do cliente — enquanto o banco analisa, ele se organiza financeiramente
+Valor inicial e prazo variam conforme projeto, terreno, documentos e análise. Nunca prometa entrada fixa ou cronograma fechado antes da proposta.
 
 FGTS:
 - Pode ser usado pra REDUZIR a entrada
@@ -79,21 +78,19 @@ FGTS:
 - Disponível pra quem trabalha de carteira assinada
 - Na simulação gratuita a EDR já calcula quanto pode ser utilizado
 
-Subsídio (só Faixa 1):
+Benefícios e descontos:
 - É um desconto do governo federal no valor do imóvel
 - Reduz a entrada e/ou parcela
-- Quanto menor a renda, maior o subsídio
-- Pode chegar a valores significativos
+- Elegibilidade e valor dependem da renda, modalidade, localização e análise
 
 Vantagem Nordeste:
 - Famílias da região Norte/Nordeste pagam juros MENORES que Sul/Sudeste
-- Faixa 1 no Nordeste: a partir de 4% a.a. (Sul/Sudeste mínimo 4,25%)
-- Na prática: parcelas mais baixas e menos dinheiro jogado fora
+- A menor taxa nominal parte de 4% a.a. em perfis elegíveis
+- A taxa final depende de renda, região, vínculo com FGTS e análise da Caixa
 
-Quando o cliente disser a renda, CLASSIFIQUE na faixa correta e diga:
+Quando o cliente disser a renda, faça apenas uma orientação inicial:
 - "Com sua renda, você se encaixa na Faixa X"
-- "O banco pode financiar até R$Y"
-- "Pra saber exatamente a entrada e a parcela, a Elyda faz a simulação completa pra você"
+- "Pra confirmar entrada, taxa, valor aprovado e parcela, é necessária a simulação e a análise da Caixa"
 
 SOBRE TERRENO:
 - Processo é de "aquisição de terreno e construção" — terreno entra no financiamento
@@ -102,16 +99,14 @@ SOBRE TERRENO:
 - Tudo dentro do mesmo processo de financiamento, sem dor de cabeça
 
 SOBRE ENTRADA:
-- Entrada é obrigatória (Caixa financia até 80%, os outros 20% são a entrada)
-- MAS na prática pode ser bem menor do que parece: FGTS abate, subsídio reduz (Faixa 1)
-- Pode negociar parcelamento da entrada com a EDR
-- "Fechando agora, são ~9 meses até a entrega. Dá pra se organizar bem nesse período"
+- O valor depende da renda, do imóvel, do FGTS e da análise de crédito
+- FGTS e benefícios do programa podem reduzir a entrada em perfis elegíveis
+- Nunca afirme um percentual fixo ou parcelamento sem proposta formal
 
 SOBRE MEDO DE FINANCIAR:
-- Taxa de juros habitacional é a MAIS BAIXA do mercado brasileiro
+- Explique que o MCMV oferece condições próprias e que a comparação depende do perfil
 - "Aluguel não tem fim nem dá segurança que a casa própria dá"
-- Existe cláusula de PAUSA nas parcelas se apertar financeiramente
-- Casa financiada pode ser vendida como qualquer outra
+- Regras de pausa, venda ou renegociação devem ser confirmadas no contrato e com a Caixa
 - "Você vai pagar uma coisa que um dia será sua"
 
 DOCUMENTOS necessários (informar se perguntarem):
@@ -127,7 +122,7 @@ MODELOS DE PROJETO:
 - EDR 65 (Cecília): 64,85m², 2 quartos, 1 banheiro — entregue
 - EDR 60 (Afonso): 60,20m², 2 quartos — entregue
 - EDR 70 (Thiago): 69,81m², 2 quartos + escritório/depósito — entregue
-- EDR 68 (Lívia): 67,81m², 3 quartos — em execução
+- EDR 68 (Lívia): 67,81m², 3 quartos — entregue
 - EDR 61 (Clara): 60,97m², 2 quartos — entregue
 
 CONTATO:
@@ -214,7 +209,7 @@ function initEdrChat() {
     .edr-chat-header-name { font-size:13px; font-weight:700; color:#f5f0e8; }
     .edr-chat-header-status { font-size:10px; color:#5cb870; display:flex; align-items:center; gap:4px; }
     .edr-chat-header-status::before { content:''; width:6px; height:6px; border-radius:50%; background:#5cb870; }
-    .edr-chat-close { background:none; border:none; color:#7a7060; font-size:18px; cursor:pointer; padding:4px; }
+    .edr-chat-close { width:44px; height:44px; background:none; border:none; color:#c8c0b5; font-size:24px; cursor:pointer; padding:0; }
     .edr-chat-close:hover { color:#f5f0e8; }
 
     .edr-chat-body {
@@ -265,9 +260,9 @@ function initEdrChat() {
       outline:none; resize:none; max-height:80px;
     }
     .edr-chat-input::placeholder { color:#7a7060; }
-    .edr-chat-input:focus { border-color:rgba(201,168,76,0.3); }
+    .edr-chat-input:focus { border-color:#c9a84c; box-shadow:0 0 0 2px rgba(201,168,76,0.25); }
     .edr-chat-send {
-      background:#0a3d18; border:none; border-radius:8px; padding:0 14px;
+      min-width:44px; min-height:44px; background:#0a3d18; border:none; border-radius:8px; padding:0 14px;
       color:#c9a84c; font-size:16px; cursor:pointer; transition:background 0.2s;
       display:flex; align-items:center;
     }
@@ -276,15 +271,24 @@ function initEdrChat() {
 
     .edr-chat-wpp {
       display:flex; align-items:center; justify-content:center; gap:6px;
-      padding:8px; margin:0 14px 12px; background:#25D366; color:#fff;
+      min-height:44px; padding:8px; margin:0 14px 12px; background:#25D366; color:#062b12;
       border-radius:6px; font-size:11px; font-weight:600; text-decoration:none;
       letter-spacing:0.05em; transition:background 0.2s;
     }
     .edr-chat-wpp:hover { background:#1da851; }
+    .edr-chat-privacy {
+      padding:6px 14px 10px; color:#c8c0b5; font-size:11px;
+      line-height:1.45; text-align:center;
+    }
 
     @media (max-width:480px) {
       .edr-chat-window { right:0; bottom:0; width:100%; height:100%; max-height:100vh; border-radius:0; border:none; }
-      .edr-chat-btn { right:1.2rem; bottom:calc(4.5rem + env(safe-area-inset-bottom,0px)); padding:0.7rem 1rem; }
+      .edr-chat-btn {
+        right:calc(1rem + 60px); bottom:calc(1rem + env(safe-area-inset-bottom,0px));
+        width:52px; height:52px; justify-content:center; padding:0; border-radius:50%;
+        font-size:0; letter-spacing:0;
+      }
+      .edr-chat-btn svg { width:22px; height:22px; }
     }
   `;
   document.head.appendChild(style);
@@ -292,6 +296,9 @@ function initEdrChat() {
   // Botão flutuante
   const btn = document.createElement('button');
   btn.className = 'edr-chat-btn';
+  btn.setAttribute('aria-label', 'Falar com a Duda, assistente virtual');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-controls', 'edr-chat-window');
   btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg> Fale com a Duda`;
   btn.onclick = toggleEdrChat;
   document.body.appendChild(btn);
@@ -300,41 +307,49 @@ function initEdrChat() {
   const win = document.createElement('div');
   win.className = 'edr-chat-window';
   win.id = 'edr-chat-window';
+  win.setAttribute('role', 'dialog');
+  win.setAttribute('aria-modal', 'true');
+  win.setAttribute('aria-labelledby', 'edr-chat-title');
+  win.setAttribute('aria-hidden', 'true');
   win.innerHTML = `
     <div class="edr-chat-header">
       <div class="edr-chat-header-left">
         <div class="edr-chat-avatar">EDR</div>
         <div>
-          <div class="edr-chat-header-name">Duda · EDR Engenharia</div>
-          <div class="edr-chat-header-status">Online agora</div>
+          <div class="edr-chat-header-name" id="edr-chat-title">Duda · EDR Engenharia</div>
+          <div class="edr-chat-header-status">Assistente virtual</div>
         </div>
       </div>
-      <button class="edr-chat-close" onclick="toggleEdrChat()">&times;</button>
+      <button class="edr-chat-close" onclick="toggleEdrChat()" aria-label="Fechar conversa">&times;</button>
     </div>
-    <div class="edr-chat-body" id="edr-chat-body">
-      <div class="edr-msg bot">Oi! Sou a Duda da EDR Engenharia! 😊 Em que posso te ajudar?</div>
+    <div class="edr-chat-body" id="edr-chat-body" aria-live="polite">
+      <div class="edr-msg bot">Oi! Sou a Duda, assistente virtual da EDR Engenharia. 😊 Em que posso te ajudar?</div>
       <div class="edr-chat-typing" id="edr-chat-typing"><span></span><span></span><span></span></div>
     </div>
-    <div style="padding:6px 14px 10px;font-size:10px;color:#7a7060;text-align:center;line-height:1.4;">A Duda vai te ajudar com todas as informações. Quando estiver pronto, a Elyda entra em contato direto com você! 😊</div>
+    <div class="edr-chat-privacy">Não envie documentos, senhas ou dados bancários. Suas mensagens são processadas para responder ao atendimento.</div>
     <div class="edr-chat-footer">
-      <textarea class="edr-chat-input" id="edr-chat-input" placeholder="Digite sua dúvida..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviarMsgChat()}"></textarea>
-      <button class="edr-chat-send" id="edr-chat-send" onclick="enviarMsgChat()">➤</button>
+      <textarea class="edr-chat-input" id="edr-chat-input" aria-label="Digite sua dúvida" placeholder="Digite sua dúvida..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviarMsgChat()}"></textarea>
+      <button class="edr-chat-send" id="edr-chat-send" onclick="enviarMsgChat()" aria-label="Enviar mensagem">➤</button>
     </div>
   `;
   document.body.appendChild(win);
 
   // Mensagem inicial no histórico
-  _chatMessages.push({ role: 'assistant', content: 'Oi! Sou a Duda da EDR Engenharia! 😊 Em que posso te ajudar?' });
+  _chatMessages.push({ role: 'assistant', content: 'Oi! Sou a Duda, assistente virtual da EDR Engenharia. 😊 Em que posso te ajudar?' });
 }
 
 function toggleEdrChat() {
   _chatOpen = !_chatOpen;
-  document.getElementById('edr-chat-window').classList.toggle('open', _chatOpen);
+  const win = document.getElementById('edr-chat-window');
+  const btn = document.querySelector('.edr-chat-btn');
+  win.classList.toggle('open', _chatOpen);
+  win.setAttribute('aria-hidden', String(!_chatOpen));
+  btn.setAttribute('aria-expanded', String(_chatOpen));
   if (_chatOpen) {
     setTimeout(() => document.getElementById('edr-chat-input').focus(), 300);
     // Rastrear abertura no Analytics
     if (typeof gtag === 'function') gtag('event', 'chat_aberto', { event_category: 'engajamento' });
-  }
+  } else btn.focus();
 }
 
 function addMsgChat(role, text) {
@@ -342,11 +357,32 @@ function addMsgChat(role, text) {
   const typing = document.getElementById('edr-chat-typing');
   const div = document.createElement('div');
   div.className = `edr-msg ${role === 'user' ? 'user' : 'bot'}`;
-  // Converter links do WhatsApp em clicáveis
-  let html = text.replace(/\n/g, '<br>');
-  html = html.replace(/(https?:\/\/wa\.me\/\S+)/g, '<a href="$1" target="_blank" rel="noopener">Clique aqui pra falar no WhatsApp</a>');
-  html = html.replace(/\(87\)\s*9\s*8171[\-\s]*3987/g, '<a href="https://wa.me/5587981713987" target="_blank" rel="noopener">(87) 9 8171-3987</a>');
-  div.innerHTML = html;
+
+  // Montar a mensagem com nós seguros e tornar apenas contatos conhecidos clicáveis.
+  const mensagem = String(text);
+  const contatoRegex = /(https?:\/\/wa\.me\/[^\s]+|\(87\)\s*9\s*8171[\-\s]*3987)/g;
+  let inicio = 0;
+
+  const adicionarTexto = trecho => {
+    trecho.split('\n').forEach((linha, indice) => {
+      if (indice) div.appendChild(document.createElement('br'));
+      div.appendChild(document.createTextNode(linha));
+    });
+  };
+
+  for (const match of mensagem.matchAll(contatoRegex)) {
+    adicionarTexto(mensagem.slice(inicio, match.index));
+    const link = document.createElement('a');
+    const ehTelefone = match[0].startsWith('(87)');
+    link.href = ehTelefone ? 'https://wa.me/5587981713987' : match[0];
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = ehTelefone ? '(87) 9 8171-3987' : 'Clique aqui pra falar no WhatsApp';
+    div.appendChild(link);
+    inicio = match.index + match[0].length;
+  }
+
+  adicionarTexto(mensagem.slice(inicio));
   body.insertBefore(div, typing);
   body.scrollTop = body.scrollHeight;
 }
@@ -395,13 +431,6 @@ async function enviarMsgChat() {
 
     addMsgChat('bot', resposta);
     _chatMessages.push({ role: 'assistant', content: resposta });
-
-    // Salvar conversa como lead após 3+ mensagens do usuario (mesmo sem dados de contato)
-    const userMsgs = _chatMessages.filter(m => m.role === 'user').length;
-    if (userMsgs >= 3 && !window._leadSalvoSessao) {
-      window._leadSalvoSessao = true;
-      salvarLead('conversa');
-    }
 
     // Se mencionou WhatsApp, rastrear como conversão
     if (resposta.includes('wa.me') || resposta.includes('WhatsApp')) {
@@ -468,10 +497,10 @@ async function salvarLead(tipo) {
     // Classificar faixa
     let faixa = null;
     if (renda) {
-      if (renda <= 2850) faixa = 'Faixa 1';
-      else if (renda <= 4700) faixa = 'Faixa 2';
-      else if (renda <= 8600) faixa = 'Faixa 3';
-      else if (renda <= 12000) faixa = 'Faixa 4';
+      if (renda <= 3200) faixa = 'Faixa 1';
+      else if (renda <= 5000) faixa = 'Faixa 2';
+      else if (renda <= 9600) faixa = 'Faixa 3';
+      else if (renda <= 13000) faixa = 'Faixa 4';
       else faixa = 'Acima MCMV';
     }
 
@@ -526,40 +555,41 @@ function respostaOffline(msg) {
     return 'Claro, com prazer! 😊 Pode perguntar à vontade. É sobre financiamento, modelos de casa, terreno...?';
 
   if (m.match(/mcmv|minha casa|financ|faixa|caixa|programa/))
-    return 'O MCMV é um programa federal que facilita muito a construção da casa própria! 😊\n\nFunciona assim: a Caixa financia a construção com juros bem baixos (a partir de 4% ao ano) e prazo de até 35 anos. E o melhor — durante a obra você não paga a parcela cheia, só uma taxa pequena.\n\nPosso te explicar as faixas de renda se quiser. Qual a renda aproximada da sua família?';
+    return 'O MCMV é um programa federal com condições que variam conforme renda, região, imóvel e análise da Caixa. As taxas nominais partem de 4% ao ano em alguns perfis, e o prazo pode chegar a 35 anos. 😊\n\nPosso te orientar sobre as faixas atuais. Qual é a renda bruta aproximada da sua família?';
 
   if (m.match(/renda|ganho|salario|quanto.*ganho|faixa/)) {
     const nums = m.match(/\d[\d.,]*/);
     if (nums) {
       const renda = parseFloat(nums[0].replace('.','').replace(',','.'));
-      if (renda <= 2850) return 'Com essa renda, você se encaixa na Faixa 1 — a melhor do programa! 😊\n\nO banco pode financiar até R$168.000, com juros a partir de 4% ao ano. E ainda pode ter subsídio do governo federal, que reduz o valor.\n\nVocê já tem terreno ou precisaria de um?';
-      if (renda <= 4700) return 'Você se encaixa na Faixa 2, que é a mais procurada! 😊\n\nO banco pode financiar até R$194.461, com juros de 7,95% ao ano. O prazo pode ser de até 35 anos.\n\nVocê já tem terreno ou precisaria incluir no financiamento?';
-      if (renda <= 8600) return 'Sua renda se encaixa na Faixa 3! O banco pode financiar até R$280.000, com juros entre 7,66% e 8,16% ao ano. 😊\n\nIsso dá pra fazer um projeto bem legal. Você tem ideia do tamanho de casa que gostaria?';
-      return 'Com essa renda, você entra na Faixa 4 — financiamento de até R$400.000! Dá pra fazer um projeto mais amplo e confortável. 😊\n\nVocê já tem alguma ideia de terreno ou tamanho de casa?';
+      if (renda <= 3200) return 'Pela renda informada, você está na Faixa 1. 😊 Pode haver subsídio e as taxas nominais partem de 4% ao ano em perfis elegíveis. A entrada, a taxa final e o valor aprovado só aparecem na simulação e na análise da Caixa.\n\nVocê já tem terreno ou precisaria incluir um?';
+      if (renda <= 5000) return 'Pela renda informada, você está na Faixa 2. 😊 A taxa e os possíveis descontos variam conforme renda, região, imóvel e análise da Caixa.\n\nVocê já tem terreno ou precisaria incluir um?';
+      if (renda <= 9600) return 'Pela renda informada, você está na Faixa 3. As taxas nominais divulgadas ficam entre 7,66% e 8,16% ao ano, mas a condição final depende da análise da Caixa. 😊\n\nVocê tem ideia do tamanho de casa que gostaria?';
+      if (renda <= 13000) return 'Pela renda informada, você está na Faixa 4, também chamada Classe Média. A linha tem taxa nominal de 10% ao ano e atende imóveis de até R$600 mil, sujeita à análise da Caixa. 😊\n\nVocê já tem alguma ideia de terreno ou tamanho de casa?';
+      return 'Essa renda fica acima do limite urbano atual do MCMV. A EDR ainda pode orientar outras possibilidades de projeto e financiamento. Você já tem terreno?';
     }
     return 'Pra te dizer a faixa certinha, preciso saber a renda aproximada da família (somando todos que vão compor renda). Pode me dizer um valor aproximado? 😊';
   }
 
   if (m.match(/terreno|lote|nao tenho terreno|sem terreno/))
-    return 'Não precisa ter terreno! 😊 O processo que a gente faz inclui a compra do terreno junto com a construção — tudo no mesmo financiamento. A EDR cuida dessa parte toda.\n\nVocê já tem ideia de qual bairro ou região gostaria?';
+    return 'Você pode começar sem terreno. 😊 Na modalidade de aquisição de terreno e construção, os dois podem fazer parte da mesma operação, sujeita à análise da Caixa e à aprovação do imóvel e do projeto.\n\nVocê já tem ideia de qual bairro ou região gostaria?';
 
   if (m.match(/entrada|fgts|quanto preciso/))
-    return 'A entrada depende da análise de crédito, mas posso te adiantar: se você tem FGTS, ele abate direto no valor da entrada! 😊\n\nE a gente pode negociar o parcelamento do restante. Muitos dos nossos clientes se surpreendem com o valor — costuma ser menor do que imaginam.\n\nVocê trabalha de carteira assinada?';
+    return 'A entrada depende da renda, do imóvel, do FGTS disponível e da análise de crédito. Em perfis elegíveis, FGTS e benefícios do programa podem reduzir esse valor. 😊\n\nVocê trabalha de carteira assinada e já consultou seu saldo do FGTS?';
 
   if (m.match(/quanto custa|valor|preco|caro|barato/))
-    return 'O valor da parcela depende da sua renda e da faixa do programa. Mas pra te dar uma ideia: muitos dos nossos clientes pagam parcelas menores do que o aluguel que pagavam antes! 😊\n\nA gente faz uma simulação gratuita e sem compromisso. Qual a renda aproximada da sua família?';
+    return 'O custo total depende do terreno, do projeto, do padrão de acabamento e do orçamento da obra. Entrada e parcela também dependem da análise da Caixa. 😊\n\nA EDR pode montar uma simulação com custo, entrada e parcela estimada. Qual é a renda aproximada da sua família?';
 
   if (m.match(/modelo|projeto|planta|quartos|metros|tamanho/))
     return 'Temos modelos de 60m² a 70m², com 2 ou 3 quartos! 😊\n\n• 2 quartos: a partir de 60m² — ideal pra casais ou famílias pequenas\n• 3 quartos: até 70m² — mais espaço, suíte incluída\n\nTodos com sala, cozinha, área de serviço e garagem. A gente adapta o modelo ao seu orçamento. Quantas pessoas vão morar na casa?';
 
   if (m.match(/prazo|demora|tempo|quanto tempo|quando fica pronto/))
-    return 'O processo todo leva de 6 a 10 meses — 2 a 3 meses de burocracia (projeto + aprovação do banco) e 4 a 7 meses de obra. 😊\n\nE o melhor: pra começar, você precisa de apenas R$5.000, que já fazem parte da sua entrada. O resto se resolve durante o processo.\n\nTem mais alguma dúvida sobre o prazo?';
+    return 'O prazo depende do terreno, do projeto, das aprovações, da análise bancária e do porte da obra. 😊 Antes de começar, a EDR organiza as etapas e apresenta um cronograma compatível com o seu caso.\n\nVocê já tem terreno e documentação do imóvel?';
 
   if (m.match(/garantia|seguranca|confi|qualidade|medo/))
     return 'Na EDR, a gente se responsabiliza por tudo. No ato da entrega você recebe um manual do usuário e um termo de garantia. Nosso suporte é de até 5 anos em questões estruturais. 😊\n\nE os valores que fechamos não são alterados — zero surpresas. Se quiser, posso marcar uma visita pra você conhecer uma obra de perto. O que acha?';
 
   if (m.match(/parcela|juros|taxa|pagar|prestacao/))
-    return 'As taxas do MCMV são as mais baixas do mercado! Aqui no Nordeste, a Faixa 1 começa em 4% ao ano. 😊\n\nE tem uma coisa que pouca gente sabe: se apertar financeiramente, existe uma cláusula no contrato que permite pausar as parcelas por um período.\n\nQual a renda da sua família? Assim consigo te dar uma estimativa melhor.';
+    return 'As condições do MCMV variam por renda, região e perfil. No Norte e Nordeste, a menor taxa nominal parte de 4% ao ano em perfis elegíveis. 😊 A taxa final, a entrada e a parcela precisam ser confirmadas na simulação e no contrato com a Caixa.\n\nQual é a renda bruta aproximada da sua família?';
 
   if (m.match(/aluguel|alugar|alugado/))
     return 'Muitos dos nossos clientes estavam na mesma situação — pagando aluguel sem fim. 😊 O financiamento habitacional tem a taxa de juros mais baixa do mercado. Na prática, muita gente paga parcela menor que o aluguel.\n\nE a diferença é que cada parcela te aproxima de algo que vai ser SEU. Já pensou em quanto paga de aluguel hoje?';
