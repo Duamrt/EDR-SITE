@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10261f">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Aplicativo experimental de campo para conferência e correção de gabarito por medidas.">
+  <meta name="application-name" content="EDR Esquadro">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="EDR Esquadro">
+  <title>EDR Esquadro</title>
+  <link rel="canonical" href="https://edreng.com.br/esquadro/">
+  <link rel="manifest" href="manifest.webmanifest?v=14">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css?v=14">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="brand-mark" aria-hidden="true">E</div>
+    <div>
+      <p class="eyebrow">EDR • FERRAMENTA DE CAMPO</p>
+      <h1>Esquadro</h1>
+    </div>
+    <div class="app-statuses">
+      <span class="trial-badge">EXPERIMENTAL</span>
+      <span id="connection-status" class="offline-badge" title="Os cálculos acontecem neste aparelho">
+        <span aria-hidden="true">●</span><b>PREPARANDO</b>
+      </span>
+    </div>
+  </header>
+
+  <nav class="stepper" aria-label="Etapas">
+    <div class="step-pill is-active" data-step-pill="1"><b>1</b><span>Projeto</span></div>
+    <div class="step-line" aria-hidden="true"></div>
+    <div class="step-pill" data-step-pill="2"><b>2</b><span>Medidas</span></div>
+    <div class="step-line" aria-hidden="true"></div>
+    <div class="step-pill" data-step-pill="3"><b>3</b><span>Correção</span></div>
+  </nav>
+
+  <main id="conteudo" class="app-shell">
+    <section class="screen is-active" data-screen="1" aria-labelledby="titulo-projeto">
+      <aside id="install-panel" class="install-panel" aria-labelledby="install-title">
+        <div class="install-mark" aria-hidden="true">▣</div>
+        <div>
+          <p>APLICATIVO DE CAMPO</p>
+          <h2 id="install-title">Pronto para funcionar sem internet</h2>
+          <span id="install-message">Depois do primeiro carregamento, os cálculos continuam neste aparelho.</span>
+        </div>
+        <button id="install-app" type="button">COMO INSTALAR</button>
+      </aside>
+
+      <div class="screen-heading">
+        <p class="step-kicker">ETAPA 01</p>
+        <h2 id="titulo-projeto">Qual é o tamanho correto?</h2>
+        <p>Informe apenas as dimensões previstas no projeto. O sistema fará o restante.</p>
+      </div>
+
+      <div class="project-grid">
+        <div class="diagram-card">
+          <div class="diagram-caption">
+            <span id="project-diagram-label">COMPRIMENTO EM FOCO</span>
+            <strong id="project-diagram-value">A–C / B–D</strong>
+          </div>
+          <svg class="lot-diagram" viewBox="0 0 360 460" role="img" aria-label="Retângulo com pontos A e C fixos à esquerda e pontos B e D à direita">
+            <defs>
+              <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                <path d="M 24 0 L 0 0 0 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".12"/>
+              </pattern>
+            </defs>
+            <rect x="0" y="0" width="360" height="460" fill="url(#grid)"/>
+            <path class="street-line" d="M40 38 V420"/>
+            <text class="street-text" x="24" y="230" transform="rotate(-90 24 230)">LINHA DE REFERÊNCIA</text>
+            <rect class="target-shape" x="88" y="74" width="194" height="306" rx="2"/>
+            <line id="project-line-AB" class="project-dimension-line" x1="88" y1="74" x2="282" y2="74"/>
+            <line id="project-line-BD" class="project-dimension-line is-active" x1="282" y1="74" x2="282" y2="380"/>
+            <line id="project-line-CD" class="project-dimension-line" x1="88" y1="380" x2="282" y2="380"/>
+            <line id="project-line-AC" class="project-dimension-line is-active is-reference" x1="88" y1="74" x2="88" y2="380"/>
+            <g class="point point-fixed"><circle cx="88" cy="74" r="20"/><text x="88" y="81">A</text></g>
+            <g class="point point-move"><circle cx="282" cy="74" r="20"/><text x="282" y="81">B</text></g>
+            <g class="point point-fixed"><circle cx="88" cy="380" r="20"/><text x="88" y="387">C</text></g>
+            <g class="point point-move"><circle cx="282" cy="380" r="20"/><text x="282" y="387">D</text></g>
+            <text class="dimension-text" x="58" y="229" transform="rotate(-90 58 229)">COMPRIMENTO</text>
+            <text class="dimension-text" x="185" y="57">LARGURA</text>
+          </svg>
+          <div class="fixed-note"><span aria-hidden="true">⊙</span> A e C definem onde a obra fica no lote.</div>
+        </div>
+
+        <form id="project-form" class="form-card" novalidate>
+          <label class="field-block" data-project-dimension="length">
+            <span>Comprimento A–C</span>
+            <span class="input-wrap"><input id="target-length" inputmode="decimal" autocomplete="off" placeholder="Ex.: 13,85"><b>m</b></span>
+          </label>
+          <label class="field-block" data-project-dimension="width">
+            <span>Largura A–B / C–D</span>
+            <span class="input-wrap"><input id="target-width" inputmode="decimal" autocomplete="off" placeholder="Ex.: 5,00"><b>m</b></span>
+          </label>
+          <label class="field-block field-small" data-project-dimension="tolerance">
+            <span>Tolerância definida para a conferência</span>
+            <span class="input-wrap"><input id="tolerance" inputmode="decimal" autocomplete="off" value="1"><b>cm</b></span>
+          </label>
+          <p id="project-error" class="form-error" role="alert"></p>
+          <button class="primary-button" type="submit">COMEÇAR MEDIÇÃO <span aria-hidden="true">→</span></button>
+        </form>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="2" aria-labelledby="titulo-medidas">
+      <div class="screen-heading compact-heading">
+        <p class="step-kicker">ETAPA 02</p>
+        <h2 id="titulo-medidas">Meça as linhas destacadas</h2>
+        <p>Digite exatamente o que leu na trena, em metros e centímetros. Exemplo: 17,69 m.</p>
+      </div>
+
+      <div class="measure-layout">
+        <div class="measure-diagram-card">
+          <div class="measure-status"><span>BASE FIXA</span><strong id="project-summary">—</strong></div>
+          <svg id="measure-diagram" class="measure-diagram" viewBox="0 0 360 460" role="img" aria-label="Desenho do gabarito com seis linhas de medição">
+            <rect class="diagram-ground" x="0" y="0" width="360" height="460" rx="16"/>
+            <line id="line-AB" class="measure-line side-line" x1="84" y1="68" x2="278" y2="68"/>
+            <line id="line-BD" class="measure-line side-line" x1="278" y1="68" x2="278" y2="392"/>
+            <line id="line-CD" class="measure-line side-line" x1="84" y1="392" x2="278" y2="392"/>
+            <line id="line-AC" class="measure-line fixed-line" x1="84" y1="68" x2="84" y2="392"/>
+            <line id="line-AD" class="measure-line diagonal-green" x1="84" y1="68" x2="278" y2="392"/>
+            <line id="line-CB" class="measure-line diagonal-red" x1="84" y1="392" x2="278" y2="68"/>
+            <g class="point point-fixed"><circle cx="84" cy="68" r="20"/><text x="84" y="75">A</text></g>
+            <g class="point point-move"><circle cx="278" cy="68" r="20"/><text x="278" y="75">B</text></g>
+            <g class="point point-fixed"><circle cx="84" cy="392" r="20"/><text x="84" y="399">C</text></g>
+            <g class="point point-move"><circle cx="278" cy="392" r="20"/><text x="278" y="399">D</text></g>
+          </svg>
+          <p class="tap-hint">Ao tocar em uma medida, a linha correspondente acende.</p>
+        </div>
+
+        <form id="measure-form" class="measure-form" novalidate>
+          <div class="prefill-note">
+            <span aria-hidden="true">↳</span>
+            <div><strong>Os quatro lados já vieram do projeto.</strong><small>Confira com a trena e altere somente se estiver diferente.</small></div>
+          </div>
+          <div class="diagonal-reference">Diagonal no esquadro: <strong id="expected-diagonal">—</strong></div>
+          <div class="measure-fields">
+            <label class="measure-field" data-measure="AC">
+              <span class="order-number">1</span><span class="line-name">A–C <small id="source-AC">do projeto • confirme</small></span>
+              <span class="compact-input"><input id="measure-AC" inputmode="decimal" autocomplete="off" aria-label="Medida A até C em metros"><b>m</b></span>
+            </label>
+            <label class="measure-field" data-measure="AB">
+              <span class="order-number">2</span><span class="line-name">A–B <small id="source-AB">do projeto • confirme</small></span>
+              <span class="compact-input"><input id="measure-AB" inputmode="decimal" autocomplete="off" aria-label="Medida A até B em metros"><b>m</b></span>
+            </label>
+            <label class="measure-field" data-measure="CB">
+              <span class="order-number">3</span><span class="line-name">C–B <small>medir • diagonal vermelha</small></span>
+              <span class="compact-input"><input id="measure-CB" inputmode="decimal" autocomplete="off" placeholder="17,69" aria-label="Medida C até B em metros"><b>m</b></span>
+            </label>
+            <label class="measure-field" data-measure="CD">
+              <span class="order-number">4</span><span class="line-name">C–D <small id="source-CD">do projeto • confirme</small></span>
+              <span class="compact-input"><input id="measure-CD" inputmode="decimal" autocomplete="off" aria-label="Medida C até D em metros"><b>m</b></span>
+            </label>
+            <label class="measure-field" data-measure="AD">
+              <span class="order-number">5</span><span class="line-name">A–D <small>medir • diagonal verde</small></span>
+              <span class="compact-input"><input id="measure-AD" inputmode="decimal" autocomplete="off" placeholder="17,76" aria-label="Medida A até D em metros"><b>m</b></span>
+            </label>
+            <label class="measure-field" data-measure="BD">
+              <span class="order-number">6</span><span class="line-name">B–D <small id="source-BD">do projeto • confirme</small></span>
+              <span class="compact-input"><input id="measure-BD" inputmode="decimal" autocomplete="off" aria-label="Medida B até D em metros"><b>m</b></span>
+            </label>
+          </div>
+
+          <label class="field-confirm">
+            <input id="confirm-sides" type="checkbox">
+            <span class="check-box" aria-hidden="true">✓</span>
+            <span><strong>Conferi os quatro lados no campo</strong><small>A–C, A–B, C–D e B–D estão iguais aos valores acima.</small></span>
+          </label>
+
+          <div id="measure-error" class="measure-alert" role="alert" aria-live="polite" hidden></div>
+          <button class="primary-button calculate-button" type="submit"><span aria-hidden="true">⌖</span> CALCULAR CORREÇÃO</button>
+          <button class="text-button" id="back-project" type="button">← Corrigir dimensões do projeto</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="3" aria-labelledby="titulo-correcao">
+      <div class="result-topline">
+        <button id="back-measures" class="back-button" type="button" aria-label="Voltar às medidas">←</button>
+        <span id="result-context-label">RESULTADO DA CONFERÊNCIA</span>
+      </div>
+
+      <div id="result-banner" class="result-banner" aria-live="polite">
+        <span class="result-icon" aria-hidden="true">↗</span>
+        <div><p id="result-overline">CORREÇÃO NECESSÁRIA</p><h2 id="titulo-correcao">Mova os pontos indicados</h2></div>
+      </div>
+
+      <div id="result-content" class="result-content"></div>
+
+      <div class="result-actions">
+        <button id="remeasure" class="primary-button" type="button">MEDIR NOVAMENTE <span aria-hidden="true">↻</span></button>
+        <button id="new-project" class="secondary-button" type="button">NOVO GABARITO</button>
+      </div>
+
+      <p class="safety-note"><strong>Atenção:</strong> esta ferramenta confere o esquadro a partir da linha A–C. Ela não define divisas nem substitui os pontos de referência da obra.</p>
+    </section>
+  </main>
+
+  <button id="open-session-log" class="session-log-fab" type="button" hidden aria-haspopup="dialog">
+    <span aria-hidden="true">≡</span><b>REGISTRO</b><em id="session-event-count">0</em>
+  </button>
+
+  <dialog id="session-log-dialog" class="session-log-dialog" aria-labelledby="session-log-title">
+    <div class="session-log-head">
+      <div><p>ENSAIO ATUAL</p><h2 id="session-log-title">Registro da conferência</h2></div>
+      <button id="close-session-log" type="button" aria-label="Fechar registro">×</button>
+    </div>
+    <div id="session-log-summary" class="session-log-summary"></div>
+    <ol id="session-log-events" class="session-log-events"></ol>
+    <p id="session-log-feedback" class="session-log-feedback" role="status"></p>
+    <div class="session-log-actions">
+      <button id="share-session-log" class="primary-button" type="button">COMPARTILHAR REGISTRO <span aria-hidden="true">↗</span></button>
+      <button id="copy-session-log" class="secondary-button" type="button">COPIAR TEXTO</button>
+    </div>
+  </dialog>
+
+  <footer class="app-footer"><span>APP LOCAL • USO EXPERIMENTAL</span><span>v0.14</span></footer>
+
+  <script src="geometry.js?v=13"></script>
+  <script src="session-log.js?v=14"></script>
+  <script src="app.js?v=14"></script>
+</body>
+</html>

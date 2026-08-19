@@ -66,3 +66,14 @@ git push origin main  →  webhook dispara  →  Hostinger faz pull  →  site a
 - O arquivo `CNAME` do GitHub Pages pode ser removido após migração completa pra Hostinger
 - Se o webhook parar de funcionar, faça pull manual pelo hPanel enquanto investiga
 - DNS do domínio `edreng.com.br` precisa estar apontando para os nameservers da Hostinger
+
+## Aplicativo EDR Esquadro
+
+- **Pasta publicada:** `esquadro/`
+- **URL planejada:** `https://edreng.com.br/esquadro/`
+- **Tipo:** PWA estática, sem banco, login ou API
+- **Uso em campo:** instalar no celular enquanto houver internet; depois abre e calcula offline
+- **Dados:** o registro da conferência permanece somente no armazenamento local do aparelho
+- **Indexação:** bloqueada por `robots.txt` e pela meta `noindex`
+
+Antes de publicar, validar localmente o fluxo 8 × 4 m e confirmar que a página reabre com a rede desativada. A primeira publicação continua seguindo o fluxo normal deste repositório; nenhum arquivo da pasta `esquadro/` deve ser enviado isoladamente para `public_html`.
