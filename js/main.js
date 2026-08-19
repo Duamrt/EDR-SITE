@@ -38,6 +38,11 @@ const counterObs = new IntersectionObserver(entries => {
     const el = e.target;
     const target = parseInt(el.dataset.target);
     const suffix = el.dataset.suffix || '';
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = target + suffix;
+      counterObs.unobserve(el);
+      return;
+    }
     const duration = 1800;
     const start = performance.now();
     const tick = now => {
@@ -72,30 +77,42 @@ const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobile-menu');
 
 if (hamburger && mobileMenu) {
-  hamburger.addEventListener('click', () => {
-    const isOpen = mobileMenu.classList.contains('open');
-    if (isOpen) {
-      mobileMenu.classList.remove('open');
-      hamburger.classList.remove('active');
-      document.body.style.overflow = '';
-      setTimeout(() => { mobileMenu.style.display = 'none'; }, 350);
-    } else {
+  const setMenuOpen = (open) => {
+    hamburger.setAttribute('aria-expanded', String(open));
+    hamburger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    if (open) {
       mobileMenu.style.display = 'flex';
       requestAnimationFrame(() => {
         mobileMenu.classList.add('open');
         hamburger.classList.add('active');
         document.body.style.overflow = 'hidden';
+        mobileMenu.querySelector('a')?.focus();
       });
+      return;
     }
+
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('active');
+    document.body.style.overflow = '';
+    setTimeout(() => { mobileMenu.style.display = 'none'; }, 350);
+  };
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.contains('open');
+    setMenuOpen(!isOpen);
   });
 
   // Close menu on link click
   mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      mobileMenu.classList.remove('open');
-      hamburger.classList.remove('active');
-      document.body.style.overflow = '';
-      setTimeout(() => { mobileMenu.style.display = 'none'; }, 350);
+      setMenuOpen(false);
     });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+      setMenuOpen(false);
+      hamburger.focus();
+    }
   });
 }

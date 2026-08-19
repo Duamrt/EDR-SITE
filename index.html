@@ -94,6 +94,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
 <!-- SVG Symbols (reusable icons) -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <symbol id="icon-whatsapp" viewBox="0 0 24 24" fill="currentColor">
@@ -138,13 +140,13 @@
       Falar Agora
     </a>
   </div>
-  <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
+  <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
 <!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Menu de navegação">
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu de navegação">
   <a href="#sobre">A Empresa</a>
   <a href="#servicos">Serviços</a>
   <a href="#portfolio">Portfólio</a>
@@ -155,6 +157,8 @@
     Falar Agora
   </a>
 </div>
+
+<main id="conteudo">
 
 <!-- HERO -->
 <section class="hero">
@@ -179,7 +183,7 @@
     </div>
   </div>
   <div class="hero-right">
-    <img src="img/hero-casa.jpg" alt="Casa Vinícius, projeto residencial de 119m² entregue pela EDR Engenharia em Jupi-PE" width="960" height="720" fetchpriority="high">
+    <img src="img/hero-casa.jpg" alt="Casa Vinícius, projeto residencial de 119m² entregue pela EDR Engenharia em Jupi-PE" width="900" height="1612" fetchpriority="high">
     <div class="hero-badge">
       <div class="badge-t">Casa Vinícius · 119m²</div>
       <div class="badge-s">Entregue em 8 meses</div>
@@ -189,10 +193,9 @@
 
 <!-- NÚMEROS -->
 <div class="section-nums" role="region" aria-label="Números da EDR">
-  <div class="num-item reveal"><div class="num-n" data-target="116">0</div><div class="num-l">Projetos Entregues</div></div>
-  <div class="num-item reveal d1"><div class="num-n" data-target="25">0</div><div class="num-l">Casas Concluídas</div></div>
-  <div class="num-item reveal d2"><div class="num-n" data-target="8">0</div><div class="num-l">Em Construção Agora</div></div>
-  <div class="num-item reveal d3"><div class="num-n" data-target="5" data-suffix="+">0</div><div class="num-l">Anos no Mercado</div></div>
+  <div class="num-item reveal"><div class="num-n" data-target="116">116</div><div class="num-l">Projetos Entregues</div></div>
+  <div class="num-item reveal d1"><div class="num-n" data-target="25">25</div><div class="num-l">Casas Concluídas</div></div>
+  <div class="num-item reveal d2"><div class="num-n" data-target="5" data-suffix="+">5+</div><div class="num-l">Anos no Mercado</div></div>
 </div>
 
 <!-- MANIFESTO -->
@@ -245,11 +248,11 @@
 
 <style>
   :root {
-    --edr-green: #0a3d18; --edr-green2: #0f5225;
+    --edr-green: #0a3d18; --edr-green2: #5cb870;
     --edr-black: #080808; --edr-card: #161b16;
     --edr-border: rgba(255,255,255,0.07);
-    --edr-text: #e8e8e2; --edr-muted: #7a7d77;
-    --edr-accent: #2a7a3b;
+    --edr-text: #e8e8e2; --edr-muted: #a7aaa2;
+    --edr-accent: #5cb870;
   }
   .edr-portfolio { background: var(--edr-black); padding: 90px 0 100px; font-family: 'Barlow', sans-serif; overflow: hidden; }
   .edr-portfolio__inner { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
@@ -281,13 +284,13 @@
   .edr-card__footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--edr-border); margin-top: auto; }
   .edr-card__status--ok { color: #5cb870; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
   .edr-card__status--exec { color: #e0a843; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
-  .edr-card__cta { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--edr-green2); text-decoration: none; }
-  .edr-card__planta { background: none; border: 1px solid rgba(42,122,59,0.3); color: var(--edr-green2); font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; cursor: pointer; transition: all .2s; }
+  .edr-card__cta { display: inline-flex; align-items: center; min-height: 44px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #a8d5b4; text-decoration: none; }
+  .edr-card__planta { min-height: 44px; background: none; border: 1px solid rgba(168,213,180,0.45); color: #a8d5b4; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 8px 12px; border-radius: 2px; cursor: pointer; transition: all .2s; }
   .edr-card__planta:hover { background: rgba(42,122,59,0.15); border-color: rgba(42,122,59,0.5); }
   .edr-card__cta:hover { color: #5cb870; }
   .edr-lightbox { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
   .edr-lightbox.open { opacity: 1; visibility: visible; }
-  .edr-lightbox__close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #fff; font-size: 32px; cursor: pointer; z-index: 2; line-height: 1; }
+  .edr-lightbox__close { position: absolute; top: 16px; right: 20px; width:48px; height:48px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.35); border-radius:50%; color: #fff; font-size: 32px; cursor: pointer; z-index: 2; line-height: 1; }
   .edr-lightbox__title { color: #e8e8e2; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
   .edr-lightbox__img { max-width: 92vw; max-height: 78vh; border-radius: 4px; object-fit: contain; }
   .edr-portfolio__cta { margin-top: 52px; text-align: center; }
@@ -377,7 +380,6 @@
         <div class="edr-card__img">
           <img src="img/portfolio-livia.jpg" alt="Modelo Lívia — EDR 68, 67,81m², Jupi-PE" loading="lazy" onclick="abrirPlanta(this.src,'Modelo Lívia — EDR 68')" style="cursor:zoom-in;">
           <span class="edr-card__badge">Projeto Modelo</span>
-          <span class="edr-card__exec">Em execução</span>
         </div>
         <div class="edr-card__body">
           <div class="edr-card__code">EDR 68</div>
@@ -387,7 +389,7 @@
             <div class="edr-spec"><div class="edr-spec__val">3</div><div class="edr-spec__lbl">Quartos</div></div>
           </div>
           <div class="edr-card__footer">
-            <span class="edr-card__status--exec">⏳ Em execução</span>
+            <span class="edr-card__status--ok">✓ Entregue</span>
             <button class="edr-card__planta" onclick="abrirPlanta('img/planta-livia.jpg','Modelo Lívia — EDR 68')">Ver planta</button>
             <a href="https://wa.me/5587981713987?text=Quero%20saber%20mais%20sobre%20o%20modelo%20Lívia%20(EDR%2068)." class="edr-card__cta" target="_blank" rel="noopener">Orçamento →</a>
           </div>
@@ -478,14 +480,14 @@
     <span class="mcmv-tag reveal">Programa Federal</span>
     <h2 class="mcmv-title reveal d1">Minha Casa Minha Vida —<br><em>sua casa pode custar menos do que você pensa.</em></h2>
     <p class="mcmv-txt reveal d2">
-      O banco entra com até <strong>R$ 168.000</strong>. O governo federal ainda pode te dar um subsídio. E você ainda usa o FGTS pra abater a entrada. A EDR cuida de toda a parte técnica e documental pra sua aprovação sair sem burocracia.
+      A Caixa pode financiar a compra do terreno e a construção em uma única operação. A EDR organiza projeto e documentação para você entender entrada, parcela e próximos passos antes de começar.
     </p>
   </div>
 
   <!-- Banner modalidade -->
   <div class="mcmv-banner reveal d2">
     <span class="mcmv-banner-badge">Como funciona</span>
-    <span>Na modalidade <strong>Aquisição e Construção</strong>, terreno e obra entram num único financiamento pela Caixa. Durante a obra, você paga apenas a taxa de evolução de obra e a taxa de manutenção da conta — valores bem menores que uma parcela de financiamento. A prestação completa só começa após a entrega das chaves.</span>
+    <span>Na modalidade <strong>Aquisição de Terreno e Construção</strong>, terreno e obra podem entrar no mesmo financiamento. As condições, os encargos durante a obra e a liberação por etapas dependem da análise e do contrato com a Caixa.</span>
   </div>
 
   <!-- Faixas -->
@@ -493,42 +495,40 @@
 
     <div class="mcmv-faixa reveal">
       <div class="mcmv-faixa-num">Faixa 1</div>
-      <div class="mcmv-faixa-renda">Renda até R$ 2.850/mês</div>
+      <div class="mcmv-faixa-renda">Renda até R$ 3.200/mês</div>
       <ul class="mcmv-faixa-list">
-        <li class="mcmv-faixa-dest">🏦 Banco financia até <strong>R$ 168.000</strong></li>
-        <li class="mcmv-faixa-dest">🎁 + Subsídio do governo federal</li>
-        <li class="mcmv-faixa-dest">💳 + FGTS reduz sua entrada</li>
-        <li>Juros a partir de <strong>4% ao ano</strong></li>
+        <li class="mcmv-faixa-dest">Possibilidade de subsídio, conforme análise</li>
+        <li class="mcmv-faixa-dest">FGTS pode reduzir a entrada</li>
+        <li>Taxas nominais a partir de <strong>4% ao ano</strong></li>
         <li>Prazo de até <strong>35 anos</strong></li>
       </ul>
       <div class="mcmv-faixa-extra">
-        Descubra quanto você realmente precisa ter no bolso — pode ser muito menos do que imagina.
+        Entrada, desconto e parcela dependem do perfil e do imóvel.
       </div>
     </div>
 
     <div class="mcmv-faixa mcmv-faixa--dest reveal d1">
       <div class="mcmv-faixa-top">⭐ Mais procurada</div>
       <div class="mcmv-faixa-num">Faixa 2</div>
-      <div class="mcmv-faixa-renda">Renda de R$ 2.850 até R$ 4.700/mês</div>
+      <div class="mcmv-faixa-renda">Renda de R$ 3.200,01 até R$ 5.000/mês</div>
       <ul class="mcmv-faixa-list">
-        <li class="mcmv-faixa-dest">🏦 Banco financia até <strong>R$ 194.461</strong></li>
-        <li class="mcmv-faixa-dest">💳 + FGTS reduz sua entrada</li>
-        <li>Taxa de <strong>7,95% a.a.</strong></li>
+        <li class="mcmv-faixa-dest">Possibilidade de desconto, conforme análise</li>
+        <li class="mcmv-faixa-dest">FGTS pode reduzir a entrada</li>
+        <li>Taxa varia conforme renda, região e perfil</li>
         <li>Prazo de até <strong>35 anos</strong></li>
       </ul>
       <div class="mcmv-faixa-extra">
-        Descubra quanto você realmente precisa ter no bolso — pode ser muito menos do que imagina.
+        A simulação confirma o valor real para sua família.
       </div>
     </div>
 
     <div class="mcmv-faixa reveal d2">
       <div class="mcmv-faixa-num">Faixa 3</div>
-      <div class="mcmv-faixa-renda">Renda de R$ 4.700 até R$ 8.600/mês</div>
+      <div class="mcmv-faixa-renda">Renda de R$ 5.000,01 até R$ 9.600/mês</div>
       <ul class="mcmv-faixa-list">
-        <li class="mcmv-faixa-dest">🏦 Banco financia até <strong>R$ 280.000</strong></li>
-        <li class="mcmv-faixa-dest">💳 + FGTS reduz sua entrada</li>
-        <li>Juros entre <strong>7,66% e 8,16% a.a.</strong></li>
-        <li>Bem abaixo do mercado tradicional</li>
+        <li class="mcmv-faixa-dest">FGTS pode reduzir a entrada</li>
+        <li>Taxas nominais entre <strong>7,66% e 8,16% a.a.</strong></li>
+        <li>Valor aprovado depende da análise de crédito</li>
         <li>Prazo de até <strong>35 anos</strong></li>
       </ul>
     </div>
@@ -536,12 +536,11 @@
     <div class="mcmv-faixa reveal d3">
       <div class="mcmv-faixa-top mcmv-faixa-top--new">✦ Nova</div>
       <div class="mcmv-faixa-num">Faixa 4</div>
-      <div class="mcmv-faixa-renda">Renda de R$ 8.600 até R$ 12.000/mês</div>
+      <div class="mcmv-faixa-renda">Renda de R$ 9.600,01 até R$ 13.000/mês</div>
       <ul class="mcmv-faixa-list">
-        <li class="mcmv-faixa-dest">🏦 Banco financia até <strong>R$ 400.000</strong></li>
-        <li class="mcmv-faixa-dest">💳 + FGTS reduz sua entrada</li>
-        <li>Juros de até <strong>10,5% a.a.</strong></li>
-        <li>Abaixo dos bancos privados</li>
+        <li class="mcmv-faixa-dest">Linha Classe Média</li>
+        <li>Taxa nominal de <strong>10% a.a.</strong></li>
+        <li>Imóveis de até <strong>R$ 600 mil</strong></li>
         <li>Prazo de até <strong>35 anos</strong></li>
       </ul>
     </div>
@@ -551,7 +550,7 @@
   <!-- Vantagem Nordeste -->
   <div class="mcmv-nordeste reveal">
     <span class="mcmv-nordeste-icon">📍</span>
-    <p><strong>Vantagem de morar no Nordeste:</strong> Famílias da nossa região pagam juros menores que o restante do Brasil. Na Faixa 1, os juros partem de <strong>4% ao ano</strong> — a menor taxa da história do FGTS — enquanto no Sul/Sudeste o mínimo é 4,25%. Na prática isso significa parcelas mais baixas e menos dinheiro jogado fora no longo prazo.</p>
+    <p><strong>Vantagem de morar no Nordeste:</strong> o programa prevê taxas menores para Norte e Nordeste em diferentes perfis. A menor taxa nominal parte de <strong>4% ao ano</strong>; a taxa final depende da renda, do vínculo com o FGTS e da análise da Caixa.</p>
   </div>
 
   <!-- Como a EDR ajuda -->
@@ -574,19 +573,19 @@
   <div class="mcmv-faq">
     <details class="faq-item reveal">
       <summary>Consigo financiar sem dar entrada?</summary>
-      <p>A Caixa financia até 80% do valor do imóvel — os outros 20% são a entrada, e isso é regra do programa. <strong>Mas calma:</strong> na prática o valor da entrada pode ser bem menor do que você imagina. O FGTS abate direto na entrada, e nas Faixas 1 e 2 o subsídio do governo reduz ainda mais. Muitos dos nossos clientes saíram do aluguel com uma entrada que coube no bolso. <strong>Faz a simulação com a gente — é gratuita e você descobre o valor real.</strong></p>
+      <p>O valor da entrada depende da renda, do imóvel, do FGTS disponível e da análise de crédito. Em alguns perfis, descontos do programa e o uso do FGTS podem reduzir esse valor. <strong>A simulação é gratuita e mostra o cenário real antes de qualquer compromisso.</strong></p>
     </details>
     <details class="faq-item reveal d1">
       <summary>Não tenho terreno. Posso construir mesmo assim?</summary>
-      <p><strong>Não.</strong> Você não precisa ter terreno para começar. A EDR cuida de tudo — desde encontrar o local ideal até a documentação e a construção completa. Tudo dentro do mesmo processo de financiamento, sem dor de cabeça. Você só escolhe o modelo da sua casa e a gente faz o resto acontecer.</p>
+      <p><strong>Sim.</strong> Na modalidade de aquisição de terreno e construção, o terreno pode fazer parte da mesma operação. A aprovação depende do terreno, do projeto e da análise da Caixa. A EDR orienta a busca, a documentação e a parte técnica.</p>
     </details>
     <details class="faq-item reveal d2">
       <summary>Quanto tempo demora do início ao fim?</summary>
-      <p>A parte burocrática (projeto, aprovação e análise do banco) leva de <strong>2 a 3 meses</strong>. A obra em si leva de <strong>4 a 7 meses</strong>, dependendo do porte. E aqui vem a melhor parte: <strong>para iniciar todo o processo, você precisa de apenas R$ 5.000</strong> — que já fazem parte da sua entrada. Os 2 a 3 meses de burocracia são tempo a seu favor: enquanto o banco analisa, você se organiza para completar o restante. A EDR cuida de tudo — seu trabalho é só assinar onde a gente indicar.</p>
+      <p>Projeto, aprovações, análise bancária e obra variam conforme terreno, documentação e porte da casa. Como referência, o processo completo costuma levar vários meses. Antes de começar, a EDR apresenta as etapas e um cronograma compatível com o seu caso.</p>
     </details>
     <details class="faq-item reveal d3">
       <summary>Posso usar o FGTS?</summary>
-      <p>Sim! Se você trabalha de carteira assinada, o FGTS pode ser usado para <strong>reduzir a entrada</strong> ou <strong>amortizar parcelas</strong>. É um dos maiores aliados do programa. Na simulação gratuita a gente já calcula quanto do seu FGTS pode ser utilizado.</p>
+      <p>Em muitos casos, sim. O FGTS pode ajudar na entrada ou na amortização, desde que você cumpra as regras vigentes. Na simulação, a EDR orienta a conferência do saldo e das condições com a Caixa.</p>
     </details>
   </div>
 
@@ -597,7 +596,7 @@
       <svg width="15" height="15" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
       Quero saber se tenho direito
     </a>
-    <p class="mcmv-disclaimer">Informações baseadas nas regras oficiais do programa (Ministério das Cidades / Caixa Econômica Federal · 2026). Valores podem variar conforme perfil e disponibilidade de recursos.</p>
+    <p class="mcmv-disclaimer">Faixas e taxas consultadas em agosto de 2026. As condições podem mudar e dependem da análise da Caixa. Confira também a <a href="https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/habitacao/programa-minha-casa-minha-vida/mcmv-fgts" target="_blank" rel="noopener">página oficial do Minha Casa Minha Vida</a>.</p>
   </div>
 
 </section>
@@ -617,7 +616,7 @@
   <div class="cta-cards">
     <div class="cta-card reveal">
       <div class="cta-card-ic" aria-hidden="true"><svg width="20" height="20"><use href="#icon-heart"/></svg></div>
-      <div><h3 style="font-size:0.8rem;font-weight:500;color:var(--areia);margin-bottom:0.25rem">Atendimento humano, sempre</h3><p>Você fala diretamente com quem resolve. Sem robô, sem intermediário.</p></div>
+      <div><h3 style="font-size:0.8rem;font-weight:500;color:var(--areia);margin-bottom:0.25rem">Atendimento humano, sempre</h3><p>Quando você precisar, Elyda ou Duam assumem o atendimento diretamente.</p></div>
     </div>
     <div class="cta-card reveal d1">
       <div class="cta-card-ic" aria-hidden="true"><svg width="20" height="20"><use href="#icon-check"/></svg></div>
@@ -629,6 +628,8 @@
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- FOOTER -->
 <footer role="contentinfo">
@@ -681,7 +682,7 @@
 
 <!-- LIGHTBOX PLANTAS -->
 <div class="edr-lightbox" id="lightbox-planta" onclick="if(event.target===this)fecharPlanta()">
-  <button class="edr-lightbox__close" onclick="fecharPlanta()">&times;</button>
+  <button class="edr-lightbox__close" onclick="fecharPlanta()" aria-label="Fechar planta">&times;</button>
   <div class="edr-lightbox__title" id="lightbox-titulo"></div>
   <img class="edr-lightbox__img" id="lightbox-img" src="" alt="">
 </div>
