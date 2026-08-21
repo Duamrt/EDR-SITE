@@ -2,8 +2,18 @@ import * as pdfjsLib from './vendor/pdf.min.mjs';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('./vendor/pdf.worker.min.mjs', import.meta.url).href;
 
+const APP_VERSION = document.querySelector('meta[name="application-version"]')?.content || 'não informada';
+const BUILD_ID = document.querySelector('meta[name="build-id"]')?.content || 'não informado';
+document.documentElement.dataset.appVersion = APP_VERSION;
+document.documentElement.dataset.buildId = BUILD_ID;
+console.info(
+  '%c EDR ESQUADRO QR ',
+  'background:#0b2b22;color:#f5c32f;font-weight:800;padding:4px 8px;border-radius:3px',
+  `v${APP_VERSION} • build ${BUILD_ID}`,
+);
+
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=20260821-1516'));
 }
 
 const PAGE_NAMES = {
