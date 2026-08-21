@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#10261f">
+  <meta name="application-name" content="EDR Esquadro QR">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Esquadro QR">
+  <title>EDR Esquadro QR — Beta de campo</title>
+  <link rel="canonical" href="https://edreng.com.br/esquadro-qr/">
+  <link rel="manifest" href="manifest.webmanifest?v=2">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="app-header">
+    <div class="brand-mark">E</div>
+    <div class="brand-copy">
+      <span>EDR • FERRAMENTA DE CAMPO</span>
+      <strong>ESQUADRO</strong>
+    </div>
+    <div class="local-badge"><i></i> BETA</div>
+  </header>
+
+  <nav class="stepper" aria-label="Etapas do aplicativo">
+    <div class="step is-active" data-step="1"><b>1</b><span>PREPARAR</span></div>
+    <div class="step-line"></div>
+    <div class="step" data-step="2"><b>2</b><span>GERAR QR</span></div>
+    <div class="step-line"></div>
+    <div class="step" data-step="3"><b>3</b><span>NA OBRA</span></div>
+  </nav>
+
+  <main id="conteudo">
+    <section class="screen is-active" data-screen="start">
+      <div class="intro-grid">
+        <div class="intro-copy">
+          <p class="kicker">NOVO FLUXO • SEM CONTAS NA OBRA</p>
+          <h1>Uma prancha.<br><em>Nenhuma conta.</em></h1>
+          <p>Prepare a locação no escritório. No canteiro, basta ler o QR e digitar as duas diagonais medidas.</p>
+        </div>
+
+        <div class="choice-card">
+          <span class="choice-number">01</span>
+          <div>
+            <small>COMEÇAR POR UMA PRANCHA</small>
+            <h2>Anexar planta de locação</h2>
+            <p>Envie o PDF executivo. Nesta rodada, o sistema identifica e confirma a prancha de locação.</p>
+          </div>
+          <label class="upload-button">
+            <input id="plan-file" type="file" accept="application/pdf,.pdf">
+            <span>ESCOLHER ARQUIVO</span><b>↑</b>
+          </label>
+          <p id="upload-error" class="upload-error" role="alert"></p>
+        </div>
+      </div>
+
+      <div class="flow-strip" aria-label="Resumo do fluxo">
+        <div><b>1</b><span>ANEXA A PRANCHA</span></div>
+        <i>→</i>
+        <div><b>2</b><span>CONFIRMA A CASA</span></div>
+        <i>→</i>
+        <div><b>3</b><span>LEVA O QR</span></div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="analyzing" aria-live="polite">
+      <div class="analyzing-card">
+        <div class="scan-document">
+          <div class="paper-lines"></div>
+          <div class="scan-beam"></div>
+        </div>
+        <p class="kicker">LEITURA DEMONSTRATIVA</p>
+        <h1>Separando a casa do lote…</h1>
+        <p id="analysis-file">Prancha de locação</p>
+        <div class="analysis-progress"><span></span></div>
+        <small id="analysis-status">Abrindo o PDF no próprio aparelho…</small>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="sheet">
+      <div class="screen-heading">
+        <button class="back-link" data-go="start" type="button">←</button>
+        <div>
+          <p class="kicker">PDF ANALISADO • 14 PÁGINAS</p>
+          <h1>Encontrei a prancha de locação</h1>
+          <p>Antes de procurar a casa, o sistema confirma que escolheu a página e a revisão corretas.</p>
+        </div>
+      </div>
+
+      <div class="sheet-layout">
+        <figure class="sheet-preview">
+          <div class="pdf-bar"><span id="pdf-file-name">Arquivo PDF</span><strong id="pdf-page-counter">— / —</strong></div>
+          <div class="sheet-image">
+            <canvas id="sheet-canvas" aria-label="Pré-visualização da prancha selecionada"></canvas>
+            <div class="sheet-selected"><span>✓</span><b id="selection-source">PÁGINA SELECIONADA</b></div>
+          </div>
+          <figcaption>O arquivo original continua intacto. O aplicativo apenas lê a prancha.</figcaption>
+        </figure>
+
+        <aside class="sheet-confirm-card">
+          <div class="analysis-count"><span>✓</span><div><small>BUSCA CONCLUÍDA</small><strong id="search-result">PRANCHA ENCONTRADA</strong></div></div>
+          <ol id="page-list" class="page-list" aria-label="Páginas próximas da prancha escolhida"></ol>
+          <div class="document-identity">
+            <div><small>PROJETO PELO ARQUIVO</small><strong id="identity-project">—</strong></div>
+            <div><small>CLIENTE IMPRESSO</small><strong id="identity-client">—</strong></div>
+            <div><small>PÁGINA</small><strong id="identity-page">—</strong></div>
+            <div><small>REVISÃO / DATA</small><strong id="identity-revision">—</strong></div>
+          </div>
+          <div id="revision-warning" class="revision-warning"><span>!</span><p id="revision-warning-text">Confira os dados da prancha antes de continuar.</p></div>
+          <label id="identity-confirm" class="identity-confirm" hidden>
+            <input id="identity-checkbox" type="checkbox">
+            <span>Eu conferi a divergência acima e esta é a prancha correta.</span>
+          </label>
+          <button id="confirm-sheet" class="primary-button" type="button" disabled>SIM, USAR ESTA PRANCHA <span>→</span></button>
+          <button class="secondary-button" data-go="start" type="button">NÃO É ESTA • VOLTAR AO ARQUIVO</button>
+        </aside>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="detected">
+      <div class="screen-heading">
+        <button class="back-link" data-go="sheet" type="button">←</button>
+        <div>
+          <p class="kicker">CASA IDENTIFICADA</p>
+          <h1>É este o retângulo que você vai locar?</h1>
+          <p>O amarelo envolve somente a construção. O formato do lote ficou fora da conta.</p>
+        </div>
+      </div>
+
+      <div class="detection-layout">
+        <div class="phase-warning"><strong>ETAPA SEGUINTE DO PROTÓTIPO</strong><span>A prancha abaixo ainda usa o retângulo demonstrativo. Nesta rodada, a identificação real é somente da página de locação.</span></div>
+        <figure class="plan-card">
+          <div class="plan-toolbar"><span>PRANCHA • <b id="detected-project">OBRA</b></span><strong>LOCAÇÃO</strong></div>
+          <div class="plan-stage">
+            <img src="assets/locacao-demo.svg" alt="Esquema neutro com o retângulo externo da casa destacado">
+            <div class="detected-box" aria-hidden="true">
+              <span class="corner corner-b">B</span>
+              <span class="corner corner-c">C</span>
+              <span class="corner corner-a">A</span>
+              <span class="corner corner-d">D</span>
+            </div>
+          </div>
+          <figcaption><span>▣</span> Retângulo externo da casa • eixos 2–9 / B–F</figcaption>
+        </figure>
+
+        <aside class="confirm-card">
+          <div class="found-stamp"><span>✓</span><div><small>LEITURA ENCONTRADA</small><strong id="detected-house">CASA DA OBRA</strong></div></div>
+          <div class="metric-grid">
+            <div><small>HORIZONTAL</small><strong>11,12 <em>m</em></strong><span>EIXO 2 → 9</span></div>
+            <div><small>VERTICAL</small><strong>7,16 <em>m</em></strong><span>EIXO B → F</span></div>
+          </div>
+          <div class="diagonal-result">
+            <small>AS DUAS DIAGONAIS DEVEM MEDIR</small>
+            <strong>13,23 <em>m</em></strong>
+          </div>
+          <button id="confirm-rectangle" class="primary-button" type="button">SIM, É ESTE RETÂNGULO <span>→</span></button>
+          <button id="adjust-points" class="secondary-button" type="button">NÃO • AJUSTAR OS 4 PONTOS</button>
+          <p id="adjust-note" class="adjust-note" hidden>Modo de ajuste demonstrativo: arraste A, B, C e D até os quatro extremos da casa.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="qr">
+      <div class="screen-heading">
+        <button class="back-link" data-go="detected" type="button">←</button>
+        <div>
+          <p class="kicker">FICHA DE CAMPO</p>
+          <h1>O QR já leva tudo para a obra</h1>
+          <p>Não é necessário criar outra prancha. Você pode imprimir este carimbo ou salvá-lo junto da obra.</p>
+        </div>
+      </div>
+
+      <div class="qr-layout">
+        <article class="field-ticket">
+          <div class="ticket-qr">
+            <span>LER NA OBRA</span>
+            <img src="assets/qr-demo.svg" alt="QR demonstrativo sem dados reais de cliente">
+            <small>FUNCIONA SEM INTERNET</small>
+          </div>
+          <div class="ticket-data">
+            <p>EDR ESQUADRO • <span id="ticket-project">OBRA</span></p>
+            <span id="ticket-revision" class="revision-tag">PRANCHA 03 • REVISÃO 00</span>
+            <small>RETÂNGULO DA CASA</small>
+            <h2>11,12 × 7,16 m</h2>
+            <small>DIAGONAL CORRETA</small>
+            <h3>13,23 m</h3>
+            <div class="mini-rectangle" aria-label="Retângulo com os pontos A, B, C e D">
+              <span class="mini-b">B</span><span class="mini-c">C</span>
+              <span class="mini-a">A</span><span class="mini-d">D</span>
+              <i></i><b></b>
+            </div>
+          </div>
+        </article>
+
+        <aside class="qr-actions">
+          <div class="offline-callout"><span>●</span><div><strong>SEM BANCO. SEM INTERNET.</strong><p>As medidas ficam gravadas dentro do próprio QR.</p></div></div>
+          <button id="simulate-scan" class="primary-button" type="button">SIMULAR LEITURA NA OBRA <span>⌗</span></button>
+          <button class="secondary-button" type="button" id="print-ticket">VER COMO FICARIA IMPRESSO</button>
+          <p>Na versão final, a câmera do celular fará esta leitura.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="scanning" aria-live="polite">
+      <div class="scanner-shell">
+        <div class="scanner-head"><span>‹</span><strong>LER QR DA OBRA</strong><i>● OFFLINE</i></div>
+        <div class="camera-view">
+          <img src="assets/qr-demo.svg" alt="QR demonstrativo sendo lido">
+          <div class="scanner-corners"></div>
+          <div class="scanner-line"></div>
+        </div>
+        <p>APONTANDO PARA O CARIMBO…</p>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="field">
+      <button id="field-back-button" class="field-context-back" type="button"><span>←</span><b>VOLTAR PARA O QR</b></button>
+      <div class="field-success">
+        <span class="success-icon">✓</span>
+        <div><small id="field-qr-meta">QR LIDO • PRANCHA 03 • REVISÃO 00</small><h1>Locação pronta: <span id="field-project">obra</span></h1></div>
+      </div>
+
+      <div class="field-project-data" aria-label="Medidas carregadas pelo QR">
+        <div><small>COMPRIMENTO</small><strong>11,12 m</strong></div>
+        <div><small>LARGURA</small><strong>7,16 m</strong></div>
+        <div><small>DIAGONAL IDEAL</small><strong>13,23 m</strong></div>
+        <div><small>LIMITE PARA LIBERAR</small><strong>0,5 cm</strong></div>
+      </div>
+
+      <div id="field-workspace" class="field-workspace" aria-live="polite"></div>
+
+      <button class="new-demo" data-go="start" type="button">COMEÇAR OUTRA DEMONSTRAÇÃO</button>
+    </section>
+  </main>
+
+  <footer><span>BETA DE CAMPO • USO CONTROLADO</span><b>QR LAB v0.2</b></footer>
+  <script src="geometry.js?v=2"></script>
+  <script type="module" src="app.js?v=2"></script>
+</body>
+</html>

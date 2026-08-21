@@ -1,0 +1,36 @@
+{
+  "id": "./",
+  "name": "EDR Esquadro QR",
+  "short_name": "Esquadro QR",
+  "description": "Beta de campo para preparar a locação, levar as medidas pelo QR e orientar o fechamento do esquadro.",
+  "start_url": "./",
+  "scope": "./",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f3efe5",
+  "theme_color": "#10261f",
+  "categories": ["productivity", "utilities"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -77,3 +77,13 @@ git push origin main  →  webhook dispara  →  Hostinger faz pull  →  site a
 - **Indexação:** bloqueada por `robots.txt` e pela meta `noindex`
 
 Antes de publicar, validar localmente o fluxo 8 × 4 m e confirmar que a página reabre com a rede desativada. A primeira publicação continua seguindo o fluxo normal deste repositório; nenhum arquivo da pasta `esquadro/` deve ser enviado isoladamente para `public_html`.
+
+## Beta EDR Esquadro QR
+
+- **Pasta publicada:** `esquadro-qr/`
+- **URL:** `https://edreng.com.br/esquadro-qr/`
+- **Estado:** beta para uso controlado; não substitui a versão estável em `esquadro/`
+- **Limite atual:** a leitura do QR pela câmera ainda é simulada
+- **Privacidade:** o PDF escolhido é lido no próprio aparelho; não é enviado nem armazenado no site
+- **Offline:** interface, cálculo, PDF.js e imagens neutras de campo ficam no cache
+- **Indexação:** bloqueada por `robots.txt` e pela meta `noindex`

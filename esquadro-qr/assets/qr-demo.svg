@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title description">
+  <title id="title">QR demonstrativo</title>
+  <desc id="description">Imagem visual de demonstração, sem dados reais de obra ou cliente.</desc>
+  <rect width="320" height="320" rx="18" fill="#fffdf5"/>
+  <g fill="#10261f">
+    <path d="M28 28h86v86H28zm18 18v50h50V46zM206 28h86v86h-86zm18 18v50h50V46zM28 206h86v86H28zm18 18v50h50v-50z"/>
+    <path d="M142 30h28v28h-28zM174 62h28v28h-28zM126 94h28v28h-28zM158 126h28v28h-28zM206 142h28v28h-28zM238 126h28v28h-28zM270 158h22v28h-22zM126 174h28v28h-28zM158 206h28v28h-28zM190 174h28v28h-28zM222 206h28v28h-28zM254 238h38v22h-38zM126 254h28v38h-28zM174 254h28v28h-28zM206 270h28v22h-28z"/>
+  </g>
+  <rect x="103" y="142" width="114" height="42" rx="8" fill="#f5c32f"/>
+  <text x="160" y="170" text-anchor="middle" fill="#10261f" font-family="Arial, sans-serif" font-size="17" font-weight="900">QR BETA</text>
+</svg>

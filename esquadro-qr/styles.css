@@ -1,0 +1,372 @@
+:root {
+  --ink: #13221d;
+  --ink-soft: #4c5a54;
+  --forest: #0b2b22;
+  --forest-2: #173d31;
+  --paper: #f3efe5;
+  --paper-deep: #e8e1d2;
+  --white: #fffdf6;
+  --line: #c8bfac;
+  --signal: #f5c32f;
+  --signal-dark: #876000;
+  --green: #38c96b;
+  --red: #ef604f;
+  --shadow: 0 20px 55px rgba(11, 43, 34, .14);
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { background: var(--forest); }
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(rgba(35, 58, 49, .065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35, 58, 49, .065) 1px, transparent 1px),
+    var(--paper);
+  background-size: 32px 32px;
+  font-family: Aptos, Calibri, sans-serif;
+}
+
+button, input { font: inherit; }
+button { cursor: pointer; }
+.skip-link { position: fixed; left: 10px; top: -80px; z-index: 20; padding: 10px 14px; color: white; background: var(--forest); }
+.skip-link:focus { top: 10px; }
+
+.app-header {
+  display: flex;
+  align-items: center;
+  min-height: 92px;
+  padding: 16px max(20px, calc((100vw - 1120px) / 2));
+  color: var(--white);
+  background: linear-gradient(110deg, var(--forest) 0 64%, #33451e 100%);
+  border-bottom: 4px solid var(--signal);
+}
+.brand-mark { display: grid; flex: 0 0 48px; place-items: center; width: 48px; height: 48px; margin-right: 14px; color: var(--forest); background: var(--signal); border-radius: 8px 15px 8px 8px; font: 700 30px Georgia, serif; }
+.brand-copy { display: grid; line-height: 1; }
+.brand-copy span { margin-bottom: 5px; color: #d5e3dc; font: 800 9px Consolas, monospace; letter-spacing: 1.4px; }
+.brand-copy strong { font: 900 31px "Bahnschrift Condensed", "Arial Narrow", sans-serif; letter-spacing: -.5px; }
+.local-badge { margin-left: auto; padding: 8px 11px; color: #d9e4de; border: 1px solid rgba(255,255,255,.35); border-radius: 99px; font: 800 9px Consolas, monospace; letter-spacing: .7px; }
+.local-badge i { display: inline-block; width: 6px; height: 6px; margin-right: 5px; background: var(--green); border-radius: 50%; }
+
+.stepper { display: flex; align-items: center; justify-content: center; min-height: 72px; padding: 12px; }
+.step { display: flex; align-items: center; gap: 8px; color: #8c897e; font: 800 13px "Bahnschrift Condensed", sans-serif; }
+.step b { display: grid; place-items: center; width: 30px; height: 30px; color: #6d6a60; border: 1px solid #aaa392; border-radius: 50%; font: 800 10px Consolas, monospace; }
+.step.is-active { color: var(--forest); }
+.step.is-active b { color: var(--forest); background: var(--signal); border-color: var(--signal); }
+.step.is-done { color: var(--forest-2); }
+.step.is-done b { color: white; background: var(--forest-2); border-color: var(--forest-2); }
+.step-line { width: clamp(24px, 7vw, 78px); height: 1px; margin: 0 10px; background: #b4ad9e; }
+
+main { width: min(1120px, calc(100% - 32px)); min-height: calc(100vh - 222px); margin: 0 auto 48px; }
+.screen { display: none; }
+.screen.is-active { display: block; animation: enter .42s ease both; }
+@keyframes enter { from { opacity: 0; transform: translateY(12px); } }
+
+.intro-grid { display: grid; grid-template-columns: 1fr 440px; gap: clamp(30px, 7vw, 88px); align-items: center; min-height: 480px; }
+.kicker { margin: 0 0 9px; color: var(--signal-dark); font: 900 10px Consolas, monospace; letter-spacing: 1.5px; }
+.intro-copy h1, .screen-heading h1, .analyzing-card h1 { margin: 0; font: 500 clamp(42px, 7vw, 76px)/.98 Georgia, serif; letter-spacing: -2.5px; }
+.intro-copy h1 em { color: var(--forest); text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 7px; text-underline-offset: 5px; }
+.intro-copy > p:last-child { max-width: 500px; color: var(--ink-soft); font-size: 17px; line-height: 1.55; }
+
+.choice-card { position: relative; padding: 32px; overflow: hidden; background: var(--white); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); }
+.choice-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: var(--signal); }
+.choice-number { position: absolute; right: 22px; top: 18px; color: #d7d0c0; font: 900 52px "Bahnschrift Condensed", sans-serif; }
+.choice-card small, .ticket-data > small, .diagonal-result small, .found-stamp small { color: var(--signal-dark); font: 900 9px Consolas, monospace; letter-spacing: 1.1px; }
+.choice-card h2 { max-width: 290px; margin: 7px 0 8px; font: 900 31px "Bahnschrift Condensed", sans-serif; text-transform: uppercase; }
+.choice-card p { margin: 0 0 24px; color: var(--ink-soft); font-size: 14px; line-height: 1.45; }
+.choice-card .upload-error { min-height: 18px; margin: 12px 0 0; color: #a02e25; font-weight: 800; }
+.upload-button, .primary-button, .secondary-button, .example-button { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 58px; padding: 0 18px; border: 0; border-radius: 7px; font: 900 16px "Bahnschrift Condensed", sans-serif; letter-spacing: .5px; }
+.upload-button { color: white; background: var(--forest); box-shadow: 0 6px 0 #061711; cursor: pointer; }
+.upload-button input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.example-button { justify-content: space-between; margin-top: 14px; color: var(--forest); background: transparent; border: 1px solid var(--forest); }
+.flow-strip { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 18px; align-items: center; padding: 20px 28px; color: white; background: var(--forest); border-radius: 12px; }
+.flow-strip div { display: flex; align-items: center; gap: 12px; }
+.flow-strip b { display: grid; place-items: center; width: 28px; height: 28px; color: var(--forest); background: var(--signal); border-radius: 50%; font: 800 10px Consolas, monospace; }
+.flow-strip span { font: 900 13px "Bahnschrift Condensed", sans-serif; }
+.flow-strip i { color: var(--signal); font-style: normal; }
+
+.analyzing-card { display: grid; justify-items: center; min-height: 560px; padding-top: 60px; text-align: center; }
+.analyzing-card h1 { font-size: clamp(34px, 6vw, 58px); }
+.analyzing-card > p:not(.kicker) { color: var(--ink-soft); }
+.analyzing-card small { color: var(--ink-soft); }
+.scan-document { position: relative; width: 170px; height: 210px; margin-bottom: 30px; overflow: hidden; background: var(--white); border: 2px solid var(--forest); border-radius: 9px; box-shadow: var(--shadow); }
+.paper-lines { position: absolute; inset: 22px; background: repeating-linear-gradient(0deg, transparent 0 20px, #d1cab9 21px 22px); }
+.paper-lines::after { content: ""; position: absolute; left: 18px; top: 42px; width: 88px; height: 72px; border: 5px solid var(--signal); }
+.scan-beam { position: absolute; left: 0; right: 0; height: 4px; background: var(--green); box-shadow: 0 0 18px var(--green); animation: scan 1.15s ease-in-out infinite alternate; }
+@keyframes scan { from { top: 14px; } to { top: 192px; } }
+.analysis-progress { width: min(430px, 80vw); height: 8px; margin: 20px 0; overflow: hidden; background: #d8d1c1; border-radius: 99px; }
+.analysis-progress span { display: block; width: 100%; height: 100%; background: var(--signal); transform-origin: left; animation: progress 1.45s ease both; }
+@keyframes progress { from { transform: scaleX(0); } }
+
+.screen-heading { display: flex; gap: 18px; align-items: flex-start; margin: 15px 0 24px; }
+.screen-heading h1 { max-width: 820px; font-size: clamp(34px, 6vw, 58px); }
+.screen-heading > div > p:last-child { max-width: 700px; margin: 10px 0 0; color: var(--ink-soft); line-height: 1.45; }
+.back-link { display: grid; flex: 0 0 46px; place-items: center; width: 46px; height: 46px; color: white; background: var(--forest); border: 0; border-radius: 8px; font-size: 23px; }
+.sheet-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(340px, .65fr); gap: 18px; align-items: start; }
+.sheet-preview, .sheet-confirm-card { margin: 0; overflow: hidden; background: var(--white); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+.pdf-bar { display: flex; justify-content: space-between; padding: 13px 16px; color: #d7e2dd; background: var(--forest); font: 800 9px Consolas, monospace; letter-spacing: .8px; }
+.pdf-bar strong { color: var(--signal); }
+.sheet-image { position: relative; aspect-ratio: 2105/1489; overflow: hidden; background: #dde1df; }
+.sheet-image canvas { display: block; width: 100%; height: 100%; object-fit: contain; background: #fff; }
+.sheet-selected { position: absolute; left: 18px; top: 18px; display: flex; align-items: center; gap: 9px; padding: 8px 12px 8px 8px; color: white; background: rgba(11,43,34,.94); border-radius: 99px; font: 900 9px Consolas, monospace; letter-spacing: .7px; }
+.sheet-selected span { display: grid; place-items: center; width: 23px; height: 23px; color: var(--forest); background: #9ef0b6; border-radius: 50%; font-size: 14px; }
+.sheet-preview figcaption { padding: 12px 16px; color: var(--ink-soft); background: var(--paper-deep); font-size: 11px; }
+.sheet-confirm-card { padding: 20px; }
+.analysis-count { display: flex; align-items: center; gap: 12px; padding-bottom: 17px; border-bottom: 1px solid var(--line); }
+.analysis-count > span { display: grid; place-items: center; width: 43px; height: 43px; color: #17653a; background: #a4f1ba; border-radius: 50%; font-size: 24px; }
+.analysis-count > div { display: grid; gap: 4px; }
+.analysis-count small { color: #207640; font: 900 9px Consolas, monospace; letter-spacing: 1px; }
+.analysis-count strong { font: 900 21px "Bahnschrift Condensed", sans-serif; }
+.page-list { display: grid; gap: 7px; margin: 16px 0; padding: 0; list-style: none; }
+.page-list li { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; min-height: 42px; padding: 7px 10px; color: #77756d; background: var(--paper); border: 1px solid transparent; border-radius: 7px; }
+.page-list li b { font: 900 12px Consolas, monospace; }
+.page-list li span { font: 900 14px "Bahnschrift Condensed", sans-serif; }
+.page-list li em { font: 800 7px Consolas, monospace; font-style: normal; letter-spacing: .5px; }
+.page-list li.is-selected { color: var(--forest); background: #fff3c7; border-color: var(--signal); box-shadow: inset 5px 0 0 var(--signal); }
+.page-list li.is-selected b { display: grid; place-items: center; width: 28px; height: 28px; color: var(--forest); background: var(--signal); border-radius: 50%; }
+.page-list li.is-selected em { color: #6f5000; }
+.document-identity { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; overflow: hidden; background: var(--line); border: 1px solid var(--line); border-radius: 8px; }
+.document-identity div { display: grid; gap: 5px; padding: 12px; background: var(--white); }
+.document-identity small { color: var(--ink-soft); font-size: 8px; font-weight: 800; }
+.document-identity strong { font: 900 14px "Bahnschrift Condensed", sans-serif; }
+.revision-warning { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px; padding: 11px; color: #654a00; background: #fff1be; border-radius: 7px; }
+.revision-warning span { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 25px; color: var(--forest); background: var(--signal); border-radius: 50%; font-weight: 900; }
+.revision-warning p { margin: 0; font-size: 11px; line-height: 1.4; }
+.revision-warning.is-danger { color: #70251e; background: #ffe0dc; border-left: 4px solid #c64135; }
+.identity-confirm { display: flex; gap: 11px; align-items: flex-start; margin-top: 12px; padding: 13px; border: 2px solid #b19d65; border-radius: 7px; font-size: 12px; font-weight: 800; line-height: 1.35; cursor: pointer; }
+.identity-confirm input { flex: 0 0 auto; width: 23px; height: 23px; margin: 0; accent-color: var(--signal); }
+.detection-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(320px, .7fr); gap: 18px; align-items: start; }
+.phase-warning { grid-column: 1 / -1; display: flex; gap: 9px 18px; align-items: baseline; padding: 12px 15px; color: #654a00; background: #fff1be; border: 1px solid #e4bd45; border-radius: 8px; }
+.phase-warning strong { flex: 0 0 auto; font: 900 11px Consolas, monospace; letter-spacing: .7px; }
+.phase-warning span { font-size: 12px; line-height: 1.4; }
+.plan-card, .confirm-card, .field-ticket, .qr-actions, .field-diagram-card, .measure-ready { margin: 0; background: var(--white); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+.plan-card { overflow: hidden; }
+.plan-toolbar, .field-card-head { display: flex; justify-content: space-between; padding: 13px 16px; color: #d7e2dd; background: var(--forest); font: 800 9px Consolas, monospace; letter-spacing: 1px; }
+.plan-toolbar strong, .field-card-head strong { color: var(--signal); }
+.plan-stage { position: relative; aspect-ratio: 1317/789; overflow: hidden; background: white; }
+.plan-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.detected-box { position: absolute; left: 21.6%; top: 37.2%; width: 42.6%; height: 45.7%; border: 4px solid var(--signal); box-shadow: 0 0 0 999px rgba(8,35,27,.1), 0 0 22px rgba(245,195,47,.8); animation: found 1s ease both; }
+@keyframes found { from { opacity: 0; transform: scale(.93); } }
+.corner { position: absolute; display: grid; place-items: center; width: 30px; height: 30px; color: var(--forest); background: var(--signal); border: 3px solid var(--forest); border-radius: 50%; font: 900 16px "Bahnschrift Condensed", sans-serif; }
+.corner-a { left: 0; top: 0; transform: translate(-50%,-50%); }
+.corner-b { right: 0; top: 0; transform: translate(50%,-50%); }
+.corner-c { left: 0; bottom: 0; transform: translate(-50%,50%); }
+.corner-d { right: 0; bottom: 0; transform: translate(50%,50%); }
+.plan-card figcaption { padding: 13px 16px; color: var(--ink-soft); background: var(--paper-deep); font-size: 12px; }
+.plan-card figcaption span { color: var(--signal-dark); }
+.confirm-card { padding: 20px; }
+.found-stamp { display: flex; align-items: center; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.found-stamp > span { display: grid; place-items: center; width: 42px; height: 42px; color: var(--forest); background: #9ef0b6; border-radius: 50%; font-size: 25px; }
+.found-stamp div { display: grid; gap: 4px; }
+.found-stamp strong { font: 900 23px "Bahnschrift Condensed", sans-serif; }
+.metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 18px 0; overflow: hidden; background: var(--line); border: 1px solid var(--line); border-radius: 9px; }
+.metric-grid > div { display: grid; gap: 5px; padding: 14px; background: var(--paper); }
+.metric-grid small { color: var(--ink-soft); font-size: 9px; font-weight: 800; }
+.metric-grid strong { font: 900 24px Consolas, monospace; }
+.metric-grid em, .diagonal-result em { font-size: .55em; font-style: normal; }
+.metric-grid span { color: var(--signal-dark); font: 800 9px Consolas, monospace; }
+.diagonal-result { padding: 18px; color: white; background: var(--forest); border-radius: 10px; }
+.diagonal-result small { display: block; color: #c8d8d1; }
+.diagonal-result strong { display: block; margin-top: 5px; color: var(--signal); font: 900 38px Consolas, monospace; }
+.primary-button { margin-top: 16px; color: #172018; background: var(--signal); box-shadow: 0 6px 0 #876000; }
+.primary-button:disabled { color: #777166; background: #d4cdbb; box-shadow: 0 6px 0 #9d9789; cursor: not-allowed; opacity: .82; }
+.secondary-button { justify-content: center; margin-top: 14px; color: var(--forest); background: transparent; border: 2px solid var(--forest); }
+.adjust-note { padding: 12px; color: #654a00; background: #fff1be; border-radius: 6px; font-size: 12px; }
+.plan-stage.is-adjusting .corner { cursor: move; animation: pulse .8s ease infinite alternate; }
+@keyframes pulse { to { transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.15); box-shadow: 0 0 0 7px rgba(245,195,47,.35); } }
+
+.qr-layout { display: grid; grid-template-columns: 1.45fr .65fr; gap: 18px; align-items: stretch; }
+.field-ticket { display: grid; grid-template-columns: 280px 1fr; overflow: hidden; }
+.ticket-qr { display: grid; justify-items: center; align-content: center; padding: 26px; color: white; background: var(--forest); }
+.ticket-qr > span { margin-bottom: 16px; color: var(--signal); font: 900 23px "Bahnschrift Condensed", sans-serif; }
+.ticket-qr img { width: 210px; max-width: 100%; padding: 10px; background: white; }
+.ticket-qr small { margin-top: 14px; font-size: 11px; }
+.ticket-data { position: relative; padding: 34px; }
+.ticket-data > p { margin: 0 0 26px; font: 900 30px "Bahnschrift Condensed", sans-serif; }
+.revision-tag { display: inline-block; margin: -14px 0 22px; padding: 6px 8px; color: #d7e2dd; background: var(--forest); border-radius: 4px; font: 800 8px Consolas, monospace; letter-spacing: .7px; }
+.ticket-data h2 { margin: 7px 0 25px; font: 900 38px Consolas, monospace; }
+.ticket-data h3 { margin: 7px 0 0; color: var(--forest); font: 900 47px Consolas, monospace; }
+.mini-rectangle { position: absolute; right: 34px; bottom: 34px; width: 150px; height: 90px; border: 4px solid var(--signal); }
+.mini-rectangle span { position: absolute; display: grid; place-items: center; width: 24px; height: 24px; color: white; background: var(--forest); border-radius: 50%; font: 900 13px "Bahnschrift Condensed", sans-serif; }
+.mini-a { left: -14px; top: -14px; }.mini-b { right: -14px; top: -14px; }.mini-c { left: -14px; bottom: -14px; }.mini-d { right: -14px; bottom: -14px; }
+.mini-rectangle i, .mini-rectangle b { position: absolute; left: 50%; top: 50%; width: 170px; height: 3px; transform-origin: center; }
+.mini-rectangle i { background: var(--green); transform: translate(-50%,-50%) rotate(31deg); }
+.mini-rectangle b { background: var(--red); transform: translate(-50%,-50%) rotate(-31deg); }
+.qr-actions { display: flex; flex-direction: column; justify-content: center; padding: 22px; }
+.qr-actions > p { margin: 18px 5px 0; color: var(--ink-soft); font-size: 12px; line-height: 1.4; }
+.offline-callout { display: flex; gap: 12px; padding: 14px; color: #175526; background: #e0f4e5; border: 1px solid #9dccaa; border-radius: 9px; }
+.offline-callout > span { color: var(--green); }
+.offline-callout p { margin: 3px 0 0; color: var(--ink-soft); font-size: 12px; }
+
+.scanner-shell { width: min(430px, 100%); min-height: 630px; margin: 0 auto; overflow: hidden; color: white; background: #101512; border: 7px solid #111; border-radius: 28px; box-shadow: 0 25px 80px rgba(0,0,0,.35); }
+.scanner-head { display: flex; align-items: center; justify-content: space-between; padding: 20px; background: var(--forest); }
+.scanner-head i { color: #a4f1ba; font: 800 9px Consolas, monospace; font-style: normal; }
+.camera-view { position: relative; display: grid; place-items: center; width: calc(100% - 34px); aspect-ratio: 1; margin: 42px auto 25px; overflow: hidden; background: radial-gradient(circle, #53605a, #1f2824); border-radius: 16px; }
+.camera-view::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,.03) 0 2px, transparent 2px 6px); }
+.camera-view img { width: 64%; padding: 10px; background: white; transform: rotate(-3deg); }
+.scanner-corners { position: absolute; inset: 12%; border: 4px solid var(--signal); border-radius: 14px; }
+.scanner-line { position: absolute; left: 12%; right: 12%; height: 3px; background: var(--green); box-shadow: 0 0 16px var(--green); animation: camera-scan 1.1s ease-in-out infinite alternate; }
+@keyframes camera-scan { from { top: 17%; } to { top: 82%; } }
+.scanner-shell > p { text-align: center; color: var(--signal); font: 900 12px Consolas, monospace; letter-spacing: 1px; }
+
+.field-success { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; padding: 22px; color: white; background: #17653a; border-radius: 16px 16px 4px 4px; box-shadow: var(--shadow); }
+.field-context-back { display: inline-flex; align-items: center; gap: 10px; min-height: 45px; margin: 0 0 12px; padding: 0 15px 0 7px; color: var(--forest); background: rgba(255,253,246,.85); border: 2px solid var(--forest); border-radius: 8px; font: 900 12px "Bahnschrift Condensed", sans-serif; letter-spacing: .6px; }
+.field-context-back span { display: grid; place-items: center; width: 29px; height: 29px; color: white; background: var(--forest); border-radius: 5px; font: 900 20px/1 Consolas, monospace; }
+.field-context-back:focus-visible { outline: 4px solid rgba(245,195,47,.55); outline-offset: 2px; }
+.success-icon { display: grid; flex: 0 0 58px; place-items: center; width: 58px; height: 58px; color: #17653a; background: #a4f1ba; border-radius: 50%; font-size: 34px; }
+.field-success small { color: #bfe7ca; font: 900 9px Consolas, monospace; letter-spacing: 1.2px; }
+.field-success h1 { margin: 2px 0 0; font: 500 clamp(30px, 6vw, 48px) Georgia, serif; }
+.field-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 18px; }
+.field-diagram-card { overflow: hidden; }
+.field-diagram-card svg { display: block; width: min(100%, 420px); margin: 0 auto; }
+.rect-line { stroke: var(--ink); stroke-width: 5; }
+.diag-red { stroke: var(--red); stroke-width: 4; opacity: .65; }
+.diag-green { stroke: var(--green); stroke-width: 4; opacity: .65; }
+.svg-point circle { fill: var(--forest); stroke: var(--signal); stroke-width: 4; }
+.svg-point text { fill: white; font: 900 20px "Bahnschrift Condensed", sans-serif; text-anchor: middle; }
+.svg-length, .svg-width { fill: var(--signal-dark); font: 900 11px Consolas, monospace; text-anchor: middle; }
+.ideal-strip { display: flex; justify-content: space-between; padding: 15px 18px; color: white; background: var(--forest); }
+.ideal-strip span { font: 800 9px Consolas, monospace; letter-spacing: 1px; }
+.ideal-strip strong { color: var(--signal); font: 900 18px Consolas, monospace; }
+.measure-ready { padding: 26px; }
+.measure-ready h2 { margin: 7px 0; font: 900 35px "Bahnschrift Condensed", sans-serif; text-transform: uppercase; }
+.measure-ready > p:not(.kicker) { color: var(--ink-soft); line-height: 1.5; }
+.x-fields { display: grid; gap: 12px; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); }
+.x-fields label > span { display: block; margin-bottom: 6px; color: var(--ink-soft); font-size: 10px; font-weight: 800; }
+.x-fields label > div { display: flex; border: 2px solid #9f9888; border-radius: 8px; background: white; }
+.x-fields input { min-width: 0; width: 100%; padding: 14px; background: transparent; border: 0; outline: 0; font: 900 21px Consolas, monospace; }
+.x-fields b { align-self: center; padding-right: 13px; color: var(--ink-soft); }
+.new-demo { width: 100%; min-height: 54px; margin-top: 18px; color: var(--forest); background: transparent; border: 2px solid var(--forest); border-radius: 8px; font: 900 15px "Bahnschrift Condensed", sans-serif; }
+
+.field-project-data { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-bottom: 18px; overflow: hidden; background: var(--line); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgba(16,38,31,.08); }
+.field-project-data > div { display: grid; gap: 4px; padding: 13px 15px; background: var(--white); }
+.field-project-data small { color: var(--ink-soft); font: 800 8px Consolas, monospace; letter-spacing: .7px; }
+.field-project-data strong { font: 900 17px Consolas, monospace; }
+.field-workspace { min-height: 500px; }
+.field-measure-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 18px; align-items: start; }
+.field-reference-card, .field-entry-card, .side-check-card { overflow: hidden; background: var(--white); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.field-card-head { display: flex; justify-content: space-between; gap: 12px; padding: 12px 15px; color: #d7e5de; background: var(--forest); font: 800 9px Consolas, monospace; letter-spacing: .8px; }
+.field-card-head strong { color: var(--signal); }
+.field-reference-svg { display: block; width: min(100%, 430px); margin: 0 auto; padding: 8px 12px 0; background: linear-gradient(180deg, #fffdf6, #f7f1e2); }
+.field-reference-svg line { vector-effect: non-scaling-stroke; }
+.reference-fixed { stroke: var(--signal-dark); stroke-width: 8; stroke-dasharray: 8 7; }
+.reference-edge { stroke: #9da49f; stroke-width: 5; }
+.reference-move { stroke: var(--forest); stroke-width: 8; }
+.reference-red, .reference-green { stroke-width: 5; opacity: .55; }
+.reference-red { stroke: var(--red); }.reference-green { stroke: #219956; }
+.reference-point circle { fill: var(--forest); stroke: var(--white); stroke-width: 4; }
+.reference-point.fixed circle { fill: var(--signal); stroke: var(--forest); }
+.reference-point text { fill: white; font: 900 21px "Bahnschrift Condensed", sans-serif; text-anchor: middle; }
+.reference-point.fixed text { fill: var(--forest); }
+.reference-horizontal, .reference-vertical { fill: var(--signal-dark); font: 900 11px Consolas, monospace; text-anchor: middle; }
+.reference-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; color: white; background: #355046; }
+.reference-legend span { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 12px; background: var(--forest); font: 800 9px Consolas, monospace; }
+.reference-legend i { width: 22px; height: 4px; border-radius: 5px; }.reference-legend i.red { background: var(--red); }.reference-legend i.green { background: #219956; }
+.field-entry-card { padding: 26px; }
+.field-entry-card h2 { margin: 5px 0 7px; font: 500 clamp(31px, 5vw, 44px) Georgia, serif; line-height: 1.05; }
+.field-entry-card > p:not(.kicker) { margin: 0 0 18px; color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
+.diagonal-entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.diagonal-entry { padding: 12px; background: #f5f1e8; border: 1px solid var(--line); border-left: 6px solid; border-radius: 9px; }
+.diagonal-entry.is-red { border-left-color: var(--red); }.diagonal-entry.is-green { border-left-color: #219956; }
+.diagonal-entry > span { display: block; color: var(--ink-soft); font: 900 8px Consolas, monospace; letter-spacing: .7px; }
+.diagonal-entry > strong { display: block; margin: 2px 0 7px; font: 900 25px "Bahnschrift Condensed", sans-serif; }
+.diagonal-entry > div { display: grid; grid-template-columns: 1fr auto; align-items: center; overflow: hidden; background: white; border: 2px solid #958f80; border-radius: 7px; }
+.diagonal-entry:focus-within > div { border-color: var(--forest); box-shadow: 0 0 0 3px rgba(245,195,47,.35); }
+.diagonal-entry input { min-width: 0; width: 100%; padding: 12px 8px; background: transparent; border: 0; outline: 0; font: 900 24px Consolas, monospace; text-align: right; }
+.diagonal-entry b { padding-right: 9px; color: var(--ink-soft); font-size: 10px; }
+.field-calculate-button { margin-top: 14px; }
+.field-example-button { width: 100%; margin-top: 16px; padding: 8px; color: var(--forest); background: transparent; border: 0; border-bottom: 1px solid var(--forest); font: 800 10px Consolas, monospace; letter-spacing: .5px; }
+.field-helper { display: grid; grid-template-columns: 25px 1fr; gap: 7px 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+.field-helper span { display: grid; place-items: center; width: 23px; height: 23px; color: var(--forest); background: var(--signal); border-radius: 50%; font: 900 10px Consolas, monospace; }
+.field-helper p { align-self: center; margin: 0; color: var(--ink-soft); font-size: 11px; }
+.field-inline-error { margin: 10px 0 0; padding: 10px; color: #6b201b; background: #ffe8e3; border-left: 4px solid #c64135; font-size: 12px; }
+.field-result-banner { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; padding: 20px; color: white; background: var(--forest); border-radius: 14px 14px 3px 3px; box-shadow: var(--shadow); }
+.field-result-banner > span { display: grid; flex: 0 0 54px; place-items: center; width: 54px; height: 54px; color: var(--forest); background: var(--signal); border-radius: 50%; font-size: 29px; font-weight: 900; }
+.field-result-banner small { color: #cfdbd6; font: 800 9px Consolas, monospace; letter-spacing: 1px; }
+.field-result-banner h2 { margin: 2px 0 0; font: 500 clamp(27px, 6vw, 41px) Georgia, serif; }
+.field-result-banner.is-stop { background: #7c2b23; }.field-result-banner.is-stop > span { color: #7c2b23; background: #ffd4cd; }
+.field-result-banner.is-aligned, .field-result-banner.is-confirmed { background: #176033; }.field-result-banner.is-aligned > span, .field-result-banner.is-confirmed > span { color: #176033; background: #a5efb4; }
+.movement-guide { overflow: hidden; background: var(--white); border: 2px solid var(--forest); border-radius: 14px; box-shadow: 0 14px 38px rgba(16,38,31,.14); }
+.movement-head { display: flex; justify-content: space-between; gap: 12px; padding: 11px 14px; color: #d9e5df; background: var(--forest); font: 800 10px Consolas, monospace; letter-spacing: 1px; }.movement-head strong { color: var(--signal); }
+.movement-diagram-wrap { padding: 8px 16px 0; background: linear-gradient(180deg, #fffdf6, #f7f1e2); }
+.movement-diagram { display: block; width: min(100%, 480px); margin: 0 auto; }.movement-diagram line { vector-effect: non-scaling-stroke; }
+.movement-fixed { stroke: var(--signal-dark); stroke-width: 8; stroke-dasharray: 8 7; }.movement-edge { stroke: #9ba19d; stroke-width: 5; }.movement-red, .movement-green { stroke-width: 4; opacity: .42; }.movement-red { stroke: var(--red); }.movement-green { stroke: #219956; }.movement-current { stroke: var(--forest); stroke-width: 9; }.movement-target { stroke: var(--signal); stroke-width: 7; stroke-dasharray: 5 5; }.movement-arrow { stroke: var(--signal-dark); stroke-width: 6; }.movement-value, #field-move-arrow path { fill: var(--signal-dark); }.movement-value { font: 900 18px "Bahnschrift Condensed", sans-serif; }.movement-point circle { fill: var(--forest); stroke: var(--white); stroke-width: 4; }.movement-point.fixed circle { fill: var(--signal); stroke: var(--forest); }.movement-point text { fill: white; font: 900 20px "Bahnschrift Condensed", sans-serif; text-anchor: middle; }.movement-point.fixed text { fill: var(--forest); }.movement-target-label { fill: #9b7100; font: 900 9px Consolas, monospace; letter-spacing: .4px; }
+.movement-command { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding: 16px 18px; color: white; background: var(--forest); }.movement-command span { color: #cbd8d2; font: 800 9px Consolas, monospace; letter-spacing: 1px; }.movement-command strong { grid-row: span 2; align-self: center; color: var(--signal); font: 900 48px "Bahnschrift Condensed", sans-serif; line-height: .9; }.movement-command b { font: 900 24px "Bahnschrift Condensed", sans-serif; }.movement-command small { grid-column: 1 / -1; margin-top: 7px; color: #cbd8d2; font-size: 11px; }
+.movement-done { width: calc(100% - 24px); margin: 12px; }.movement-done[hidden] { display: none; }
+.repeat-x-form { padding: 18px; border-top: 1px solid var(--line); background: #f6f1e5; animation: field-panel-in .28s ease both; }.repeat-head > span, .side-check-head > span { color: var(--signal-dark); font: 900 9px Consolas, monospace; letter-spacing: 1px; }.repeat-head h3, .side-check-head h3 { margin: 4px 0; font: 500 28px Georgia, serif; }.repeat-head p, .side-check-head p { margin: 0 0 15px; color: var(--ink-soft); font-size: 12px; }
+.field-result-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 12px; overflow: hidden; background: var(--line); border: 1px solid var(--line); border-radius: 10px; }.field-result-metrics > div { display: grid; gap: 4px; padding: 14px; background: var(--white); }.field-result-metrics small { color: var(--ink-soft); font-size: 9px; }.field-result-metrics strong { font: 900 18px Consolas, monospace; }
+.field-stop-card { display: grid; grid-template-columns: 58px 1fr; gap: 13px; padding: 18px; color: #5f201a; background: #fff0ed; border: 2px solid #d86154; border-radius: 14px; }.field-stop-symbol { display: grid; place-items: center; width: 54px; height: 54px; color: white; background: #a7352a; border-radius: 50%; font-size: 30px; font-weight: 900; }.field-stop-card strong { color: #9b3027; font: 900 10px Consolas, monospace; letter-spacing: .8px; }.field-stop-card p { margin: 5px 0 0; color: #744139; font-size: 13px; line-height: 1.45; }.field-stop-card > small { grid-column: 1 / -1; justify-self: start; padding: 5px 8px; color: #754c00; background: #fff0b7; border-radius: 4px; font: 900 8px Consolas, monospace; }
+.x-aligned-card { padding: 24px 18px; text-align: center; color: var(--forest); background: #e7f6ea; border: 2px solid #80bf90; border-radius: 14px; }.x-aligned-card > div { display: grid; place-items: center; width: 68px; height: 68px; margin: 0 auto 10px; color: white; background: #176033; border-radius: 50%; font-size: 39px; font-weight: 900; }.x-aligned-card > span { display: block; font: 900 9px Consolas, monospace; letter-spacing: 1px; }.x-aligned-card > strong { display: block; margin-top: 5px; font: 900 30px "Bahnschrift Condensed", sans-serif; }.x-aligned-card p { margin: 10px 0 0; color: #417453; font: 800 12px Consolas, monospace; }
+.side-check-card { margin-top: 12px; padding: 18px; border: 2px solid var(--forest); }.side-check-grid { display: grid; gap: 8px; }.side-check-field { display: grid; grid-template-columns: 1fr minmax(125px, 160px); align-items: center; gap: 10px; padding: 10px; background: #f3efe5; border-radius: 9px; }.side-check-field b, .side-check-field small { display: block; }.side-check-field b { font: 900 20px "Bahnschrift Condensed", sans-serif; }.side-check-field small { color: var(--ink-soft); font-size: 9px; }.side-check-field > div { display: grid; grid-template-columns: 1fr auto; align-items: center; overflow: hidden; background: white; border: 2px solid #969184; border-radius: 7px; }.side-check-field input { min-width: 0; width: 100%; padding: 11px 7px; border: 0; outline: 0; background: transparent; font: 900 20px Consolas, monospace; text-align: right; }.side-check-field em { padding-right: 8px; color: var(--ink-soft); font-size: 10px; font-style: normal; font-weight: 800; }
+.confirmed-card { padding: 28px 18px; text-align: center; color: white; background: #176033; border-radius: 14px; box-shadow: 0 14px 38px rgba(23,96,51,.2); }.confirmed-card > div { display: grid; place-items: center; width: 74px; height: 74px; margin: 0 auto 10px; color: #176033; background: #a5efb4; border-radius: 50%; font-size: 42px; font-weight: 900; }.confirmed-card > small { color: #bfe4c8; font: 900 9px Consolas, monospace; letter-spacing: 1px; }.confirmed-card h3 { margin: 4px 0; font: 900 43px "Bahnschrift Condensed", sans-serif; }.confirmed-card p { margin: 0; }.confirmed-card section { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; max-width: 440px; margin: 18px auto 0; overflow: hidden; color: var(--forest); background: rgba(255,255,255,.25); border-radius: 7px; }.confirmed-card section span { display: grid; gap: 3px; padding: 9px; background: #edf8ef; font-size: 9px; }.confirmed-card section b { font: 900 15px Consolas, monospace; }
+@keyframes field-panel-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+footer { display: flex; justify-content: space-between; padding: 17px max(20px, calc((100vw - 1120px) / 2)); color: #d4e2dc; background: var(--forest); font: 800 9px Consolas, monospace; letter-spacing: .8px; }
+footer b { color: var(--signal); }
+
+@media (max-width: 820px) {
+  .app-header { min-height: 76px; padding: 12px 16px; }
+  .brand-mark { width: 42px; height: 42px; flex-basis: 42px; font-size: 25px; }
+  .brand-copy strong { font-size: 25px; }
+  .brand-copy span { font-size: 7px; }
+  .local-badge { padding: 6px 8px; font-size: 7px; }
+  .step span { display: none; }
+  .stepper { min-height: 62px; }
+  main { width: min(100% - 20px, 650px); }
+  .intro-grid, .sheet-layout, .detection-layout, .qr-layout, .field-layout { grid-template-columns: 1fr; }
+  .intro-grid { gap: 25px; min-height: auto; }
+  .intro-copy h1 { font-size: 49px; }
+  .choice-card { padding: 25px 20px; }
+  .flow-strip { gap: 8px; padding: 14px 10px; }
+  .flow-strip span { font-size: 10px; }
+  .flow-strip b { width: 23px; height: 23px; }
+  .screen-heading { margin-top: 0; }
+  .screen-heading h1 { font-size: 37px; letter-spacing: -1.5px; }
+  .plan-card { order: 1; }
+  .confirm-card { order: 2; }
+  .detected-box { border-width: 3px; }
+  .corner { width: 24px; height: 24px; font-size: 13px; }
+  .field-ticket { grid-template-columns: 1fr; }
+  .ticket-qr { padding: 20px; }
+  .ticket-qr img { width: 190px; }
+  .ticket-data { min-height: 330px; padding: 24px; }
+  .ticket-data > p { font-size: 25px; }
+  .ticket-data h2 { font-size: 29px; }
+  .ticket-data h3 { font-size: 38px; }
+  .mini-rectangle { right: 28px; bottom: 28px; width: 125px; height: 75px; }
+  .mini-rectangle i, .mini-rectangle b { width: 142px; }
+  .field-success { padding: 17px; }
+  .success-icon { width: 48px; height: 48px; flex-basis: 48px; }
+  .measure-ready { padding: 21px; }
+  .field-measure-grid { grid-template-columns: 1fr; }
+  .field-project-data { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 430px) {
+  .local-badge { max-width: 75px; text-align: center; }
+  .intro-copy > p:last-child { font-size: 15px; }
+  .flow-strip span { display: none; }
+  .flow-strip { grid-template-columns: 1fr auto 1fr auto 1fr; justify-items: center; }
+  .plan-toolbar { font-size: 8px; }
+  .plan-card figcaption { font-size: 10px; }
+  .metric-grid strong { font-size: 19px; }
+  .screen-heading { gap: 10px; }
+  .back-link { width: 40px; height: 40px; flex-basis: 40px; }
+  .scanner-shell { border-width: 4px; border-radius: 20px; }
+  .field-success h1 { font-size: 27px; }
+  .field-entry-card { padding: 20px 14px; }
+  .diagonal-entry-grid { grid-template-columns: 1fr; }
+  .field-project-data > div { padding: 10px; }
+  .movement-command strong { font-size: 41px; }
+  .movement-command b { font-size: 20px; }
+  .side-check-field { grid-template-columns: 1fr minmax(115px, 135px); }
+}
+
+@media print {
+  body * { visibility: hidden; }
+  .field-ticket, .field-ticket * { visibility: visible; }
+  .field-ticket { position: fixed; inset: 20px; box-shadow: none; }
+}

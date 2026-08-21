@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
+  <title id="title">Esquema neutro da locação</title>
+  <desc id="description">Retângulo externo da casa destacado sobre uma malha de eixos, sem dados de cliente.</desc>
+  <rect width="1200" height="720" fill="#f8f5ec"/>
+  <g stroke="#e8d2cb" stroke-width="2" stroke-dasharray="8 7">
+    <path d="M170 70V650M360 70V650M550 70V650M740 70V650M930 70V650M1100 70V650"/>
+    <path d="M90 120H1130M90 280H1130M90 440H1130M90 600H1130"/>
+  </g>
+  <path d="M155 605L230 105H990L1115 605Z" fill="none" stroke="#406453" stroke-width="12"/>
+  <rect x="270" y="150" width="680" height="410" rx="4" fill="#f1eee5" stroke="#f5c32f" stroke-width="12"/>
+  <g fill="#10261f" font-family="Arial, sans-serif" font-size="28" font-weight="700">
+    <text x="250" y="137">B</text><text x="250" y="595">F</text>
+    <text x="252" y="642">2</text><text x="938" y="642">9</text>
+  </g>
+  <g fill="#f5c32f" stroke="#10261f" stroke-width="5">
+    <circle cx="270" cy="150" r="15"/><circle cx="950" cy="150" r="15"/>
+    <circle cx="270" cy="560" r="15"/><circle cx="950" cy="560" r="15"/>
+  </g>
+  <path d="M270 560L950 150M270 150L950 560" stroke="#10261f" stroke-width="5" stroke-dasharray="18 14" opacity=".55"/>
+  <text x="610" y="345" text-anchor="middle" fill="#10261f" font-family="Arial, sans-serif" font-size="34" font-weight="800">RETÂNGULO DA CASA</text>
+  <text x="610" y="390" text-anchor="middle" fill="#53675f" font-family="Arial, sans-serif" font-size="24">ESQUEMA SEM DADOS DE CLIENTE</text>
+</svg>

@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /esquadro/
+Disallow: /esquadro-qr/
 Sitemap: https://edreng.com.br/sitemap.xml
