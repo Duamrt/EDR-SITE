@@ -1,14 +1,14 @@
-const CACHE_NAME = 'edr-esquadro-qr-v2';
+const CACHE_NAME = 'edr-esquadro-qr-v6';
 const APP_FILES = [
   './',
   './index.html',
-  './styles.css?v=2',
-  './geometry.js?v=2',
-  './app.js?v=2',
+  './styles.css?v=6',
+  './geometry.js?v=6',
+  './app.js?v=6',
   './icon.svg',
   './icon-192.png',
   './icon-512.png',
-  './manifest.webmanifest?v=2',
+  './manifest.webmanifest?v=6',
   './vendor/pdf.min.mjs',
   './vendor/pdf.worker.min.mjs',
   './assets/locacao-demo.svg',

@@ -11,10 +11,10 @@
   <meta name="apple-mobile-web-app-title" content="Esquadro QR">
   <title>EDR Esquadro QR — Beta de campo</title>
   <link rel="canonical" href="https://edreng.com.br/esquadro-qr/">
-  <link rel="manifest" href="manifest.webmanifest?v=2">
+  <link rel="manifest" href="manifest.webmanifest?v=6">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -134,19 +134,25 @@
       </div>
 
       <div class="detection-layout">
-        <div class="phase-warning"><strong>ETAPA SEGUINTE DO PROTÓTIPO</strong><span>A prancha abaixo ainda usa o retângulo demonstrativo. Nesta rodada, a identificação real é somente da página de locação.</span></div>
+        <div class="phase-warning"><strong>CONFIRA A MARCAÇÃO</strong><span>A prancha escolhida aparece abaixo. Se o contorno amarelo não estiver nos quatro extremos da casa, ajuste os pontos antes de continuar.</span></div>
         <figure class="plan-card">
           <div class="plan-toolbar"><span>PRANCHA • <b id="detected-project">OBRA</b></span><strong>LOCAÇÃO</strong></div>
           <div class="plan-stage">
-            <img src="assets/locacao-demo.svg" alt="Esquema neutro com o retângulo externo da casa destacado">
-            <div class="detected-box" aria-hidden="true">
-              <span class="corner corner-b">B</span>
-              <span class="corner corner-c">C</span>
-              <span class="corner corner-a">A</span>
-              <span class="corner corner-d">D</span>
+            <canvas id="detected-canvas" aria-label="Prancha de locação escolhida"></canvas>
+            <div id="point-adjust-overlay" class="point-adjust-overlay" aria-label="Quatro pontos do retângulo da casa">
+              <svg class="detected-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <polygon id="detected-polygon"></polygon>
+                <line id="detected-diagonal-red"></line>
+                <line id="detected-diagonal-green"></line>
+              </svg>
+              <div class="point-control point-control-a" data-point-control="A"><span class="point-anchor" aria-hidden="true"></span><button class="corner" data-point="A" type="button" aria-label="Mover ponto A">A</button></div>
+              <div class="point-control point-control-b" data-point-control="B"><span class="point-anchor" aria-hidden="true"></span><button class="corner" data-point="B" type="button" aria-label="Mover ponto B">B</button></div>
+              <div class="point-control point-control-c" data-point-control="C"><span class="point-anchor" aria-hidden="true"></span><button class="corner" data-point="C" type="button" aria-label="Mover ponto C">C</button></div>
+              <div class="point-control point-control-d" data-point-control="D"><span class="point-anchor" aria-hidden="true"></span><button class="corner" data-point="D" type="button" aria-label="Mover ponto D">D</button></div>
             </div>
+            <div id="point-magnifier" class="point-magnifier" hidden aria-hidden="true"><canvas></canvas><span></span><b>MIRA EXATA</b></div>
           </div>
-          <figcaption><span>▣</span> Retângulo externo da casa • eixos 2–9 / B–F</figcaption>
+          <figcaption id="point-status"><span>▣</span> Retângulo externo da casa • eixos 2–9 / B–F</figcaption>
         </figure>
 
         <aside class="confirm-card">
@@ -161,7 +167,8 @@
           </div>
           <button id="confirm-rectangle" class="primary-button" type="button">SIM, É ESTE RETÂNGULO <span>→</span></button>
           <button id="adjust-points" class="secondary-button" type="button">NÃO • AJUSTAR OS 4 PONTOS</button>
-          <p id="adjust-note" class="adjust-note" hidden>Modo de ajuste demonstrativo: arraste A, B, C e D até os quatro extremos da casa.</p>
+          <button id="reset-points" class="text-button" type="button" hidden>RECOMEÇAR A MARCAÇÃO</button>
+          <p id="adjust-note" class="adjust-note" hidden>Arraste A, B, C e D até os quatro extremos da casa. No celular, segure o ponto e mova com o dedo.</p>
         </aside>
       </div>
     </section>
@@ -201,6 +208,7 @@
         <aside class="qr-actions">
           <div class="offline-callout"><span>●</span><div><strong>SEM BANCO. SEM INTERNET.</strong><p>As medidas ficam gravadas dentro do próprio QR.</p></div></div>
           <button id="simulate-scan" class="primary-button" type="button">SIMULAR LEITURA NA OBRA <span>⌗</span></button>
+          <button id="edit-qr-points" class="secondary-button" type="button">EDITAR OS 4 PONTOS</button>
           <button class="secondary-button" type="button" id="print-ticket">VER COMO FICARIA IMPRESSO</button>
           <p>Na versão final, a câmera do celular fará esta leitura.</p>
         </aside>
@@ -240,7 +248,7 @@
   </main>
 
   <footer><span>BETA DE CAMPO • USO CONTROLADO</span><b>QR LAB v0.2</b></footer>
-  <script src="geometry.js?v=2"></script>
-  <script type="module" src="app.js?v=2"></script>
+  <script src="geometry.js?v=6"></script>
+  <script type="module" src="app.js?v=6"></script>
 </body>
 </html>

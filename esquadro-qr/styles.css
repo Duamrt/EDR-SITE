@@ -147,14 +147,32 @@ main { width: min(1120px, calc(100% - 32px)); min-height: calc(100vh - 222px); m
 .plan-toolbar, .field-card-head { display: flex; justify-content: space-between; padding: 13px 16px; color: #d7e2dd; background: var(--forest); font: 800 9px Consolas, monospace; letter-spacing: 1px; }
 .plan-toolbar strong, .field-card-head strong { color: var(--signal); }
 .plan-stage { position: relative; aspect-ratio: 1317/789; overflow: hidden; background: white; }
-.plan-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.detected-box { position: absolute; left: 21.6%; top: 37.2%; width: 42.6%; height: 45.7%; border: 4px solid var(--signal); box-shadow: 0 0 0 999px rgba(8,35,27,.1), 0 0 22px rgba(245,195,47,.8); animation: found 1s ease both; }
+.plan-stage canvas { display: block; width: 100%; height: 100%; object-fit: contain; background: #fff; }
+.point-adjust-overlay { position: absolute; inset: 0; z-index: 2; pointer-events: none; animation: found 1s ease both; }
+.detected-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.detected-lines polygon { fill: rgba(245,195,47,.13); stroke: var(--signal); stroke-width: .7; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 6px rgba(245,195,47,.85)); }
+.detected-lines line { stroke-width: .45; stroke-dasharray: 1.3 1.3; vector-effect: non-scaling-stroke; opacity: .72; }
+#detected-diagonal-red { stroke: var(--red); }
+#detected-diagonal-green { stroke: var(--green); }
 @keyframes found { from { opacity: 0; transform: scale(.93); } }
-.corner { position: absolute; display: grid; place-items: center; width: 30px; height: 30px; color: var(--forest); background: var(--signal); border: 3px solid var(--forest); border-radius: 50%; font: 900 16px "Bahnschrift Condensed", sans-serif; }
-.corner-a { left: 0; top: 0; transform: translate(-50%,-50%); }
-.corner-b { right: 0; top: 0; transform: translate(50%,-50%); }
-.corner-c { left: 0; bottom: 0; transform: translate(-50%,50%); }
-.corner-d { right: 0; bottom: 0; transform: translate(50%,50%); }
+.point-control { --label-x: 0px; --label-y: 0px; --leader-angle: 0deg; position: absolute; width: 0; height: 0; }
+.point-control::before { content: ""; position: absolute; left: 0; top: -1px; width: 31px; height: 2px; background: var(--forest); opacity: .75; transform: rotate(var(--leader-angle)); transform-origin: left center; }
+.point-control-a { --label-x: -30px; --label-y: -30px; --leader-angle: -135deg; }
+.point-control-b { --label-x: 30px; --label-y: -30px; --leader-angle: -45deg; }
+.point-control-c { --label-x: -30px; --label-y: 30px; --leader-angle: 135deg; }
+.point-control-d { --label-x: 30px; --label-y: 30px; --leader-angle: 45deg; }
+.point-anchor { position: absolute; left: 0; top: 0; width: 18px; height: 18px; background: radial-gradient(circle, var(--signal) 0 2px, #fff 2px 4px, transparent 4px); border: 2px solid var(--forest); border-radius: 50%; box-shadow: 0 0 0 2px rgba(255,255,255,.92); transform: translate(-50%,-50%); }
+.point-anchor::before, .point-anchor::after { content: ""; position: absolute; left: 50%; top: 50%; background: var(--forest); transform: translate(-50%,-50%); }
+.point-anchor::before { width: 24px; height: 1px; }
+.point-anchor::after { width: 1px; height: 24px; }
+.corner { position: absolute; left: var(--label-x); top: var(--label-y); display: grid; place-items: center; width: 34px; height: 34px; padding: 0; color: var(--forest); background: var(--signal); border: 3px solid var(--forest); border-radius: 50%; box-shadow: 0 2px 7px rgba(11,43,34,.35); font: 900 16px "Bahnschrift Condensed", sans-serif; transform: translate(-50%,-50%); touch-action: none; user-select: none; }
+.point-magnifier { position: absolute; right: 14px; top: 14px; z-index: 4; width: 164px; height: 184px; padding: 7px 7px 27px; overflow: hidden; background: var(--white); border: 3px solid var(--forest); border-radius: 12px; box-shadow: 0 12px 35px rgba(11,43,34,.35); pointer-events: none; }
+.point-magnifier.is-left { left: 14px; right: auto; }
+.point-magnifier canvas { width: 144px; height: 144px; border: 1px solid var(--line); object-fit: fill; }
+.point-magnifier span::before, .point-magnifier span::after { content: ""; position: absolute; left: 82px; top: 82px; background: #c72e24; transform: translate(-50%,-50%); }
+.point-magnifier span::before { width: 42px; height: 2px; }
+.point-magnifier span::after { width: 2px; height: 42px; }
+.point-magnifier b { position: absolute; left: 0; right: 0; bottom: 7px; color: var(--forest); text-align: center; font: 900 10px Consolas, monospace; letter-spacing: 1px; }
 .plan-card figcaption { padding: 13px 16px; color: var(--ink-soft); background: var(--paper-deep); font-size: 12px; }
 .plan-card figcaption span { color: var(--signal-dark); }
 .confirm-card { padding: 20px; }
@@ -175,8 +193,12 @@ main { width: min(1120px, calc(100% - 32px)); min-height: calc(100vh - 222px); m
 .primary-button:disabled { color: #777166; background: #d4cdbb; box-shadow: 0 6px 0 #9d9789; cursor: not-allowed; opacity: .82; }
 .secondary-button { justify-content: center; margin-top: 14px; color: var(--forest); background: transparent; border: 2px solid var(--forest); }
 .adjust-note { padding: 12px; color: #654a00; background: #fff1be; border-radius: 6px; font-size: 12px; }
-.plan-stage.is-adjusting .corner { cursor: move; animation: pulse .8s ease infinite alternate; }
-@keyframes pulse { to { transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.15); box-shadow: 0 0 0 7px rgba(245,195,47,.35); } }
+.text-button { width: 100%; margin-top: 12px; padding: 10px; color: var(--forest); background: transparent; border: 0; font: 900 12px "Bahnschrift Condensed", sans-serif; text-decoration: underline; text-underline-offset: 4px; }
+.plan-stage.is-adjusting { outline: 4px solid var(--signal); outline-offset: -4px; }
+.plan-stage.is-adjusting .point-adjust-overlay { pointer-events: auto; background: rgba(11,43,34,.08); }
+.plan-stage.is-adjusting .point-anchor { box-shadow: 0 0 0 3px rgba(255,255,255,.95), 0 0 0 7px rgba(245,195,47,.3); }
+.plan-stage.is-adjusting .corner { width: 42px; height: 42px; cursor: grab; box-shadow: 0 0 0 7px rgba(245,195,47,.35), 0 3px 9px rgba(11,43,34,.4); }
+.plan-stage.is-adjusting .corner:active { cursor: grabbing; transform: translate(-50%,-50%) scale(1.08); }
 
 .qr-layout { display: grid; grid-template-columns: 1.45fr .65fr; gap: 18px; align-items: stretch; }
 .field-ticket { display: grid; grid-template-columns: 280px 1fr; overflow: hidden; }
@@ -327,8 +349,11 @@ footer b { color: var(--signal); }
   .screen-heading h1 { font-size: 37px; letter-spacing: -1.5px; }
   .plan-card { order: 1; }
   .confirm-card { order: 2; }
-  .detected-box { border-width: 3px; }
-  .corner { width: 24px; height: 24px; font-size: 13px; }
+  .corner { width: 32px; height: 32px; font-size: 13px; }
+  .plan-stage.is-adjusting .corner { width: 44px; height: 44px; }
+  .point-magnifier { width: 132px; height: 150px; padding: 5px 5px 23px; }
+  .point-magnifier canvas { width: 116px; height: 116px; }
+  .point-magnifier span::before, .point-magnifier span::after { left: 66px; top: 66px; }
   .field-ticket { grid-template-columns: 1fr; }
   .ticket-qr { padding: 20px; }
   .ticket-qr img { width: 190px; }

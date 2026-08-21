@@ -21,6 +21,15 @@ const identityCheckbox = document.querySelector('#identity-checkbox');
 let scanTimer;
 let selectedDocument;
 
+const DEFAULT_DETECTED_POINTS = Object.freeze({
+  A: Object.freeze({ x: 21.6, y: 37.2 }),
+  B: Object.freeze({ x: 64.2, y: 37.2 }),
+  C: Object.freeze({ x: 21.6, y: 82.9 }),
+  D: Object.freeze({ x: 64.2, y: 82.9 }),
+});
+let detectedPoints = cloneDetectedPoints(DEFAULT_DETECTED_POINTS);
+let pointsWereAdjusted = false;
+
 function normalize(value = '') {
   return value
     .normalize('NFD')
@@ -140,13 +149,143 @@ async function inspectPage(pdf, pageIndex, onProgress) {
   return info;
 }
 
-async function renderPage(page) {
-  const canvas = document.querySelector('#sheet-canvas');
+async function renderPageIntoCanvas(page, canvas) {
   const context = canvas.getContext('2d', { alpha: false });
   const viewport = page.getViewport({ scale: 1.55 });
   canvas.width = Math.ceil(viewport.width);
   canvas.height = Math.ceil(viewport.height);
   await page.render({ canvasContext: context, viewport }).promise;
+}
+
+async function renderPage(page) {
+  await renderPageIntoCanvas(page, document.querySelector('#sheet-canvas'));
+}
+
+function cloneDetectedPoints(points) {
+  return Object.fromEntries(Object.entries(points).map(([name, point]) => [name, { ...point }]));
+}
+
+function updateDetectedOverlay() {
+  const pointOrder = ['A', 'B', 'D', 'C'];
+  document.querySelector('#detected-polygon').setAttribute('points', pointOrder.map((name) => `${detectedPoints[name].x},${detectedPoints[name].y}`).join(' '));
+
+  const diagonals = [
+    ['#detected-diagonal-red', detectedPoints.C, detectedPoints.B],
+    ['#detected-diagonal-green', detectedPoints.A, detectedPoints.D],
+  ];
+  diagonals.forEach(([selector, start, end]) => {
+    const line = document.querySelector(selector);
+    line.setAttribute('x1', start.x);
+    line.setAttribute('y1', start.y);
+    line.setAttribute('x2', end.x);
+    line.setAttribute('y2', end.y);
+  });
+
+  Object.entries(detectedPoints).forEach(([name, point]) => {
+    const control = document.querySelector(`[data-point-control="${name}"]`);
+    control.style.left = `${point.x}%`;
+    control.style.top = `${point.y}%`;
+  });
+}
+
+function updatePointMagnifier(pointName) {
+  const magnifier = document.querySelector('#point-magnifier');
+  const source = document.querySelector('#detected-canvas');
+  const target = magnifier.querySelector('canvas');
+  const stage = document.querySelector('.plan-stage');
+  const point = detectedPoints[pointName];
+  if (!source.width || !source.height || !point) return;
+
+  const stageRect = stage.getBoundingClientRect();
+  const displayScale = Math.min(stageRect.width / source.width, stageRect.height / source.height);
+  const displayWidth = source.width * displayScale;
+  const displayHeight = source.height * displayScale;
+  const imageOffsetX = (stageRect.width - displayWidth) / 2;
+  const imageOffsetY = (stageRect.height - displayHeight) / 2;
+  const sourceX = (((stageRect.width * point.x) / 100) - imageOffsetX) / displayScale;
+  const sourceY = (((stageRect.height * point.y) / 100) - imageOffsetY) / displayScale;
+  const targetCssSize = Number.parseFloat(getComputedStyle(target).width) || 144;
+  const cropSize = Math.min(source.width, source.height, targetCssSize / (displayScale * 4));
+  const cropX = Math.min(Math.max(0, sourceX - (cropSize / 2)), source.width - cropSize);
+  const cropY = Math.min(Math.max(0, sourceY - (cropSize / 2)), source.height - cropSize);
+  const density = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+
+  target.width = Math.round(targetCssSize * density);
+  target.height = Math.round(targetCssSize * density);
+  const context = target.getContext('2d', { alpha: false });
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = 'high';
+  context.drawImage(source, cropX, cropY, cropSize, cropSize, 0, 0, target.width, target.height);
+  magnifier.classList.toggle('is-left', point.x > 55);
+}
+
+function showPointMagnifier(pointName) {
+  const magnifier = document.querySelector('#point-magnifier');
+  magnifier.hidden = false;
+  updatePointMagnifier(pointName);
+}
+
+function hidePointMagnifier() {
+  document.querySelector('#point-magnifier').hidden = true;
+}
+
+function resetDetectedPoints() {
+  detectedPoints = cloneDetectedPoints(DEFAULT_DETECTED_POINTS);
+  pointsWereAdjusted = false;
+  updateDetectedOverlay();
+}
+
+function setPointAdjustmentMode(active) {
+  const stage = document.querySelector('.plan-stage');
+  const note = document.querySelector('#adjust-note');
+  const adjustButton = document.querySelector('#adjust-points');
+  const resetButton = document.querySelector('#reset-points');
+  const confirmButton = document.querySelector('#confirm-rectangle');
+  const status = document.querySelector('#point-status');
+
+  stage.classList.toggle('is-adjusting', active);
+  confirmButton.disabled = active;
+  resetButton.hidden = !active;
+  note.hidden = false;
+
+  if (active) {
+    adjustButton.textContent = 'SALVAR ESTES 4 PONTOS';
+    note.textContent = 'Arraste A, B, C e D até os quatro extremos da casa. No celular, segure o ponto e mova com o dedo.';
+    status.innerHTML = '<span>●</span> Ajuste em andamento • mova os quatro pontos amarelos';
+  } else {
+    pointsWereAdjusted = true;
+    adjustButton.textContent = 'AJUSTAR NOVAMENTE';
+    note.textContent = 'Pontos salvos. Confira o contorno amarelo e as medidas antes de continuar.';
+    status.innerHTML = '<span>✓</span> Quatro pontos ajustados e salvos';
+  }
+}
+
+function constrainDetectedPoint(name, next) {
+  const minimumGap = 4;
+  const constrained = {
+    x: Math.min(97, Math.max(3, next.x)),
+    y: Math.min(97, Math.max(3, next.y)),
+  };
+  if (name === 'A' || name === 'C') constrained.x = Math.min(constrained.x, Math.min(detectedPoints.B.x, detectedPoints.D.x) - minimumGap);
+  if (name === 'B' || name === 'D') constrained.x = Math.max(constrained.x, Math.max(detectedPoints.A.x, detectedPoints.C.x) + minimumGap);
+  if (name === 'A' || name === 'B') constrained.y = Math.min(constrained.y, Math.min(detectedPoints.C.y, detectedPoints.D.y) - minimumGap);
+  if (name === 'C' || name === 'D') constrained.y = Math.max(constrained.y, Math.max(detectedPoints.A.y, detectedPoints.B.y) + minimumGap);
+  return constrained;
+}
+
+function moveDetectedPoint(name, next) {
+  detectedPoints[name] = constrainDetectedPoint(name, next);
+  updateDetectedOverlay();
+}
+
+async function prepareDetectedScreen() {
+  resetDetectedPoints();
+  setPointAdjustmentMode(false);
+  pointsWereAdjusted = false;
+  document.querySelector('#adjust-points').textContent = 'NÃO • AJUSTAR OS 4 PONTOS';
+  document.querySelector('#adjust-note').hidden = true;
+  document.querySelector('#point-status').innerHTML = '<span>▣</span> Retângulo externo da casa • eixos 2–9 / B–F';
+  await renderPageIntoCanvas(selectedDocument.selected.page, document.querySelector('#detected-canvas'));
 }
 
 function renderPageList(selected, totalPages) {
@@ -575,8 +714,13 @@ fieldBackButton.addEventListener('click', () => {
 });
 
 document.querySelector('#confirm-rectangle').addEventListener('click', () => show('qr'));
-confirmSheet.addEventListener('click', () => {
-  if (!confirmSheet.disabled && selectedDocument) show('detected');
+confirmSheet.addEventListener('click', async () => {
+  if (!confirmSheet.disabled && selectedDocument) {
+    confirmSheet.disabled = true;
+    await prepareDetectedScreen();
+    show('detected');
+    confirmSheet.disabled = false;
+  }
 });
 document.querySelector('#simulate-scan').addEventListener('click', () => {
   show('scanning');
@@ -588,11 +732,72 @@ document.querySelector('#simulate-scan').addEventListener('click', () => {
   }, 1850);
 });
 
+document.querySelector('#edit-qr-points').addEventListener('click', () => {
+  show('detected');
+  setPointAdjustmentMode(true);
+  window.setTimeout(() => document.querySelector('[data-point="A"]')?.focus({ preventScroll: true }), 50);
+});
+
 document.querySelector('#adjust-points').addEventListener('click', () => {
   const stage = document.querySelector('.plan-stage');
-  const note = document.querySelector('#adjust-note');
-  stage.classList.toggle('is-adjusting');
-  note.hidden = !stage.classList.contains('is-adjusting');
+  setPointAdjustmentMode(!stage.classList.contains('is-adjusting'));
+});
+
+document.querySelector('#reset-points').addEventListener('click', () => {
+  resetDetectedPoints();
+  document.querySelector('#point-status').innerHTML = '<span>●</span> Marcação reiniciada • mova os quatro pontos amarelos';
+});
+
+document.querySelectorAll('[data-point]').forEach((handle) => {
+  const pointName = handle.dataset.point;
+  let pointerOffset = { x: 0, y: 0 };
+  const moveFromPointer = (event) => {
+    const stage = document.querySelector('.plan-stage');
+    if (!stage.classList.contains('is-adjusting')) return;
+    const rect = stage.getBoundingClientRect();
+    moveDetectedPoint(pointName, {
+      x: ((event.clientX + pointerOffset.x - rect.left) / rect.width) * 100,
+      y: ((event.clientY + pointerOffset.y - rect.top) / rect.height) * 100,
+    });
+    if (!document.querySelector('#point-magnifier').hidden) updatePointMagnifier(pointName);
+  };
+
+  handle.addEventListener('pointerdown', (event) => {
+    if (!document.querySelector('.plan-stage').classList.contains('is-adjusting')) return;
+    event.preventDefault();
+    handle.focus({ preventScroll: true });
+    const anchor = handle.closest('[data-point-control]').getBoundingClientRect();
+    pointerOffset = { x: anchor.left - event.clientX, y: anchor.top - event.clientY };
+    handle.setPointerCapture(event.pointerId);
+    moveFromPointer(event);
+    showPointMagnifier(pointName);
+  });
+  handle.addEventListener('pointermove', (event) => {
+    if (handle.hasPointerCapture(event.pointerId)) moveFromPointer(event);
+  });
+  handle.addEventListener('pointerup', (event) => {
+    if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId);
+    pointerOffset = { x: 0, y: 0 };
+    hidePointMagnifier();
+  });
+  handle.addEventListener('pointercancel', hidePointMagnifier);
+  handle.addEventListener('keydown', (event) => {
+    if (!document.querySelector('.plan-stage').classList.contains('is-adjusting')) return;
+    const directions = {
+      ArrowLeft: [-1, 0],
+      ArrowRight: [1, 0],
+      ArrowUp: [0, -1],
+      ArrowDown: [0, 1],
+    };
+    if (!directions[event.key]) return;
+    event.preventDefault();
+    const step = event.shiftKey ? 0.2 : 0.7;
+    const [dx, dy] = directions[event.key];
+    moveDetectedPoint(pointName, {
+      x: detectedPoints[pointName].x + (dx * step),
+      y: detectedPoints[pointName].y + (dy * step),
+    });
+  });
 });
 
 document.querySelector('#print-ticket').addEventListener('click', () => window.print());
