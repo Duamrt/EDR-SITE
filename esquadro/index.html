@@ -8,137 +8,40 @@
   <meta name="application-name" content="EDR Esquadro">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Esquadro">
-  <meta name="versao" content="1.0.0">
+  <meta name="versao" content="1.1.0">
   <title>EDR Esquadro</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilo.css?v=1.0.0">
+  <link rel="preload" href="fontes/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="estilo.css?v=1.1.0">
 </head>
 <body>
   <header class="topo">
+    <button class="voltar" id="voltar" type="button" aria-label="Voltar" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     <div class="marca">
-      <span class="selo" aria-hidden="true">
-        <svg viewBox="0 0 32 32"><path d="M6 26V6h20" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 26 26 6" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2.5 2.5"/><rect x="6" y="20" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-      </span>
-      <div><b>EDR Esquadro</b><small id="obra-atual">Locação por eixos</small></div>
+      <span class="selo" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M7 25V7h18" fill="none" stroke="currentColor" stroke-width="3.2"/><path d="M7 25 25 7" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2.6 2.6"/><rect x="7" y="19" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+      <div><b>EDR Esquadro</b><small id="subtitulo">Locação por eixos</small></div>
     </div>
-    <span class="piloto" title="Ainda não validado no teste de campo 8 × 4 m">Piloto em teste</span>
+    <span class="piloto" title="Ainda não validado no teste de campo 8 × 4 m">Piloto</span>
   </header>
 
-  <nav class="etapas" aria-label="Etapas">
-    <button class="etapa" data-ir="obra" type="button"><i>1</i>Obra</button>
-    <button class="etapa" data-ir="medir" type="button"><i>2</i>Medir</button>
-    <button class="etapa" data-ir="resultado" type="button"><i>3</i>Corrigir</button>
-  </nav>
-
-  <main>
-    <!-- ETAPA 1: OBRA -->
-    <section class="tela" data-tela="obra">
-      <div class="grade">
-        <div class="coluna">
-          <h1>Cotas da prancha de locação</h1>
-          <p class="guia">Digite os eixos e as cotas entre eles como estão na prancha. Depois escolha os 4 eixos da casa e a linha que já está conferida no lote.</p>
-
-          <div class="cartao">
-            <label class="campo">
-              <span>Obra salva</span>
-              <select id="obra-salva"></select>
-            </label>
-            <label class="campo">
-              <span>Nome da obra</span>
-              <input id="nome" autocomplete="off" placeholder="Ex.: Arthur — Rua Projetada, 67">
-            </label>
-          </div>
-
-          <div class="cartao">
-            <h2>Eixos verticais <small>números, da esquerda para a direita</small></h2>
-            <label class="campo"><span>Nomes</span><input id="nomesV" autocomplete="off" placeholder="1 2 3 4 5"></label>
-            <label class="campo"><span>Cotas entre eixos (m)</span><input id="cotasV" autocomplete="off" inputmode="decimal" placeholder="1,50 0,52 3,34 1,55"></label>
-            <h2>Eixos horizontais <small>letras, de cima para baixo</small></h2>
-            <label class="campo"><span>Nomes</span><input id="nomesH" autocomplete="off" placeholder="A B C D"></label>
-            <label class="campo"><span>Cotas entre eixos (m)</span><input id="cotasH" autocomplete="off" inputmode="decimal" placeholder="7,74 3,12 1,22"></label>
-          </div>
-
-          <div class="cartao">
-            <h2>Retângulo da casa</h2>
-            <div class="duas">
-              <label class="campo"><span>De eixo</span><select id="v0"></select></label>
-              <label class="campo"><span>até eixo</span><select id="v1"></select></label>
-              <label class="campo"><span>De eixo</span><select id="h0"></select></label>
-              <label class="campo"><span>até eixo</span><select id="h1"></select></label>
-            </div>
-            <label class="campo destaque">
-              <span>Linha fixa (referência)</span>
-              <select id="referencia"></select>
-              <small>A linha que já foi conferida no lote — normalmente a da rua. Os dois cruzamentos dela nunca são mexidos pelo app.</small>
-            </label>
-            <div class="duas">
-              <label class="campo"><span>Tolerância por cruzamento</span><div class="com-unidade"><input id="tolerancia" inputmode="decimal" value="1"><b>cm</b></div></label>
-              <label class="campo"><span>Afastamento dos sarrafos <em>(opcional)</em></span><div class="com-unidade"><input id="gabarito" inputmode="decimal" placeholder="—"><b>m</b></div></label>
-            </div>
-            <p class="nota">Só preencha o afastamento se os sarrafos estiverem paralelos à casa e todos a essa distância das linhas. Sem ele, o app mostra o cruzamento a remarcar e as distâncias de trena — que sempre valem.</p>
-          </div>
-          <p id="erro-obra" class="erro" role="alert" hidden></p>
-          <button id="ir-medir" class="botao principal" type="button">Ir para a medição <span>→</span></button>
-        </div>
-
-        <aside class="coluna lateral">
-          <figure class="desenho-cartao">
-            <div class="desenho" id="planta" role="img" aria-label="Retângulo da casa com os eixos"></div>
-            <figcaption id="resumo-obra"></figcaption>
-          </figure>
-          <details class="cartao intermed" open>
-            <summary>Marcação dos outros eixos</summary>
-            <div id="tabela-intermed"></div>
-          </details>
-        </aside>
-      </div>
-    </section>
-
-    <!-- ETAPA 2: MEDIR -->
-    <section class="tela" data-tela="medir" hidden>
-      <div class="grade">
-        <aside class="coluna lateral fixa">
-          <figure class="desenho-cartao">
-            <div class="desenho" id="desenho-medir" role="img" aria-label="Trenas a medir"></div>
-            <figcaption>Toque numa medida: a trena correspondente acende no desenho.</figcaption>
-          </figure>
-        </aside>
-        <div class="coluna">
-          <p class="rodada" id="rodada-medir">Rodada 1</p>
-          <h1>Meça as seis trenas</h1>
-          <p class="guia">Meça entre os cruzamentos das linhas, sempre nos mesmos pontos e com a trena esticada. Pode digitar em metros (13,23) ou centímetros (1323).</p>
-          <form id="form-medidas" novalidate>
-            <ol class="trenas" id="lista-trenas"></ol>
-            <p id="erro-medir" class="erro" role="alert" hidden></p>
-            <button class="botao principal" type="submit">Conferir o esquadro <span>⌖</span></button>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- ETAPA 3: RESULTADO -->
-    <section class="tela" data-tela="resultado" hidden>
-      <div id="resultado"></div>
-    </section>
-  </main>
+  <main id="tela" aria-live="polite"></main>
 
   <footer class="rodape">
-    <span>EDR Engenharia • Esquadro v1.0 piloto</span>
-    <button id="ver-registro" class="link" type="button">Registro das conferências</button>
+    <span>EDR Engenharia • v1.1 piloto em teste</span>
+    <button id="ver-registro" class="link" type="button">Registro</button>
   </footer>
 
   <dialog id="registro" class="dialogo">
     <div class="dialogo-topo"><h2>Registro das conferências</h2><button class="fechar" type="button" data-fechar aria-label="Fechar">×</button></div>
     <div id="registro-lista"></div>
-    <div class="dialogo-acoes"><button id="copiar-registro" class="botao" type="button">Copiar para o WhatsApp</button><button id="limpar-registro" class="botao fantasma" type="button">Limpar registro</button></div>
+    <div class="dialogo-acoes"><button id="copiar-registro" class="botao" type="button">Copiar para o WhatsApp</button><button id="limpar-registro" class="botao discreto" type="button">Limpar</button></div>
   </dialog>
 
-  <script src="geometria.js?v=1.0.0"></script>
-  <script src="app.js?v=1.0.0"></script>
+  <script src="geometria.js?v=1.1.0"></script>
+  <script src="app.js?v=1.1.0"></script>
 </body>
 </html>

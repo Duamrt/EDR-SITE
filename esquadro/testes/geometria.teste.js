@@ -93,8 +93,37 @@ ok(impossivel.situacao === 'nao-fecha', 'medida absurda (diagonal 3 m) => não f
 const rod1 = G.conferir(r, medir({ x: 0.08, y: h }, { x: s, y: h }), CFG);
 const rod2Errada = G.conferir(r, medir({ x: 0.16, y: h }, { x: s, y: h }), CFG); // mexeu no sentido contrário
 const rod2Certa = G.conferir(r, medir({ x: 0.005, y: h }, { x: s, y: h }), CFG);
-ok(G.piorou(rod1, rod2Errada, 0.01) === true, 'mexeu no sentido errado (erro 8 → 16 cm) => trava e manda conferir');
+ok(!!G.piorou(rod1, rod2Errada, 0.01), 'mexeu no sentido errado (erro 8 → 16 cm) => trava e manda conferir');
 ok(G.piorou(rod1, rod2Certa, 0.01) === false, 'mexeu certo (8 → 0,5 cm) => segue');
+
+console.log('\n# Regressões da revisão do Cerberus (IA-03)');
+{ // item 3: cantos 10/1 cm -> 8/4 cm. O maior erro caiu, mas 9-B piorou 3 cm.
+  const a = G.conferir(r, medir({ x: 0.10, y: h }, { x: s + 0.01, y: h }), CFG);
+  const b = G.conferir(r, medir({ x: 0.08, y: h }, { x: s + 0.04, y: h }), CFG);
+  const p = G.piorou(a, b, 0.01);
+  ok(!!p && p.M2 === true && p.M1 === false, 'item 3: um canto piorou 3 cm enquanto o outro melhorou => trava e aponta 9-B', JSON.stringify(p));
+}
+{ // item 6: base 10, profundidade 8, M1=(2;0), M2=(10;8) — seis medidas fecham mas M1 está na linha fixa
+  const r2 = { s: 10, h: 8, diagonal: Math.hypot(10, 8), M1: 'M1', M2: 'M2', linhaRef: 'R' };
+  const A = { x: 0, y: 0 }, B = { x: 10, y: 0 }, M1 = { x: 2, y: 0 }, M2 = { x: 10, y: 8 };
+  const res = G.conferir(r2, { ref: 10, lado1: d(A, M1), lado2: d(B, M2), oposto: d(M1, M2), diag1: d(A, M2), diag2: d(B, M1) }, { tolerancia: 0.01, gabarito: 1 });
+  ok(res.situacao === 'nao-fecha' && res.degenerada === true, 'item 6: canto em cima da linha fixa => para (não manda mexer 8 m nem diz que o prego fica)', res.situacao);
+}
+{ // item 4: leitura errada de 1,3 cm num lado; a releitura obrigatória tem que pegar
+  const c1 = G.compararLeituras([7.147, 7.160]);
+  ok(c1.ok === false && c1.motivo === 'divergiu', 'item 4: 1ª leitura 7,147 e releitura 7,160 => divergem, pede 3ª leitura');
+  const c2 = G.compararLeituras([7.147, 7.160, 7.161]);
+  ok(c2.ok === true && Math.abs(c2.valor - 7.1605) < 1e-9 && c2.descartou, 'item 4: 3ª leitura 7,161 => usa as duas que concordam (7,1605)');
+  ok(G.compararLeituras([7.160, 7.163]).ok === true, 'leituras a 3 mm => aceitas (média)');
+  ok(G.compararLeituras([7.160, 7.180, 7.200]).ok === false, 'três leituras todas diferentes => não aceita, medir de novo');
+  ok(G.compararLeituras([7.160]).ok === false, 'releitura em branco não vale');
+}
+{ // item 4 (8 x 4 m): erro de +2,5 cm num lado passa pelo fechamento — por isso a releitura é obrigatória
+  const r84 = G.montarRetangulo({ nomesV: '1 2', cotasV: '8', nomesH: 'A B', cotasH: '4', v0: '1', v1: '2', h0: 'A', h1: 'B', referencia: 'B' });
+  const e = G.esperado(r84);
+  const res = G.conferir(r84, { ...e, lado1: e.lado1 + 0.025 }, CFG);
+  ok(res.situacao === 'corrigir', 'confirma o limite real: 8 x 4 m com +2,5 cm num lado não é pego pela conferência (só pela releitura)', res.situacao);
+}
 
 console.log('\n# Leitura de trena');
 ok(G.lerMedida('13,23', 13.2).valor === 13.23, '"13,23" => 13,23 m');

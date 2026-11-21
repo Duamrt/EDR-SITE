@@ -182,6 +182,14 @@
       return { ...base, situacao: 'nao-fecha', motivo: e.message };
     }
 
+    // 2b) geometria impossível para um gabarito (revisão IA-03, item 6): cruzamento colado na
+    //     linha fixa ou do lado de fora. Não é teto de movimento: é medida que não descreve uma casa.
+    const minimoY = 0.25 * r.h;
+    if (M1.y < minimoY || M2.y < minimoY) {
+      return { ...base, situacao: 'nao-fecha', M1, M2, degenerada: true,
+        motivo: `Com essas trenas, ${M1.y < minimoY ? (r.M1 || 'M1') : (r.M2 || 'M2')} cairia quase em cima da linha fixa ${r.linhaRef || ''}. Isso não é uma casa fora de esquadro: alguma trena foi lida ou anotada errada.` };
+    }
+
     // 3) conferência independente: o lado oposto medido x o calculado
     const opostoCalculado = Math.hypot(M2.x - M1.x, M2.y - M1.y);
     const fechamento = med.oposto - opostoCalculado;
@@ -233,6 +241,8 @@
         sinalDentro: -1,
       },
     };
+    const opostoDx = Math.abs(M2.x - M1.x);
+    const pregosValidos = M1.y > 0.5 * h && M2.y > 0.5 * h && opostoDx > 0.5 * s;
     linhas.lado1.mexe = Math.max(Math.abs(linhas.lado1.pregoPerto), Math.abs(linhas.lado1.pregoLonge)) > tol / 2;
     linhas.lado2.mexe = Math.max(Math.abs(linhas.lado2.pregoPerto), Math.abs(linhas.lado2.pregoLonge)) > tol / 2;
     linhas.oposto.mexe = Math.max(Math.abs(linhas.oposto.pregoLado1), Math.abs(linhas.oposto.pregoLado2)) > tol / 2;
@@ -244,7 +254,8 @@
       M1, M2, alvo1, alvo2, c1, c2,
       opostoCalculado, fechamento,
       gabarito: gab,
-      linhas: gab ? linhas : null,
+      linhas: gab && pregosValidos ? linhas : null,
+      motivoSemPregos: gab && !pregosValidos ? 'As linhas estão longe demais do lugar para calcular os pregos com segurança. Use as distâncias de remarcação.' : '',
       // retas que não mexem mesmo sem pregos: referência sempre fixa
       linhaFixa: r.linhaRef,
       remarcar: {
@@ -255,14 +266,37 @@
     };
   }
 
-  // Entre rodadas: se o erro aumentou, alguém mexeu no sentido errado, passou do ponto
-  // ou trocou as trenas. O app para e manda conferir (regra 3: na dúvida, não chuta).
+  // Entre rodadas: compara CADA cruzamento com o próprio erro anterior (revisão IA-03, item 3).
+  // Se qualquer um piorou além da margem de ruído, alguém mexeu no sentido errado, passou do
+  // ponto ou trocou as trenas: o app para e manda conferir (regra 3: na dúvida, não chuta).
   function piorou(anterior, atual, tol) {
     if (!anterior || !atual || !anterior.c1 || !atual.c1) return false;
-    const a = Math.max(anterior.c1.total, anterior.c2.total);
-    const b = Math.max(atual.c1.total, atual.c2.total);
-    return b > a + Math.max(0.005, tol / 2);
+    const margem = Math.max(0.005, (tol || 0.01) / 2);
+    const p1 = atual.c1.total > anterior.c1.total + margem;
+    const p2 = atual.c2.total > anterior.c2.total + margem;
+    return p1 || p2 ? { M1: p1, M2: p2 } : false;
   }
+
+  // Releitura (revisão IA-03, item 4): duas leituras da mesma trena precisam concordar.
+  // Devolve o valor a usar (média) ou pede a terceira leitura.
+  const LIMITE_RELEITURA = 0.005; // 5 mm — a calibrar no gabarito 8 x 4 m
+  function compararLeituras(leituras, limite = LIMITE_RELEITURA) {
+    const v = leituras.filter((x) => Number.isFinite(x) && x > 0);
+    if (v.length < 2) return { ok: false, motivo: 'faltando' };
+    if (v.length === 2) {
+      return Math.abs(v[0] - v[1]) <= limite + EPS ? { ok: true, valor: (v[0] + v[1]) / 2 } : { ok: false, motivo: 'divergiu', diferenca: v[1] - v[0] };
+    }
+    // três ou mais: usa as duas mais próximas entre si, se concordarem
+    let melhor = null;
+    for (let i = 0; i < v.length; i++) for (let j = i + 1; j < v.length; j++) {
+      const d = Math.abs(v[i] - v[j]);
+      if (!melhor || d < melhor.d) melhor = { d, valor: (v[i] + v[j]) / 2 };
+    }
+    return melhor.d <= limite + EPS ? { ok: true, valor: melhor.valor, descartou: true } : { ok: false, motivo: 'divergiu' };
+  }
+
+  // Quais trenas definem cada cruzamento que pode andar
+  const TRENAS_DE = { M1: ['lado1', 'diag2'], M2: ['lado2', 'diag1'] };
 
   function fmt(v, casas = 3) {
     return v.toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
@@ -282,5 +316,5 @@
     return { valor: num };
   }
 
-  return { piorou, lerNumeros, lerNomes, montarEixos, montarRetangulo, conferir, esperado, trilaterar, lerMedida, CAMPOS };
+  return { piorou, compararLeituras, TRENAS_DE, LIMITE_RELEITURA, lerNumeros, lerNomes, montarEixos, montarRetangulo, conferir, esperado, trilaterar, lerMedida, CAMPOS };
 });

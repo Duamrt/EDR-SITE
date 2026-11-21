@@ -1,7 +1,7 @@
-/* EDR Esquadro v1.0 — funciona sem internet depois do primeiro acesso.
+/* EDR Esquadro v1.1 — funciona sem internet depois do primeiro acesso.
    Apaga caches antigos do Esquadro (inclusive do Esquadro QR) ao ativar. */
-const CACHE = 'edr-esquadro-v1.0.0';
-const ARQUIVOS = ['./', './index.html', './estilo.css?v=1.0.0', './geometria.js?v=1.0.0', './app.js?v=1.0.0', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
+const CACHE = 'edr-esquadro-v1.1.0';
+const ARQUIVOS = ['./', './index.html', './estilo.css?v=1.1.0', './geometria.js?v=1.1.0', './app.js?v=1.1.0', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png', './fontes/archivo-latin-400-normal.woff2', './fontes/archivo-latin-600-normal.woff2', './fontes/archivo-latin-700-normal.woff2', './fontes/archivo-latin-800-normal.woff2'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ARQUIVOS)));
