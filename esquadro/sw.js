@@ -1,41 +1,31 @@
-const CACHE_NAME = 'edr-esquadro-v14-2';
-const APP_FILES = [
-  './',
-  './index.html',
-  './styles.css?v=14',
-  './geometry.js?v=13',
-  './session-log.js?v=14',
-  './app.js?v=14',
-  './icon.svg',
-  './icon-192.png',
-  './icon-512.png',
-  './manifest.webmanifest?v=14'
-];
+/* EDR Esquadro v1.0 — funciona sem internet depois do primeiro acesso.
+   Apaga caches antigos do Esquadro (inclusive do Esquadro QR) ao ativar. */
+const CACHE = 'edr-esquadro-v1.0.0';
+const ARQUIVOS = ['./', './index.html', './estilo.css?v=1.0.0', './geometria.js?v=1.0.0', './app.js?v=1.0.0', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_FILES)));
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ARQUIVOS)));
   self.skipWaiting();
 });
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
-      .then(() => self.clients.claim())
-  );
+self.addEventListener('activate', (e) => {
+  e.waitUntil(caches.keys()
+    .then((ks) => Promise.all(ks.filter((k) => k !== CACHE && /esquadro/i.test(k)).map((k) => caches.delete(k))))
+    .then(() => self.clients.claim()));
 });
-
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  event.respondWith(
-    caches.match(event.request, { ignoreSearch: true }).then((cached) => {
-      if (cached) return cached;
-      if (event.request.mode === 'navigate') return caches.match('./index.html');
-      return fetch(event.request).then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        return response;
-      });
-    })
-  );
+self.addEventListener('fetch', (e) => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  // fontes do Google: guarda a cópia para usar sem internet
+  if (/fonts\.(googleapis|gstatic)\.com$/.test(url.hostname)) {
+    e.respondWith(caches.open(CACHE).then((c) => c.match(req).then((hit) => hit || fetch(req).then((r) => { c.put(req, r.clone()); return r; }).catch(() => hit))));
+    return;
+  }
+  if (url.origin !== location.origin) return;
+  // páginas: rede primeiro (pega versão nova), cache se estiver sem internet
+  if (req.mode === 'navigate') {
+    e.respondWith(fetch(req).then((r) => { caches.open(CACHE).then((c) => c.put('./index.html', r.clone())); return r; }).catch(() => caches.match('./index.html')));
+    return;
+  }
+  e.respondWith(caches.match(req).then((hit) => hit || fetch(req).then((r) => { if (r.ok) caches.open(CACHE).then((c) => c.put(req, r.clone())); return r; })));
 });
